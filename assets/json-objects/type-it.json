@@ -1,0 +1,44 @@
+[
+	{
+        "difficulty" : 1,
+        "points" : 1,
+        "duration" : 60,
+		"words" : ["Ability","Able","Begin","Board","Cancer","Cause",
+					"Cost","Deep","Detail","Effort","Exactly","Federal",
+					"Foreign","Generation","Government","Happen","History","Increase",
+					"Information","Kitchen","Keep","Lawyer","Letter","Maintain",
+					"Material","Measure","Necessary","Network","Operation","Odd",
+					"Parent","Peace","Race","Rather","Scene","School",
+					"Table","Take","Upon","Use","Value","Visit",
+					"Voice","Wait","Water","Watch","Your","Yard",
+					"Suffer","Success"]
+	},
+	{
+        "difficulty" : 2,
+        "points" : 2,
+        "duration" : 50,
+		"words" : ["Knowledge","Ambiguous","Arbitrary","Benevolent","Connotation","Scarce",
+					"Commission","League","Knight","Circumstances","Convention","Furnish",
+					"Territory","Belligerent","Scheme","Distinction","Oppress","Multitude",
+					"Credible","Provoke","Perpetual","Substantial","Facile","Flourish",
+					"Pious","Purse","Siege","Proceeding","Throng","Venerate",
+					"Assail","Sublime","Humiliate","Cleave","Cogent","Dearth",
+					"Dispel","Evince","Fatuous","Garrulous","Iconoclast","Insurgent",
+					"Laconic","Morass","Noisome","Officious","Serendipity","Utilitarian",
+					"Virtuoso","Vituperate"]
+	},
+	{
+		"difficulty" : 3,
+        "points" : 3,
+        "duration" : 40,
+		"words" : ["Notwithstanding","Conspicuous","Extravagant","Abnegation","Abstruse","Adumbrate",
+					"Aphrodite","Demagogue","Diaphanous","Egregious","Embezzlement","Equanimity",
+					"Blandishment","Forbearance","Grandiloquent","Heterogenous","Impecunious","Incontrovertible",
+					"Camaraderie","Neophyte","Trenchant","Zephyr","Surreptitious","Vituperate",
+					"Capitulate","Pertinacious","Recalcitrant","Tangential","Promulgate","Redoubtable",
+					"Circumlocution","Ubiquitous","Plethora","Pulchritude","Noisome","Ostracism",
+					"Mendacious","Preponderance","Mawkish","Munificent","Linchpin","Interlocutor",
+					"Legerdemain","Inexorable","Hapless","Ostensible","Palliate","Phlegmatic",
+					"Preponderance","Vicissitude"]
+	}
+]

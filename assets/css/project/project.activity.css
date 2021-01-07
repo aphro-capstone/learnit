@@ -1,0 +1,171 @@
+
+
+body.activities {
+    font-family: 'Raleway', sans-serif;
+    background-image: url(../../images/games/bg1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.wrapper {
+	max-width: 1000px;
+	margin: auto;
+	width: 300%;
+	text-align: center;
+	padding: 5%;
+  height: 800px;
+  z-index: 4;
+  position: relative;
+  
+}
+
+h1 {
+  color: white;
+  font-family: 'Courier New';
+  font-size: 50px;
+}
+
+h1 + p {
+	margin-bottom: 5%;
+  color: white;
+  font-family: 'Courier New';
+  font-size: 20px;
+
+}
+
+.scoreWrap {float: left;}
+.timeWrap {float: right;}
+
+.outerWrap:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+/*.bg {
+	background-color: #04AF71;*/
+}
+
+button {
+   border: none;
+  background-color: #FF7373;
+  box-shadow: 0px 5px 0px 0px #CE4646;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 15px;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.start {
+  border: none;
+  background-color: #fff;
+  box-shadow: 0px 5px 0px 0px #6c757d;
+  outline: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 20px;
+  text-decoration: none;
+  margin: 0px;
+  color: black;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+}
+
+button:active {
+  transform: translate(0px, 5px);
+  -webkit-transform: translate(0px, 5px);
+  box-shadow: 0px 1px 0px 0px;
+}
+
+.scoreWrap p, .scoreWrap span, .timeWrap p, .timeWrap span {
+    font-size: 30px;
+    color: #FF7373;
+}
+
+.wordsWrap {
+	margin-top: 50px;
+}
+
+.words span{
+  font-size: 75px;
+  color: #ffffff; 
+  text-transform: uppercase;
+}
+
+.words span.correct{
+  color: #12f4ff;
+}
+.words span.game-over-text{
+  font-size: 43px;
+  font-weight: 600;
+  color: #ff7373;
+}
+
+.box-clickable{
+  cursor: pointer;
+  padding: 10px;
+}
+
+
+/*#acti{
+  max-width: 1000px;
+  margin: auto;
+  width: 300%;
+  text-align: center;
+  padding: 5%;
+  height: 600px;
+  background-color: gray;*/
+ 
+
+.head-text {
+    font-size: 40PX;
+    color: #fff;
+    font-family: Stonecross;
+    padding: 5%;
+}
+
+
+.game-box .backtext {
+    position: absolute;
+    padding: 5px 10px;
+    width: 100%;
+    background-color: #00000085;
+    z-index: 2;
+    color: #fff;
+    cursor: pointer;
+    transition: ease all 1s;
+    top: 100%;
+
+}
+
+.game-box {
+    position: relative;
+    overflow: hidden;
+}
+
+.backtext .img-container{
+  z-index: 1;
+  position: relative;
+}
+
+.game-box:hover .backtext {
+  bottom: 0;
+  top: auto;
+}
+
+
+body.activities .container{
+  position: relative;
+  z-index: 4;
+}
+
+ 

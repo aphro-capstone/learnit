@@ -1,0 +1,61 @@
+ 
+.folder-panel .search{
+    position: relative;
+    display: block;
+    width: 40%;
+    transition: ease all 0.4s;
+    z-index: 3; 
+}
+
+.folder-panel .search input {
+   width: 100%;
+    padding: 5px;
+    border-radius: 52px;
+    outline: none;
+    padding-right: 30px;
+    padding-left: 10px;
+}
+
+.folder-panel .search.focus{
+	 width: 100%; 
+}
+
+
+.folder-panel .search i{
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 17px;
+} 
+
+
+.folder-menu-dd{
+	width: 90px;
+}
+
+
+.folder-container{
+    margin-top: 5px;
+}
+
+.folder-details{
+    border: 1px solid #b8b8b8;
+    border-radius: 5px;
+ padding: 4px 11px;
+     cursor: pointer;
+}
+
+.folder-container .sub-folders{
+    padding-left: 30px;
+}
+
+.folder-details i{
+        font-size: 1.2em;
+        color: #7996df;
+}
+
+.folder-details:hover,
+.folder-details.selected
+{
+    background: #ddf0ff;
+}

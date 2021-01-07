@@ -1,0 +1,112 @@
+
+
+body#gradebook #main-content{
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+}
+
+.first-section {
+	font-size: 1.2em;
+} 
+.navigation-section ul.right{
+	font-size: 0.8em;
+    font-style: italic;
+    color: #757575;
+}
+
+.headpart ul.periods .btn{
+    padding: 0 8px;
+    border-radius: 0;
+}
+
+#gradebook-container .headpart{
+	display: table;
+	width: 100%;
+	padding-bottom: 15px;
+}
+
+#gradebook-container .headpart .text{font-size: 1.2em; margin: auto;}
+
+
+.gradebook-grid{ 
+	overflow: auto;
+	border: 1px solid #bfbfbf;
+}
+ 
+.grid-header .student-header{
+	width: 300px;
+} 
+
+.grid-header .grade-header{
+	text-align: center;
+	width: 230px;
+}
+
+.grade-content-td{
+	text-align: center;
+}
+
+.grade-content{
+	white-space: nowrap;
+}
+
+/*
+.grid-body{
+	display: flex;
+}*/
+.grid-body .student-body{
+	/*width: 250px;*/
+}
+
+.grid-body .student-item{
+	position: relative;
+    padding: 10px;
+    display: flex;
+    width: 300px;
+}
+
+.grid-body .student-item .img-container{
+	width: 35px;
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+.grid-body .student-item .text{
+	margin-top: auto;
+    margin-bottom: auto;
+}
+
+.grid-body .student-item .percentage{
+	position: absolute;
+    right: 5px;
+    background: #d6d6d6;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 13px;
+    top: calc(50% - 15px);
+    border: 1px solid #484848;
+}
+
+.grade-content input {
+    width: 85px;	
+    border-radius: 4px;
+    border: 1px solid #bfbfbf;
+    box-shadow: none;
+    outline: none;
+    text-align: center;
+    height: 35px;
+}
+
+.student-grade-item{display: flex;}
+
+.gradebook-table{width: auto;}
+.table-header{background: #f1f1f1;}
+.fixed-td{position: fixed!important;}
+
+.fixed-td + th,
+.fixed-td + td
+{
+	margin-left: 300px;
+    display: block;
+}
