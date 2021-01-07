@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Capstone Project</title>
+		<title> Learn IT Project</title>
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="<?= base_url(); ?>assets/images/favicon.ico" type="image/x-icon">
 

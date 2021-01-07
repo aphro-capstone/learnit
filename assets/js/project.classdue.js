@@ -1,6 +1,6 @@
 jQuery( ($) => {
     $('.backbtn').on('click',function(){
-        window.location.href="http://localhost/capstone_project/teacher/classes/whats-due";
+        window.location.href= SITE_URL + "/teacher/classes/whats-due";
     });
 
     $('.section .search input').on('focus',function(){
@@ -26,7 +26,7 @@ const iniClassDue = () => {
                         <td>\
                             <div class="student-info">\
                                 <div class="student-image img-container ">\
-                                <img src="http://localhost/capstone_project/assets/images/avatars/user2.png">\
+                                <img src="'+ SITE_URL +'/assets/images/avatars/user2.png">\
                                 </div>\
                                 <div class="student-name"> Aphrodite Gajo</div>\
                             </div>\

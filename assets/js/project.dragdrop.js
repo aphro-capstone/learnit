@@ -4,7 +4,7 @@
 
  
 	var myDropzone = new Dropzone("#drop-item-box", { 
-		url: "capstone_project/student/postAttachment",
+		url: "learnit/student/postAttachment",
 	    parallelUploads: 2,
 	    thumbnailHeight: 120,
 	    thumbnailWidth: 120,

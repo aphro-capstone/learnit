@@ -10,7 +10,7 @@ class Home extends MY_Controller {
 	public function __construct() {
         parent::__construct();
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $this->currentDomain = $protocol . $_SERVER['HTTP_HOST'] .'/capstone_project'; 
+        $this->currentDomain = $protocol . $_SERVER['HTTP_HOST'] .'/learnit'; 
         
         $this->checkRole('home');
         

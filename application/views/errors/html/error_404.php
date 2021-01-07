@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<head>
 		<meta charset="utf-8">
 		<title>404 Page Not Found</title>
-		<link rel="stylesheet" type="text/css" href="../../capstone_project/assets/plugins/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="../../capstone_project/assets/css/project.css">
+		<link rel="stylesheet" type="text/css" href="../../learnit/assets/plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="../../learnit/assets/css/project.css">
 	</head>
 	<body class="error-page">
 		<div class="overlay"></div>
