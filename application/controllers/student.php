@@ -204,6 +204,28 @@ class Student extends MY_Controller {
 	}
 
 
+
+	private function checkStudSubmission($quizid){
+		
+		$task = 'quiz';
+ 
+		$args =  array(
+				'select'	=> '*',
+				'from'		=> 'quizzes as q',
+				'join'		=> array(
+									array( 'table' => 'tasks as tsk', 'cond' => 'q.task_id = tsk.tsk_id'),
+									array( 'table' => 'task_submissions as ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
+								 ),
+				'where'		=> array( 
+									array( 'field' => 'quiz_id', 'value' => $quizid ),
+									array( 'field' => 'student_id', 'value' => getUserID() ),
+							)
+		);
+
+		return $this->prepare_query( $args )->num_rows() > 0;
+	}
+
+
 	public function quiz($quizID = null){
 		if($quizID){
 			$var['projectScripts'] = array(	'Project.quiz', 'project.attachments' );
@@ -214,32 +236,42 @@ class Student extends MY_Controller {
 
 
 			$quizDetails =  array(
-					'select'	=> 'ts.task_id,
-									quiz_questions,
+					'select'	=> 'quiz_questions,
 									quiz_count,
 									quiz_duration,
-									tsk_duedate,
-									duration_consumed,
-									quiz_score,
-									datetime_submitted,
+									tsk_duedate,  
 									total_points as quiz_total,
-									tsk_title',
+									tsk_title,
+									tsk_id,
+									timestamp_created',
 					'from'		=> 'tasks as tsk',
-					'join'		=> array( 
-										array( 'table' => 'quizzes as q', 'cond' => 'q.task_id = tsk.tsk_id'),
-										array( 'table' => 'task_submissions as ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
-										// array( 'table' => 'task_submission_quiz as tsq', 'cond' => 'tsq.ts_id = ts.ts_id')
-									),
+					'join'		=> array(  array( 'table' => 'quizzes as q', 'cond' => 'q.task_id = tsk.tsk_id'), ),
 					'where'		=> array( array( 'field' => 'q.quiz_id', 'value' => $id ) )
 			);
-
-
+			
+			if($pref == 'view'){
+				$quizDetails['select'] = $quizDetails['select'] . ',quiz_score,ts.datetime_submitted,duration_consumed,quiz_answers';
+				$quizDetails['join'][] = array( 'table' => 'task_submissions as ts', 'cond' => 'ts.task_id = tsk.tsk_id');
+				$quizDetails['join'][] = array( 'table' => 'task_submission_quiz as tsq', 'cond' => 'tsq.ts_id = ts.ts_id');
+				$quizDetails['where'][] = array( 'field' => 'ts.student_id', 'value' => getUserID() );
+			}else if( $this->checkStudSubmission($id) ){
+				redirect('/student/quiz/view:' . $id, 'location');
+			}
 
 			$quizDetails = $this->prepare_query( $quizDetails )->result_array();
 			
+			
+
+			
+
+
+
 			if(!empty( $quizDetails )){
 				$var['QSD'] = $quizDetails[0];
 				$var['isView'] = $pref == 'view' ? TRUE : FALSE;
+				$var['quizid'] = $id;
+
+				// var_dump($var['QSD']);
 				$this->load->template('student/quiz-template', $var);
 			}else{
 				show_404();
@@ -602,6 +634,106 @@ class Student extends MY_Controller {
 		return $this->prepare_query( $args )->result_array();
 	}
 
+
+
+	public function submitQuizAnswers(){
+		$answers = $this->input->post('answers');
+		$quizID = $this->input->post('quiz');
+		$tsk = $this->input->post('task');
+		$duration = $this->input->post('duration');
+		$A = array(
+			'task_id' 			=> $tsk,								
+			'student_id' 		=> getUserID(),								
+		);
+
+		$tsID = $this->ProjectModel->insert_CI_Query( $A, 'task_submissions',true );
+
+
+
+		$A = array(
+			'ts_id' 			=> $tsID,								
+			'quiz_answers' 		=> json_encode($answers),
+			'duration_consumed' => $duration,
+			'quiz_score'		=> $this->checkQuizAnswers($quizID,$answers,true)					
+		);
+
+		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_quiz',true ) ){
+			echo 1;
+			die();
+		}
+
+		echo 0;
+
+	}
+
+
+	private function checkQuizAnswers($quizid, $answers,$returnScore = false){
+		$args = array(
+			'select' => 'quiz_questions',
+			'from' => 'quizzes',
+			'where'	=> array( 
+							array(  'field' => 'quiz_id',  'value'  =>  $quizid ),
+						)
+		);
+		// echo getSessionData('sess_userID');
+
+		$questions = $this->prepare_query( $args )->result_array(); 
+		$questions = json_decode( $questions[0]['quiz_questions'] ,true);
+		$hasShortAnswer  = false;
+
+		$score = 0; 	
+		// var_dump($answers);
+		for ($i=0; $i < count($questions); $i++) { 
+			// echo '<br>---------------------------------------------------------------------------<br><br>';
+			$question = $questions[$i];
+			
+			
+			if( !isset( $answers[$i] ) ) continue;
+			$answer = $answers[$i];
+			
+			$responses = $question['responses'] ;
+
+			if( $question['type'] == 0 &&  $responses == $answer[0] ){   // TRUE OR FALSE
+				$score += intval( $question['points'] );
+			}else if( $question['type'] == 1 ){    // Mulitple Choice
+				$correctAnswerindex = null;
+
+				for($x = 0; $x < count( $responses ); $x++):
+					if( $responses[$x]['ischecked'] == 'true' ):
+						$correctAnswer = $x;
+						break;
+					endif;
+				endfor;
+				
+				if( $correctAnswerindex == $answer[0] ){ var_dump(2);$score+= intval( $question['points'] ); };	
+			}else if ($question['type'] == 2 ){ // Short Answer/ Essay
+				$hasShortAnswer = true;
+			}else if( $question['type'] == 3 ){  // Fill in the blanks
+				for($x = 0; $x < count( $responses ) ; $x++ ){
+					if( $responses[$x] == $answer[$x] ) { $score +=  intval( $question['points'] ); };
+				}
+			}else if ( $question['type'] == 4 ){   // matching type
+				
+			}else if( $question['type'] == 5 ){   // multiple answers
+				$answer = array_values( $answer );
+			
+				
+				$question['toSub_mistakes'] = true;   //    MUST DELETE LATER,   ONLY FOR TESTING PURPOSES
+
+				for($x = 0; $x < count( $answer ); $x++):
+					if( $responses[$x]['ischecked'] == 'true' &&  in_array($x,$answer )): 
+						$score += intval( $question['points'] );
+						unset( $answers[ array_search($x, $answers) ] );
+					endif;
+				endfor;
+				$mistakecount = count($answers);
+				if( $question['toSub_mistakes'] ) $score -= ( $mistakecount * intval( $question['points'] ) );
+
+			}
+		}  
+		return $score;
+
+	}
 }
 
 

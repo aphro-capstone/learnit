@@ -607,12 +607,13 @@ class Teacher extends MY_Controller {
 		 
 		$duration = $this->input->post('duration');
 		$questions = $this->input->post('questions'); 
-
+		$total_points = $this->input->post( 'total_points' );
 		$quizAdd = array(
 					'task_id'			=> $taskID,
 					'quiz_questions'	=> json_encode($questions),
 					'quiz_duration'		=> $duration,
-					'quiz_count'		=> count( $questions )
+					'quiz_count'		=> count( $questions ),
+					'total_points'		=> intval($total_points)
 		);
 		
 		$quizID = $this->ProjectModel->insert_CI_Query( $quizAdd, 'quizzes',true );    // Add Quiz datails
