@@ -743,4 +743,17 @@ class Teacher extends MY_Controller {
 		$this->getActivities($game);
 	}
 
+
+
+	public function profile(){
+		$this->load->template("shared/profile");
+	}
+
+
+
+
+
+
+
+
 }

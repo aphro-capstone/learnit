@@ -2522,4 +2522,46 @@ ul.overview-items{
     border: none;
 }
 
+.column-panel-multi-row.d-flex{
+    margin: 0;
+    padding: 0;
+    border-radius: 8px;
+    display: inline-flex;
+}
+
+
+#user-profile-page .profile-avatar-main{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #b4c1e5;
+    position: relative;
+}
+
+#user-profile-page .profile-avatar-main .img-container{
+        width: 100%;
+    height: 100%;
+}
+
+
+.avatar-profile-overlay{
+    position: ABSOLUTE;
+    top: 0;
+    left: 0;
+    background: #01010140;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: none;
+    transition: ease all 0.3s;
+
+}
+
+.profile-avatar-main:hover .avatar-profile-overlay{
+    display: flex;
+}
+
+.avatar-text-container{margin: auto;}
 
