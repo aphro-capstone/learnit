@@ -1,3 +1,5 @@
+<div class="row">
+<div class="col col-sm-12  col-md-3 col-lg-5 pr-2">
 <div class="container" id="user-profile-page">
 	<div class="profile-page-header p-3 pt-6 pb-6">
 		<div class="panel">
@@ -5,6 +7,7 @@
 				<div class="column-panel-multi-row d-flex">
 					<div class="d-flex justify-content-center">
 					
+
 					 <div class="profile-avatar-main">
 
 
@@ -15,56 +18,64 @@
 					 			<div class="avatar-text-container">
 					 				<svg class="d-block m-auto"width="24" height="24" viewBox="0 0 24 24" name="camera-icon"><path fill="#fff" fill-rule="evenodd" stroke="none" stroke-width="1" id="Icon/small/camera" d="M7.23 5.579C7.569 4.659 8.478 4 9.546 4h4.91c1.068 0 1.977.66 2.314 1.579h2.595c.903 0 1.636.707 1.636 1.579V17.42c0 .872-.733 1.579-1.636 1.579H4.636C3.733 19 3 18.293 3 17.421V7.158c0-.872.733-1.58 1.636-1.58h2.595zM12 16.632c2.711 0 4.91-2.121 4.91-4.737S14.71 7.158 12 7.158c-2.711 0-4.91 2.12-4.91 4.737 0 2.616 2.199 4.737 4.91 4.737zm-3.2-5.4c.236.837 1.03 1.452 1.973 1.452 1.13 0 2.045-.883 2.045-1.973 0-.91-.637-1.676-1.505-1.905a3.4 3.4 0 01.687-.07c1.807 0 3.273 1.415 3.273 3.159 0 1.744-1.466 3.158-3.273 3.158-1.807 0-3.273-1.414-3.273-3.158 0-.228.025-.45.072-.663z"></path></svg>
 									<span class="d-block text-center">Update Photo</span>
-					 			</div>
-					 				
+					 			</div>	
 					 		</div>
-					 	</div>
 
+					 	</div>
+					 
 					
-						<!-- <div class="text-content"> -->
-						<div class="profile-info-section">
-						<div class="user-profile-details">
+					<div class="profile-info-section">
+
 						<div class="profile-banner-title-container qa-test-profilePageHeader-titleContainer d-flex align-items-baseline">
-							<label class="display-full-name pt-1"> <?=getUserName(); ?> </label>
+							<label class="display-full-name pt-1"> <?=getUserName(); ?></label>
+							<div class="mt-2_5"></div>
 							<p class="student-profile subtext"></p></div>
-								<span><small>Student</small></span></p>
-						
-						<div class="sub-banner-title mt-2_5 qa-test-sub-banner-title">
-							<div class="mt-4"></div>
-									
+								<span><small>Student</small></span>
+
+								
 							<ul class="personal-info no-style mt-3 pl-3" >
 							<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
-							<span class="icon-edit qa-test-profilePage-editIcon"></span>
-							</ul>
-						</div>
-						</div>
-						</div>
-						</div>
-					<!-- </div> -->
-				</div>
-				</div>
-			</div>
-			</div>
-							</div>
-						</div>
+							<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
 					
+					</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+				
+
+
+
+		<div class="col col-sm-12  col-md-3 col-lg-5 pr-2">
+			<div class="panel">
+				<div class="panel-content">
+					<div class="profile-info-section2">
+						<div class="profile-page-header p-3 pt-6 pb-6">
+							<div class="column-panel-multi-row d-flex">
+					<div class="d-flex justify-content-center">
+				
 		
-		<!-- 	<div class="mt-2_5"></div>
-				<p class="student-profile subtext"><span>Student</span></p>
-					<div class="sub-banner-title mt-2_5 qa-test-sub-banner-title"></div>
-						<div class="mt-4"></div>
 
-							<div class="school-info-container d-flex align-items-center qa-test-school-info-container">
-								<div class="d-flex body-text align-items-center mr-4"><p class="qa-test-profile-user-school">
-									<svg width="24" height="24" viewBox="0 0 24 24" name="school-circle-icon" class="mr-1"><path fill="#2e313e" fill-rule="evenodd" stroke="none" stroke-width="1" id="Icon/small/schoolcircle" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-6-6v-4.124c0-.534.312-1.018.797-1.238L8.5 9.864V8.55c0-.233.12-.45.317-.575l2.82-1.779a.68.68 0 01.726 0l2.82 1.78a.68.68 0 01.317.574v1.314l1.703.774c.485.22.797.704.797 1.238V16h.32a.68.68 0 01.68.68V17H5v-.32a.68.68 0 01.68-.68H6zm3 0v-2.5a.5.5 0 10-1 0V16h1zm7 0v-2.5a.5.5 0 10-1 0V16h1zm-3 0h-2v-1.32a.68.68 0 01.68-.68h.64a.68.68 0 01.68.68V16zm-1-4c-.773 0-1.5-.697-1.5-1.5S11.227 9 12 9s1.5.697 1.5 1.5S12.773 12 12 12z"></path></svg>
-									<a class="qa-test-profile-user-school-link" href="/school/DavaodelNorteStateCollege130273?source=home_me_card">Davao del Norte State College</a></p>
-									<span class="icon-edit qa-test-profilePage-editIcon"></span></div>
-									<div class="d-flex body-text align-items-center"></div></
+						<div class="profile-banner-title-container qa-test-profilePageHeader-titleContainer d-flex align-items-baseline">
+							<label class="display-full-name pt-1"> <?=getUserName(); ?></label>
+							<div class="mt-2_5"></div>
+							<p class="student-profile subtext"></p></div>
+								<span><small>Student</small></span>
 
- -->
-
-
-
+								
+							<ul class="personal-info no-style mt-3 pl-3" >
+							<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
+							<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 		<!-- 
 			<div class="panel mt-2">
