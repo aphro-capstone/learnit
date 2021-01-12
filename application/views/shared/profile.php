@@ -1,4 +1,5 @@
 <div class="row">
+	
 <div class="col col-sm-12  col-md-3 col-lg-5 pr-2">
 <div class="container" id="user-profile-page">
 	<div class="profile-page-header p-3 pt-6 pb-6">
