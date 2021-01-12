@@ -493,8 +493,12 @@ var jConfirm = (type = 'red', 	msg = 'Are you sure ?', confirmCallback = ()=>{},
 
 
 
-var radioBoxevent = (_this) => {
+var radioBoxevent = (_this) => { 
 	let radioboxinput = _this;
+
+	if(_this.closest('.response-item') && _this.closest('.response-item').hasClass('unclickable') ) return;
+
+
 
 	if(radioboxinput.hasClass('radioboxinput-container')){
 		radioboxinput = _this.find('.radioboxinput');
@@ -530,6 +534,9 @@ var inputBtnClick = (_this) => {
 
 var customCheckboxClick  = (_this) => {
 	let btn = _this;
+	
+	//
+	if( btn.closest('.response-item') && btn.closest('.response-item').hasClass('unclickable') ) return;
 
 	if( $('.custom-checkbox').has(_this).length > 0 ){
 		btn = _this.closest('.custom-checkbox');

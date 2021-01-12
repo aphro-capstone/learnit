@@ -816,11 +816,35 @@ const iniQuizQuestions = ( )=> {
 					}
 				});
 
+				if( isQuizview ){
+
+					let score = { c: 0 ,o : 0,m : 0};
+					a.addClass('unclickable');
+
+					if( answer.indexOf( (index).toString() ) > -1 ){
+						a.addClass( 'selected-answer' );
+						f.addClass('checked');
+						f.find('input').prop('checked',true);
+						g.addClass('checked');
+						g.find('input').prop('checked',true);
+						
+						if(b.ischecked == 'true') score['c'] = score.c + 1;
+						else score['m'] = score.m + 1;
+					} 
+
+					if(b.ischecked == 'true'){
+						a.addClass('correct-answer');
+						score['o'] = score.o + 1;
+					}
+
+					return { el : a, sc : score };
+				}
+
+
 				return a;
 		};
 
 		this.createTrueFalseResponse = ( R ) =>{
-			console.log(answer,b.responses);
 			temp = $('<div class="row true_false_response response-div">\
 					<div class="col col-lg-6 col-md-6 col-sm-12">\
 						<div class="custom_field radioboxinput-container p-3 d-table full-width response-item" data-index="true" >\
@@ -841,50 +865,107 @@ const iniQuizQuestions = ( )=> {
 						</div>\
 					</div>\
 				</div>');
-
 			if( answer ){
 				temp.find('.response-item').addClass('unclickable');
-				console.log(temp.find('[data-index="'+ answer[0] +'"]'));
 				temp.find('[data-index="'+ answer[0] +'"]').addClass('selected-answer'); 
-				if( answer[0] == b.responses ) {
+				temp.find('[data-index="'+ answer[0] +'"] .radioboxinput').addClass('checked');
+				temp.find('[data-index="'+ answer[0] +'"] .radioboxinput input').prop('checked',true);
 
+				if( answer[0] == b.responses ) {
+					temp.find('.selected-answer').addClass('correct-answer');
+				}else{
+					temp.find('[data-index="'+ b.responses +'"]').addClass('correct-answer');
+					temp.find('.selected-answer').addClass('incorrect-answer');
 				}
+
+				return  { el : temp, sc : { c: 1 , o : 1 } };
 			}
 
 
  
-			return  temp;
+			return temp;
 		};
 
 		this.createMultipleChoiceResponse = ( R ) => {
 			let a = $('<div class="multiple_choice_response mt-3 response-div"></div>');
 			let i = this;
-
+			let score = { c:0,o:0 };
 			R.forEach( (b,c) => {
-				a.append( this.createInputBoxes(b,true,c ) );
-			}); 
+				let aaa = this.createInputBoxes(b,true,c );
+				a.append( aaa.el ? aaa.el : aaa );
+				if( isQuizview ){
+					score['c'] = score.c + aaa.sc.c;
+					score['o'] = score.o + aaa.sc.o;
+				}
 
+			});  
+
+			if( isQuizview ) return { el : a, sc : score};
 			return a;
 		};
 
-		this.createFillTheBlanksResponse = ( R ) => {
+		this.createFillTheBlanksResponse = ( R,RR ) => {
 			let text  = R
+			
+			
 			let a = $('<div class="fill_in_the_blanks mt-3 response-div"></div>'),
 				b = $('<div class="text"></div>'),
 				 
 				lastTextUnderscore = text.trim().charAt(text.length - 1) == '_' ;
 
 				text = text.split('_').filter(item => item).join('_');
+
+				let temp = text;
+
 				text = text.replace(/_/g, '<input type="text" placeholder="Enter Answer">');
 
 				if( lastTextUnderscore ){
 					text += '<input type="text" placeholder="Enter Answer">';
+					temp += '_';
 				}
 
 				b.append(text);
 				a.append(b);
 
-			return a;
+
+				if( isQuizview ){
+					strFullSentence = '';
+					let score = { c: 0, o : RR.length};
+
+					b.find('input').each( (c,d) => { 
+						$(d).attr('readonly',true);
+						if( answer[c] != undefined ){
+							$(d).val( answer[c] != undefined ? answer[c]: '' );
+							
+							if(answer[c] == RR[c]){
+								$(d).addClass( 'correct-answer');
+								score['c'] = score.c + 1;
+							}else{
+								$(d).addClass( 'incorrect-answer');
+							} 
+							
+						}else{
+							$(d).addClass(  'incorrect-answer');
+						}
+					});
+
+					//  show full sentence
+					tempcounter = 0;
+					for( var x = 0; x <temp.length;x++){
+						
+						if( temp.charAt(x) == '_' ){
+							strFullSentence += '<strong> '+ RR[tempcounter] +' </strong>';
+							tempcounter++;
+							continue;
+						}
+						strFullSentence += temp.charAt(x);
+					}
+
+					return { el : a, sc:score, cb : () => {
+						a.append('<p class="ml-3"><strong> Full Text: </strong> '+ strFullSentence +'</p>');
+					}};
+				}
+			return a 
 		};
 
 		this.createMatchingResponse = ( R ) => {
@@ -988,21 +1069,32 @@ const iniQuizQuestions = ( )=> {
 			  
 			a.append(b);
 
+			if( isQuizview ){
+				return  { el : a, sc : { c: 1 , o : 1 } };
+			}
 			return a;
 		};
 
 		this.createMultipleAnswerResponse = ( R ) => {
 			let a = $('<div class="multiple_answer mt-3 response-div"></div>');
 			let i = this;
-
+			let score = {c : 0,o : 0};
 			R.forEach( (b,c) => {
-				a.append( this.createInputBoxes(b,false,c ) );
+				let aaa = this.createInputBoxes(b,false,c );
+				a.append( aaa.el ? aaa.el : aaa );
+				if( isQuizview ){
+					score['c'] = score.c + aaa.sc.c;
+					score['o'] = score.o + aaa.sc.o;
+				}
 			});  
 
 			setTimeout( () => {
 				getTotals();
 			},100)
-
+			 
+			if( isQuizview ){
+				return  { el : a, sc : score };
+			}
  
 
 			return a;
@@ -1014,7 +1106,7 @@ const iniQuizQuestions = ( )=> {
 				
 
 				b.on('focus',function(){ 
-					console.log($(this).attr('placeholder'));
+
 					if( $(this).text().trim() == $(this).attr('placeholder') ){
 						$(this).text('');
 					}  
@@ -1023,14 +1115,18 @@ const iniQuizQuestions = ( )=> {
 						$(this).text( $(this).attr('placeholder') );
 					}
 				});
-				
+				if( isQuizview ){
+					b.prop('contenteditable',false);
+					if( answer ) b.text( answer[0] );
+				}
+
 				a.append(b);
 			return a;	
 		}
-
+		 
 		if( b.type == 0 ) return this.createTrueFalseResponse( b.responses ) ;
 		else if( b.type == 1 ) return this.createMultipleChoiceResponse( b.responses ) ;
-		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question ) ;
+		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question,b.responses ) ;
 		else if( b.type == 4 ) return this.createMatchingResponse( b.responses ) ;
 		else if( b.type == 5 ) return this.createMultipleAnswerResponse( b.responses ) ;
 		else if( b.type == 2 ) return this.createShortAnswerResponse();  
@@ -1054,7 +1150,7 @@ const iniQuizQuestions = ( )=> {
 		'Multiple Answer ::  Select all that appplies'];
 	
 	$('.overview-items .overview-item').remove();
-
+	__q__.splice(0,1);
 	$.each( __q__,function(a,b){
 		let aa = $('<div class="question-item"></div>');
 		let left = $('<div class="left" style="border-right: none; left: -15px; position: relative; margin-left: -15px;">\
@@ -1084,60 +1180,88 @@ const iniQuizQuestions = ( )=> {
 		dflex.append(right);
 		aa.append(dflex	);	
 
-		let FR = ins.createForm(b, isQuizview ? quiz_answers[a + 1] : undefined); 
+		let FR = ins.createForm(b, isQuizview ? quiz_answers[a + 1] : undefined);
+		let callback = FR.cb; 
+		let score = FR.sc;
 
+		if( score ){
+			let p = (score.c * b.points);
+			if( b.type == 5 && b.deductmistake ) p -= (score.m * b.points);
+			right.append('<p class=" mb-1 points"> <strong>Points earned : </strong>'+ p +'</p>');
+			
+
+		}
+
+
+			FR = FR.el ? FR.el : FR;
+					
 		aa.append( FR ); 
 		aa.attr('data-type',b.type);
 		$('#questions-list-frontend').append( aa );
 		 
 
-
-		if( b.type == 0 || b.type == 1 ){
-			FR.find('.custom_field').on('click', () => {
-				 $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); });
-		}else if ( b.type == 2 ){
-			FR.find('.short-answer-response-item').on('input',function(){
-				if($(this).text().trim() != '' )  $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
-				else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
-			});
-		}else if ( b.type == 3 ){
-			let inputs = FR.find('input[type="text"]');
-		
-			inputs.on('change',function(){ 
-				let has1Value = false;
-				inputs.each( function(){  
-					if($(this).val() !== ''){
-						has1Value = true;
-						return false;
-					}
-				 } );
-
-				if( has1Value ) $('.overview-items .overview-item').eq( a ).removeClass('unanswered');
-				else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
-			});
+		if( !isQuizview ){
+			if( b.type == 0 || b.type == 1 ){
+				FR.find('.custom_field').on('click', () => {
+					 $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); });
+			}else if ( b.type == 2 ){
+				FR.find('.short-answer-response-item').on('input',function(){
+					if($(this).text().trim() != '' )  $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
+					else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
+				});
+			}else if ( b.type == 3 ){
+				let inputs = FR.find('input[type="text"]');
 			
-		}else if ( b.type == 4 ){
-			FR.find('.draggable-answers .draggable-box').on('dragstop',function(){
-				let hasAnswer = false;
-				FR.find('.matching-columns .matching-item').each( function(){
-						if($(this).find('.box.droppable-box').text().trim() != '') {
-							hasAnswer = true; 
+				inputs.on('change',function(){ 
+					let has1Value = false;
+					inputs.each( function(){  
+						if($(this).val() !== ''){
+							has1Value = true;
 							return false;
 						}
-				}); 
-				if( hasAnswer )  $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
-				else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
-			});
-		}else if ( b.type == 5 ){
-			FR.find('.custom_field').on('click',function(){ 
-				if( FR.find('> .custom_field.selected').length > 0 ) $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
-				else $('.overview-items .overview-item').eq( a ).addClass('unanswered'); 
-			});
+					 } );
+	
+					if( has1Value ) $('.overview-items .overview-item').eq( a ).removeClass('unanswered');
+					else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
+				});
+				
+			}else if ( b.type == 4 ){
+				FR.find('.draggable-answers .draggable-box').on('dragstop',function(){
+					let hasAnswer = false;
+					FR.find('.matching-columns .matching-item').each( function(){
+							if($(this).find('.box.droppable-box').text().trim() != '') {
+								hasAnswer = true; 
+								return false;
+							}
+					}); 
+					if( hasAnswer )  $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
+					else $('.overview-items .overview-item').eq( a ).addClass('unanswered');
+				});
+			}else if ( b.type == 5 ){
+				FR.find('.custom_field').on('click',function(){ 
+					if( FR.find('> .custom_field.selected').length > 0 ) $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); 
+					else $('.overview-items .overview-item').eq( a ).addClass('unanswered'); 
+				});
+			}
+		}
+		
+
+		if(typeof callback == 'function'){
+			callback();
 		}
 
-		// overview
 		
+		// overview
 		overviewitem = $('<li class="overview-item unanswered" > Question '+ (a+1) +' </li>');
+
+		if( isQuizview && b.type != 2 ){
+			// compute Remarks  
+			let r = score.c == score.o ? 1 : score.c == 0 ? 3: 2;
+			overviewitem.removeClass('unanswered').addClass('remark-' + r);
+			overviewitem.append('<span class="score">'+ score.c + '/' + score.o   +'</span>');
+		}
+
+
 		overviewitem.on('click',function(){
 			if( !quizStarted && !isQuizview ){  notify('error', 'Quiz has not started yet.',undefined,false ); return; }
 			$('#questions-list-frontend .active').removeClass('active');
@@ -1155,8 +1279,7 @@ const iniQuizQuestions = ( )=> {
 
 		});
 		$('.overview-items').append(overviewitem);
-
-		return false;
+ 
 
 	});
 

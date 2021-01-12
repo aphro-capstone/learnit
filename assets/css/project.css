@@ -2484,10 +2484,12 @@ body.activities #main-content{
 }
 
 .overview-items .overview-item.unanswered,
-.overview-items .overview-item.wrong
+.overview-items .overview-item.wrong,
+.overview-item.remark-3
 {  background: #ff00001a; }
 
-.overview-items .overview-item.semi-perfect
+.overview-items .overview-item.semi-perfect,
+.overview-item.remark-2
 {  background: #ff8d0091; }
 
 
@@ -2497,11 +2499,27 @@ ul.overview-items{
     padding-right: 5px;
     padding-bottom: 5px;
 }
+.overview-item .score{
+    float: right;
+} 
+ 
+
 
 #questions-list-frontend .custom_field.selected-answer{
     border: 2px solid #000;
 }
-#questions-list-frontend .custom_field.selected-answer.correct-answer{
+#questions-list-frontend .custom_field.correct-answer,.fill_in_the_blanks input.correct-answer{
     border-color: #07ff33;
     background: #07ff331c;
 }
+
+#questions-list-frontend .custom_field.selected-answer:not(.correct-answer), .fill_in_the_blanks input.incorrect-answer{
+    border-color: #ff7070;
+    background: #f2d8d8;
+}
+ 
+#student-quiz-view .fill_in_the_blanks .text{
+    border: none;
+}
+
+

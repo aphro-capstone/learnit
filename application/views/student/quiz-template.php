@@ -28,7 +28,7 @@
 	const quiz = <?= $quizid;?>;
 	const task = <?= $QSD['tsk_id'];?>;
 	const quiz_answers =   <?= json_encode( json_decode($QSD['quiz_answers'],true))  ?> ;
-	
+	const QSD = <?php echo json_encode($QSD);?>
 	
  </script>
 <div class="container" id="student-quiz-view">
