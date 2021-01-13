@@ -729,7 +729,7 @@ class Student extends MY_Controller {
 
 				$correct = 0;
 				$mistake = 0;
-				$question['toSub_mistakes'] = true;   //    MUST DELETE LATER,   ONLY FOR TESTING PURPOSES
+				// $question['toSub_mistakes'] = true;   //    MUST DELETE LATER,   ONLY FOR TESTING PURPOSES
 	
 				for($x = 0; $x < count( $answer ); $x++):
 					if(in_array($x,$answer )) :
@@ -752,11 +752,7 @@ class Student extends MY_Controller {
 
 	}
 
-
-
-	public class function checkuserSubscription(){
-		
-	}
+ 
 }
 
 

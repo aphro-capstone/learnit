@@ -30,7 +30,7 @@
 	const task = <?= $QSD['tsk_id'];?>;
 
 	<?php if ($isviewQuiz):?>
-		const quiz_answers =   JSON.parse(<?= json_encode( json_decode($QSD['quiz_answers'],true))?>);
+		const quiz_answers = JSON.parse(<?= json_encode( json_decode($QSD['quiz_answers'],true))?>);
 	<?php endif;?>
 
 	
