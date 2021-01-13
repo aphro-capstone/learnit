@@ -654,7 +654,7 @@ class Student extends MY_Controller {
 			'ts_id' 			=> $tsID,								
 			'quiz_answers' 		=> json_encode($answers),
 			'duration_consumed' => $duration,
-			'quiz_score'		=> $this->checkQuizAnswers($quizID,$answers,true)					
+			'quiz_score'		=> $this->checkQuizAnswers($quizID,json_decode($answers),true)					
 		);
 
 		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_quiz',true ) ){
@@ -668,6 +668,7 @@ class Student extends MY_Controller {
 
 
 	private function checkQuizAnswers($quizid, $answers,$returnScore = false){
+		
 		$args = array(
 			'select' => 'quiz_questions',
 			'from' => 'quizzes',
@@ -675,6 +676,8 @@ class Student extends MY_Controller {
 							array(  'field' => 'quiz_id',  'value'  =>  $quizid ),
 						)
 		);
+
+
 		// echo getSessionData('sess_userID');
 
 		$questions = $this->prepare_query( $args )->result_array(); 
@@ -688,7 +691,7 @@ class Student extends MY_Controller {
 			$question = $questions[$i];
 			
 			
-			if( !isset( $answers[$i] ) ) continue;
+			// if( !isset( $answers[$i] ) ) continue;
 			$answer = $answers[$i];
 			
 			$responses = $question['responses'] ;
@@ -700,39 +703,59 @@ class Student extends MY_Controller {
 
 				for($x = 0; $x < count( $responses ); $x++):
 					if( $responses[$x]['ischecked'] == 'true' ):
-						$correctAnswer = $x;
+						$correctAnswerindex = $x;
 						break;
 					endif;
 				endfor;
 				
-				if( $correctAnswerindex == $answer[0] ){ var_dump(2);$score+= intval( $question['points'] ); };	
+				if( $correctAnswerindex == $answer[0] ){ $score+= intval( $question['points'] ); };	
 			}else if ($question['type'] == 2 ){ // Short Answer/ Essay
 				$hasShortAnswer = true;
 			}else if( $question['type'] == 3 ){  // Fill in the blanks
 				for($x = 0; $x < count( $responses ) ; $x++ ){
 					if( $responses[$x] == $answer[$x] ) { $score +=  intval( $question['points'] ); };
 				}
-			}else if ( $question['type'] == 4 ){   // matching type
-				
-			}else if( $question['type'] == 5 ){   // multiple answers
+			}else  if ( $question['type'] == 4 ){   // matching type
+				$matches = $question['responses']['matches'];
+				for( $x = 0; $x < count($answer); $x++ ){
+					if(is_object($answer[$x]))  $answer[$x] = json_decode(json_encode( $answer[$x] ),true);
+					if($answer[$x]['right'] == $matches[$x][1]){
+						$score+= intval( $question['points'] ); 
+					}
+				}
+			}
+			else if( $question['type'] == 5 ){   // multiple answers
 				$answer = array_values( $answer );
-			
-				
+
+				$correct = 0;
+				$mistake = 0;
 				$question['toSub_mistakes'] = true;   //    MUST DELETE LATER,   ONLY FOR TESTING PURPOSES
-
+	
 				for($x = 0; $x < count( $answer ); $x++):
-					if( $responses[$x]['ischecked'] == 'true' &&  in_array($x,$answer )): 
-						$score += intval( $question['points'] );
-						unset( $answers[ array_search($x, $answers) ] );
+					if(in_array($x,$answer )) :
+						if( $responses[$x]['ischecked'] == 'true' ){
+							$correct++;
+						}else{
+							$mistake++;
+						}
 					endif;
-				endfor;
-				$mistakecount = count($answers);
-				if( $question['toSub_mistakes'] ) $score -= ( $mistakecount * intval( $question['points'] ) );
+				endfor; 	
 
+				$left = $correct - $mistake;
+				if($left < 0) $left = 0;
+				$score +=  $left * intval( $question['points'] ); 
 			}
 		}  
+
+		
 		return $score;
 
+	}
+
+
+
+	public class function checkuserSubscription(){
+		
 	}
 }
 

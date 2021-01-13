@@ -24,14 +24,20 @@
  <script>
 	const __q__ = <?= json_encode( json_decode($QSD['quiz_questions'],true) );?>;
 	const isQuizview = true;
+	const studQuizView =  <?= $isviewQuiz ? 'true' : 'false';?>;
 	const quiz_duration = <?= $QSD['quiz_duration'] ?>;
 	const quiz = <?= $quizid;?>;
 	const task = <?= $QSD['tsk_id'];?>;
-	const quiz_answers =   <?= json_encode( json_decode($QSD['quiz_answers'],true))  ?> ;
+
+	<?php if ($isviewQuiz):?>
+		const quiz_answers =   JSON.parse(<?= json_encode( json_decode($QSD['quiz_answers'],true))?>);
+	<?php endif;?>
+
+	
 	const QSD = <?php echo json_encode($QSD);?>
 	
  </script>
-<div class="container" id="student-quiz-view">
+<div class="container <?= $isviewQuiz ? 'viewing' : 'taking';?>" id="student-quiz-view">
 	<div class="row">
 
 		
@@ -46,7 +52,7 @@
 								<span class="d-block" style="font-size: 2em;"> <?= $QSD['quiz_score'];?> / <?= $QSD['quiz_total'];?> </span>
 							</div>
 							<span class="d-block small"> Submitted : <?= date_format( new Datetime( $QSD['datetime_submitted'] ), 'F j, Y @ h:m A' );  ?>  </span>
-							<span class="d-block small"> Time Taken : <?= $QSD['duration_consumed']  ?> minutes </span>
+							<span class="d-block small"> Time Taken : <?= $QSD['duration_consumed']  ?>s </span>
 						</div>
 					</div>
 

@@ -480,6 +480,7 @@ function quizItem(QuestionNum){
 				 pointMultiplier += $(b).find('input[type="checkbox"]').is(':checked') ? 1: 0;
 			});
 		}
+		console.log(this.getTotalPoints * pointMultiplier);
 		return this.questionPoints * pointMultiplier;
 	}
 
@@ -500,6 +501,11 @@ const submitQuiz = () => {
 	dataSend['questions'] = [];
 	questions.forEach(e => {
 		dataSend['questions'].push(e.getJSONObject());
+	});
+
+	dataSend['totalpoints'] = 0;
+	dataSend['questions'].forEach(function(a){
+		dataSend['totalpoints'] = dataSend.totalpoints + a.total_points;
 	});
 	$.ajax({
 		url: SITE_URL + USER_ROLE + '/creatTask/0',
@@ -607,14 +613,15 @@ const iniQuiz = () => {
 				durationconsumed = durationconsumed + ':00';
 			}
  
-
+			console.log({ answers : quizResponses, quiz : quiz,task: task,duration : durationconsumed });
 			// submit to backend
 			$.ajax({
 				url: SITE_URL + 'student/submitQuizAnswers',
 				type: 'post',
 				dataType : 'json',
-				data: { answers : quizResponses, quiz : quiz,task: task,duration : durationconsumed },
+				data: { answers : JSON.stringify(quizResponses), quiz : quiz,task: task,duration : durationconsumed },
 				success: function(Response) {
+					console.log(Response);
 					if( Response.Error == null ){
 						$('.modal').modal('hide');
 						notify('success','Quiz has been Submitted,  you will be redirected to view page in a few minutes. ',() => {
@@ -816,11 +823,10 @@ const iniQuizQuestions = ( )=> {
 					}
 				});
 
-				if( isQuizview ){
+				if( studQuizView && answer ){
 
 					let score = { c: 0 ,o : 0,m : 0};
-					a.addClass('unclickable');
-
+					a.addClass('unclickable'); 
 					if( answer.indexOf( (index).toString() ) > -1 ){
 						a.addClass( 'selected-answer' );
 						f.addClass('checked');
@@ -893,14 +899,14 @@ const iniQuizQuestions = ( )=> {
 			R.forEach( (b,c) => {
 				let aaa = this.createInputBoxes(b,true,c );
 				a.append( aaa.el ? aaa.el : aaa );
-				if( isQuizview ){
+				if( studQuizView && answer ){
 					score['c'] = score.c + aaa.sc.c;
 					score['o'] = score.o + aaa.sc.o;
 				}
 
 			});  
 
-			if( isQuizview ) return { el : a, sc : score};
+			if( studQuizView && answer ) return { el : a, sc : score};
 			return a;
 		};
 
@@ -928,7 +934,7 @@ const iniQuizQuestions = ( )=> {
 				a.append(b);
 
 
-				if( isQuizview ){
+				if( studQuizView ){
 					strFullSentence = '';
 					let score = { c: 0, o : RR.length};
 
@@ -969,13 +975,14 @@ const iniQuizQuestions = ( )=> {
 		};
 
 		this.createMatchingResponse = ( R ) => {
-			this.creatematchingItem = (a) => {
+			this.creatematchingItem = (a,right,i) => {
 				let b = $('<div class="matching-item">\
 							<div class="box"> <p class="m-auto"> '+ a +' </p> </div>\
 							<div class="connector"> <i class="fa fa-arrows-h m-auto"></i> </div>\
 						</div>');
 				let c = $('<div class="box empty droppable-box">  </div>');
 
+				if(!studQuizView){
 					c.droppable({
 						accept: '.draggable-box',
 						over: function(event, ui) {
@@ -1004,11 +1011,19 @@ const iniQuizQuestions = ( )=> {
 						//   console.log(draggedElement.position());
 						},
 					  })
-
-
-
+					  b.append(c);
+					return b; 
+				}else{
+					c.addClass('has-answer');
+					c.append('<div class="answer m-auto">'+ right +'</div>');
 					b.append(c);
-				return b; 
+
+					if( R.matches[i][1] == right ){
+						b.addClass('correct-answer');
+						return {el : b, c : 1 };
+					}
+					return {el : b, c : 0 };
+				}
 			};
 
 			this.createAsnwersColumn = (a) => {
@@ -1035,11 +1050,11 @@ const iniQuizQuestions = ( )=> {
 			let a = $('<div class="matching mt-3 response-div"></div>');
 				a.append()
 				 a.append('<div class="row">\
-								<div class="col-sm-8">\
+								<div class="col-sm-8 matching-div">\
 									<p class="small"> Drag and drop items the answer columns to match Column A </p>\
 									 <div class="matching-columns"></div>\
 								</div>\
-								<div class="col-sm-4">\
+								<div class="col-sm-4 answers-div">\
 									<p class="small	"> Answer Choices</p>\
 									<div class="draggable-answers"></div>\
 								</div>\
@@ -1048,43 +1063,57 @@ const iniQuizQuestions = ( )=> {
 			let i = this;
 			let colA = [];
 			let colB = [];
+			if( studQuizView ){
+				let score = {c :0, o :answer.length};
+				console.log(answer);
+				answer.forEach( (b,c) => {
+					let aaa = this.creatematchingItem(b.left,b.right,c);
+					score['c'] = score.c + aaa.c;
+					a.find('.matching-columns').append( aaa.el );
+				});
+				a.append(b);
+				return  { el : a, sc : score };
+			}else{
+				R.matches.forEach( b => {
+					colA.push(b[0]);
+					colB.push(b[1] );
+				});
+	
+				R.fakes.forEach( b => {
+					colB.push(b);
+				});
+				
+				 
+				colA.forEach( bb => {
+					a.find('.matching-columns').append( this.creatematchingItem(bb) );
+				});
 
-			R.matches.forEach( b => {
-				colA.push(b[0]);
-				colB.push(b[1] );
-			});
+				colB.forEach( bb => {
+					a.find('.draggable-answers').append( this.createAsnwersColumn(bb) );
+				});
 
-			R.fakes.forEach( b => {
-				colB.push(b);
-			});
-			
+				a.append(b);
 
-			colA.forEach( bb => {
-				a.find('.matching-columns').append( this.creatematchingItem(bb) );
-			});
-
-			colB.forEach( bb => {
-				a.find('.draggable-answers').append( this.createAsnwersColumn(bb) );
-			});
-			  
-			a.append(b);
-
-			if( isQuizview ){
-				return  { el : a, sc : { c: 1 , o : 1 } };
+				
+				return a;
 			}
-			return a;
+			
+			
+			  
+			
 		};
 
 		this.createMultipleAnswerResponse = ( R ) => {
 			let a = $('<div class="multiple_answer mt-3 response-div"></div>');
 			let i = this;
-			let score = {c : 0,o : 0};
+			let score = {c : 0,o : 0, m : 0};
 			R.forEach( (b,c) => {
 				let aaa = this.createInputBoxes(b,false,c );
 				a.append( aaa.el ? aaa.el : aaa );
-				if( isQuizview ){
+				if( studQuizView && answer ){
 					score['c'] = score.c + aaa.sc.c;
 					score['o'] = score.o + aaa.sc.o;
+					score['m'] = score.m + aaa.sc.m;
 				}
 			});  
 
@@ -1092,7 +1121,7 @@ const iniQuizQuestions = ( )=> {
 				getTotals();
 			},100)
 			 
-			if( isQuizview ){
+			if( studQuizView && answer ){
 				return  { el : a, sc : score };
 			}
  
@@ -1115,7 +1144,7 @@ const iniQuizQuestions = ( )=> {
 						$(this).text( $(this).attr('placeholder') );
 					}
 				});
-				if( isQuizview ){
+				if( studQuizView ){
 					b.prop('contenteditable',false);
 					if( answer ) b.text( answer[0] );
 				}
@@ -1150,7 +1179,8 @@ const iniQuizQuestions = ( )=> {
 		'Multiple Answer ::  Select all that appplies'];
 	
 	$('.overview-items .overview-item').remove();
-	__q__.splice(0,1);
+
+	let totalPoints = { c: 0, o :0};
 	$.each( __q__,function(a,b){
 		let aa = $('<div class="question-item"></div>');
 		let left = $('<div class="left" style="border-right: none; left: -15px; position: relative; margin-left: -15px;">\
@@ -1180,16 +1210,20 @@ const iniQuizQuestions = ( )=> {
 		dflex.append(right);
 		aa.append(dflex	);	
 
-		let FR = ins.createForm(b, isQuizview ? quiz_answers[a + 1] : undefined);
+		let FR = ins.createForm(b, studQuizView && quiz_answers[a] ? quiz_answers[a] : undefined);
 		let callback = FR.cb; 
 		let score = FR.sc;
-
+		
 		if( score ){
 			let p = (score.c * b.points);
-			if( b.type == 5 && b.deductmistake ) p -= (score.m * b.points);
+			if( b.type == 5 ){
+				m = (score.c - score.m) < 0 ? 0 : score.c - score.m;
+				p = (m * b.points); 
+				right.append('<p class=" mb-1 points"> <strong>Correct answer : </strong>'+ score.c +'</p>');
+				right.append('<p class=" mb-1 points"> <strong>Wrong answer : </strong>'+ score.m +'</p>');
+			}
+		
 			right.append('<p class=" mb-1 points"> <strong>Points earned : </strong>'+ p +'</p>');
-			
-
 		}
 
 
@@ -1200,7 +1234,7 @@ const iniQuizQuestions = ( )=> {
 		$('#questions-list-frontend').append( aa );
 		 
 
-		if( !isQuizview ){
+		if( !studQuizView ){
 			if( b.type == 0 || b.type == 1 ){
 				FR.find('.custom_field').on('click', () => {
 					 $('.overview-items .overview-item').eq( a ).removeClass('unanswered'); });
@@ -1254,7 +1288,7 @@ const iniQuizQuestions = ( )=> {
 		// overview
 		overviewitem = $('<li class="overview-item unanswered" > Question '+ (a+1) +' </li>');
 
-		if( isQuizview && b.type != 2 ){
+		if( studQuizView && b.type != 2 && quiz_answers[a] ){
 			// compute Remarks  
 			let r = score.c == score.o ? 1 : score.c == 0 ? 3: 2;
 			overviewitem.removeClass('unanswered').addClass('remark-' + r);
@@ -1263,7 +1297,7 @@ const iniQuizQuestions = ( )=> {
 
 
 		overviewitem.on('click',function(){
-			if( !quizStarted && !isQuizview ){  notify('error', 'Quiz has not started yet.',undefined,false ); return; }
+			if( !quizStarted && !studQuizView ){  notify('error', 'Quiz has not started yet.',undefined,false ); return; }
 			$('#questions-list-frontend .active').removeClass('active');
 			$('#questions-list-frontend .question-item').eq(a).addClass('active');
 
@@ -1283,6 +1317,7 @@ const iniQuizQuestions = ( )=> {
 
 	});
 
+	// $()
 	 
 }
 

@@ -2508,12 +2508,17 @@ ul.overview-items{
 #questions-list-frontend .custom_field.selected-answer{
     border: 2px solid #000;
 }
-#questions-list-frontend .custom_field.correct-answer,.fill_in_the_blanks input.correct-answer{
+#questions-list-frontend .custom_field.correct-answer,
+.fill_in_the_blanks input.correct-answer,
+#questions-list-frontend .matching-item.correct-answer .box.has-answer
+{
     border-color: #07ff33;
     background: #07ff331c;
 }
 
-#questions-list-frontend .custom_field.selected-answer:not(.correct-answer), .fill_in_the_blanks input.incorrect-answer{
+#questions-list-frontend .custom_field.selected-answer:not(.correct-answer),
+.fill_in_the_blanks input.incorrect-answer,
+#questions-list-frontend .matching-item:not(.correct-answer) .box.has-answer{
     border-color: #ff7070;
     background: #f2d8d8;
 }
@@ -2565,3 +2570,11 @@ ul.overview-items{
 
 .avatar-text-container{margin: auto;}
 
+#student-quiz-view.viewing .question-item .matching .answers-div{display: none;}
+#student-quiz-view.viewing .question-item .matching .matching-div{    width: 100%;
+    max-width: 100%;
+    flex: unset;}
+
+#questions-list-frontend .matching-item .box.has-answer{
+    border-style: solid;
+}

@@ -607,7 +607,7 @@ class Teacher extends MY_Controller {
 		 
 		$duration = $this->input->post('duration');
 		$questions = $this->input->post('questions'); 
-		$total_points = $this->input->post( 'total_points' );
+		$total_points = $this->input->post( 'totalpoints' );
 		$quizAdd = array(
 					'task_id'			=> $taskID,
 					'quiz_questions'	=> json_encode($questions),
