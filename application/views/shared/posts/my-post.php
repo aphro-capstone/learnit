@@ -23,7 +23,7 @@
 			<div class="text-content unexpanded-content" data-trigger="expand,focus" data-target=".panel"> <?=$placeholder; ?> </div>
 			<div class="text-content expanded-content">
 				<div class="text position-relative" style="top: 5px; font-weight: 500;">  <?= getUserName();  ?> </div>
-				<div class="text"><small>Teacher at DNSC</small></div>
+				<div class="text"><small> </small></div>
 			</div>
 
 			<div class="buttons unexpanded-content"> 

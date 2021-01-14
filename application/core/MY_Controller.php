@@ -383,7 +383,7 @@ class MY_Controller extends CI_Controller
         
                     
 		$taskArgs =  array(
-						'select'    => 'p.p_id,user_id,
+						'select'    => 'p.p_id,user_id as author_id,
 												p.post_ref_type,
 												p.spa_id,
                                                 p.timestamp_created,
@@ -415,7 +415,7 @@ class MY_Controller extends CI_Controller
             $npArgs['join'][] =  array( 'table' => 'classes as c', 'cond' => 'c.class_id = np.class_id');
             $npArgs['where'][] = array( 'field'    => 'c.teacher_id', 'value' =>  getUserID() );
         } else if( getRole() == 'student' ){
-
+            $taskArgs['select'] = $taskArgs['select'] . '(select count(ts_id) from li_task_submissions as ltsk where ltsk.task_id = tsk.tsk_id and ltsk.student_id = '. getUserID() .' ) as student_sub_count';
         }
         
         if( $classID != 0 ){
@@ -708,6 +708,52 @@ class MY_Controller extends CI_Controller
     }
 
     $this->load->template( 'shared/' . $template,$dataPass);
+   }
+
+
+   protected function removePost($postID){
+    
+    if( !isset($postID) && $postID ) return false;
+
+    $args = array(
+            'select'    => '*',
+            'from'      => 'posts',
+            'where'     => array(  array( 'field' => 'p_id', 'value'  =>  $postID ))
+    ); 
+
+    $post = $this->prepare_query($args);
+    
+    if( $post->num_rows() == 0 )  return false;
+    
+    $post = $post->result_array();
+    $post = $post[0];
+
+    if($post['post_ref_type'] == 0){
+        $this->ProjectModel->delete( $postID, 'p_id', 'posts');
+        $this->ProjectModel->delete( $post['post_info_ref_id'], 'np_id', 'normal_posts');
+        echo json_encode( array( 'Error' => null) );
+    }else{
+        // check if there are already submissions
+        $args = array(
+                'select'    => 'count(ts_id) as submissions',
+                'from'      => 'task_submissions',
+                'where'     => array(  array( 'field' => 'task_id', 'value'  =>  $post['post_info_ref_id'] ))
+        ); 
+
+
+        $s = $this->prepare_query( $args )->result_array();
+        $s = $s[0];
+
+        if( $s['submissions'] > 0 ){
+            echo json_encode(  array('Error' => 'Cannot delete post. It is connected to a task that has submissions.' )  );
+        }else{
+            $this->ProjectModel->delete( $postID, 'p_id', 'posts');
+            $this->ProjectModel->delete( $post['post_info_ref_id'], 'tsk_type', 'tasks');
+            echo json_encode( array( 'Error' => null) );
+        }
+    }
+        
+        die();
    }
 
 }

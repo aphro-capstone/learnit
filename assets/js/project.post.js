@@ -32,6 +32,33 @@ jQuery(($) => {
             $(this).html('Write a comment').trigger('focusout');
         }
     });
+
+
+    
+	$('.delete-post').on('click',function(e){
+		e.preventDefault();
+        let id = $(this).closest('.post-panel').attr('data-post-id');
+        // let jsquery = jQuery;
+
+		jQuery.ajax({
+            url: SITE_URL + USER_ROLE + '/delPost', 
+                type: 'post',
+                dataType : 'json',
+                data: {postid : id},
+                success: function(Response) {
+                    console.log(Response);
+                    if( Response.Error == null ){
+                        notify('success','Post deleted successfully');
+                    }else{
+                        notify('error',Response.Error,undefined,false,3000);
+                    } 
+                },error:function(e){
+                    console.error(e.responseText);
+                }
+        });
+		// jConfirm( 'red', 'Are you sure?',function(){ doajax2(); } );
+    });
+    
 });
 
 
@@ -47,29 +74,29 @@ var postItem = () => {
 			fd.append("attachFile[]", attachmentlist[x]);
 		}
  
-	$.ajax({
-			url: SITE_URL + USER_ROLE + '/addPost', 
-             type: 'post',
-			 dataType : 'json',
-			 processData:false,
-			 contentType: false ,
-			 async: false,
-             data: fd,
-             success: function(Response) {
-                console.log(Response);
-                if( Response.Error == null ){ 
-                    $(document).trigger('click');
+        $.ajax({
+                url: SITE_URL + USER_ROLE + '/addPost', 
+                type: 'post',
+                dataType : 'json',
+                processData:false,
+                contentType: false ,
+                async: false,
+                data: fd,
+                success: function(Response) {
+                    console.log(Response);
+                    if( Response.Error == null ){ 
+                        $(document).trigger('click');
 
-                    $('#posts').prepend($(Response.newpost));
-                }else{
-                    notify('error',Response.Error);
+                        $('#posts').prepend($(Response.newpost));
+                    }else{
+                        notify('error',Response.Error);
+                    }
+                    
+                    attachmentlist = [];
+                },error:function(e){
+                    console.log(e.responseText);
                 }
-             	 
-				 attachmentlist = [];
-            },error:function(e){
-                console.log(e.responseText);
-            }
-	});
+        });
 };
 
 
@@ -104,6 +131,7 @@ const writeComment = (this_,value,postID,commentID) => {
 
 
 const displayTaskModal = (postID,this_) =>{
+    
     const post = posts.find(x => x.p_id === postID); 
     let viewLink = '';
 
@@ -134,11 +162,20 @@ const displayTaskModal = (postID,this_) =>{
 
         if(ID == undefined) ID = post.ass_id;
 
+       
 
         $('.view-quiz-result-student').attr('href', SITE_URL + 'student/' + 'quiz/view:'+ ID ); 
 
         $('.take-quiz-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
         $('.view-assignment-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
+        
+        if( post.student_sub_count != undefined && post.student_sub_count  > 0 ){
+            $('.take-quiz-student').hide();
+        }else{
+            $('.take-quiz-student').show();
+        }
+
+
     }
     
     $('#taskInstruction').modal('show');

@@ -749,6 +749,12 @@ class Teacher extends MY_Controller {
 		$this->load->template("shared/profile");
 	}
 
+	public function delPost(){
+		$id = $this->input->post('postid');
+		echo $this->removePost($id) ;
+		die();
+	}
+
 
 
 

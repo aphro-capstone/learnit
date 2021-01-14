@@ -223,6 +223,8 @@ jQuery( ($) => {
 	$('.downloadable').on('click',function(e){
 		doDownload( $(this) );
 	});
+
+
 });
 
 
@@ -476,7 +478,7 @@ var notify = (type, msg,callback,showProgress = true, time = 1000 ) => {
 	$.notify( msg ,json );
 };
 
-var jConfirm = (type = 'red', 	msg = 'Are you sure ?', confirmCallback = ()=>{},cancelCallback = () => {} ) => {
+var jConfirm = (type = 'red', 	msg = 'Are you sure ?', confirmCallback = ()=>{} , cancelCallback = () => { } ) => {
 	$.confirm({
         icon: 'fa fa-smile-o',
         theme: 'modern',
@@ -701,3 +703,9 @@ var getTaskDataObject = function(form){
 
 	return dataSend;
 }
+
+
+function removePost(){
+
+}
+
