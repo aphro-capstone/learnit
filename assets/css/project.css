@@ -2546,7 +2546,7 @@ ul.overview-items{
 }
 
 #user-profile-page .profile-avatar-main .img-container{
-        width: 100%;
+    width: 100%;
     height: 100%;
 }
 
@@ -2568,7 +2568,13 @@ ul.overview-items{
     display: flex;
 }
 
-.avatar-text-container{margin: auto;}
+.avatar-text-container{
+    margin: auto;
+}
+
+.profile-banner-title-container.qa-test-profilePageHeader-titleContainer.d-flex.align-items-baseline{
+    font-size: 2rem;
+}
 
 #student-quiz-view.viewing .question-item .matching .answers-div{display: none;}
 #student-quiz-view.viewing .question-item .matching .matching-div{    width: 100%;
@@ -2577,4 +2583,15 @@ ul.overview-items{
 
 #questions-list-frontend .matching-item .box.has-answer{
     border-style: solid;
+}
+.profile-banner .profile-info-section{
+    margin-left: 75px;
+}
+
+.profile-info-section{
+    margin-left: 70px;
+}
+
+.profile-info-section2{
+    margin-left: 80px;
 }
