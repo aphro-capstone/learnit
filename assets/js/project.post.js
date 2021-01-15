@@ -39,6 +39,7 @@ jQuery(($) => {
 		e.preventDefault();
         let id = $(this).closest('.post-panel').attr('data-post-id');
         // let jsquery = jQuery;
+        let ths_ = $(this);
 
 		jQuery.ajax({
             url: SITE_URL + USER_ROLE + '/delPost', 
@@ -46,8 +47,8 @@ jQuery(($) => {
                 dataType : 'json',
                 data: {postid : id},
                 success: function(Response) {
-                    console.log(Response);
                     if( Response.Error == null ){
+                        ths_.closest('.post-panel').remove();
                         notify('success','Post deleted successfully');
                     }else{
                         notify('error',Response.Error,undefined,false,3000);
