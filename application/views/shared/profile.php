@@ -20,7 +20,7 @@
 
 			 	</div>
 			 
-			<!-- 
+			
 					<div class="profile-info-section">
 
 
@@ -34,14 +34,50 @@
 							<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
 							<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
 
-							<button class="mbutton">Edit Profile</button>
-							<button class="mbutton">Search</button>
+							<button class="btn btn-primary">Edit Profile</button>
+							<!-- <button class="btn btn-primary">Search</button> -->
 
-					</div> -->
+					</div>
 			
 
 					</div>
 				</div>
+
+
+
+		<div class="col col-sm-12  col-md-3 col-lg-4 pr-2" style="
+    margin: 0px;
+    padding: 16px;
+">
+	<div class="container" class="aboutpart">
+		<div class="profile-page-header p-3 pt-3 pb-3">
+			<div class="panel">
+				<div class="panel-content">
+
+							<div class="row2">
+  								<div class="column2">
+    								<h2></h2>
+    								<p>Post</p>
+  								</div>
+  							</div>
+  							<div class="row2">
+  								<div class="column2">
+    								<h2></h2>
+    								<p>Badges</p>
+  								</div>
+  							</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
 			</div>
 		</div>
 
@@ -99,35 +135,8 @@
 	</div>
 
  -->
-<!-- 
-<div class="col col-sm-12  col-md-3 col-lg-4 pr-2" style="
-    margin: 0px;
-    padding: 16px;
-">
-	<div class="container" class="aboutpart">
-		<div class="profile-page-header p-3 pt-6 pb-6">
-			<div class="panel">
-				<div class="panel-content">
-
-							<div class="row2">
-  								<div class="column2">
-    								<h2></h2>
-    								<p>About</p>
-  								</div>
-  							</div>
-  							<div class="row2">
-  								<div class="column2">
-    								<h2></h2>
-    								<p>Badges</p>
-  								</div>
-  							</div>
 
 
-				</div>
-			</div>
-		</div>
-	</div>
-</div> -->
 
 
 
