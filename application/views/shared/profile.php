@@ -6,8 +6,6 @@
 					
 
 			 <div class="profile-avatar-main">
-
-
 			 		<div class="img-container"> 
 			 			<img src="<?=base_url() . getSessionData('sess_userImage');?>" alt="" />
 			 		</div>	
@@ -17,266 +15,110 @@
 							<span class="d-block text-center">Update Photo</span>
 			 			</div>	
 			 		</div>
-
 			 	</div>
 			 
-			
-					<div class="profile-info-section">
+			<div class="profile-info-section">
+					<div class="profile-banner-title-container qa-test-profilePageHeader-titleContainer d-flex align-items-baseline">
+						<h4 class="display-full-name pt-1"> <?=getUserName(); ?></h4>
+						<p class="student-profile subtext"></p></div>
+							<span><small class="stu">Student</small></span>
 
-
-						<div class="profile-banner-title-container qa-test-profilePageHeader-titleContainer d-flex align-items-baseline">
-							<h4 class="display-full-name pt-1"> <?=getUserName(); ?></h4>
-							<p class="student-profile subtext"></p></div>
-								<span><small class="stu">Student</small></span>
-
-								
-							<ul class="personal-info no-style mt-3 pl-3" >
-							<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
-							<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
-
-							<button class="btn btn-primary">Edit Profile</button>
-							<!-- <button class="btn btn-primary">Search</button> -->
-
-					</div>
+						<ul class="personal-info no-style mt-3 pl-3" >
+						<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
+						<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
+						<button class="btn btn-primary">Edit Profile</button>
+			</div>
 			
 
-					</div>
-				</div>
+			</div>
+		</div>
 
 
-
-		<div class="col col-sm-12  col-md-3 col-lg-4 pr-2" style="
-    margin: 0px;
-    padding: 16px;
-">
 	<div class="container" class="aboutpart">
-		<div class="profile-page-header p-3 pt-3 pb-3">
-			<div class="panel">
-				<div class="panel-content">
+		<div class="navigation-list-container navigation-list-container-gray">
 
-							<div class="row2">
-  								<div class="column2">
-    								<h2></h2>
-    								<p>Post</p>
-  								</div>
-  							</div>
-  							<div class="row2">
-  								<div class="column2">
-    								<h2></h2>
-    								<p>Badges</p>
-  								</div>
-  							</div>
-
-
+					<ul class="navigation-list qa-test-list-group navigation-list-container-horizontal-on-mobile list-group">
+						<li class="p-0 list-group-item">
+							<a class="navigation-list-item qa-test-profile-nav-post selected">
+							<button class="btn btn">Post</button>
+							</a>
+						</li>
+						<li class="p-0 list-group-item">
+							<a class="navigation-list-item qa-test-profile-nav-classes selected">
+							<button class="btn btn">Class Enrolled</button>
+							</a>
+						</li>
+						<li class="p-0 list-group-item">
+							<a class="navigation-list-item qa-test-profile-nav-abo selected">
+							<button class="btn btn">About</button>
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-
-
-			</div>
-		</div>
-
-
-<!-- 	<div class="profile-page-header p-3 pt-6 pb-6">
-		
-	</div> -->
-
 
 <!-- 
+<div class="profile-page-header p-3 pt-6 pb-6">
+		
+</div>
 	
 <div class="col col-sm-12  col-md-3 col-lg-5 pr-2">
 
 </div> -->
 
-<!-- 
-		<div class="col col-sm-12  col-md-3 col-lg-5" style="top: 10px">
+
+
+	<!-- 	<div class="col col-sm-12  col-md-3 col-lg-5" style="top: 10px">
 			<div class="panel">
 				<div class="panel-content">
 					<div class="profile-info-section2">
 						<div class="profile-page-header p-3 pt-6 pb-6">
 					
 
-					<div class="profile-info-section2">
+							<div class="profile-info-section2">
 
-						<div class="row">
-  							<div class="column">
-    							<h2>Badges</h2>
-    							<p></p>
-  							</div>
-  							<div class="column">
-    							<h2>Likes</h2>
-    							<p></p>
-  							</div>
-						</div>
-
-						<div class="row">
-						  <div class="column">
-						    <h2>Post</h2>
-						    <p></p>
-						  </div>
-						  <div class="column">
-						    <h2>Gwapa ko</h2>
-						    <p></p>
-						  </div>
-						</div>
-
-					</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
- -->
-
-
-
-
-
-
-		<!-- 
-			<div class="panel mt-2">
-				<div class="panel-content">
-					<div class="heading dropdown">
-						<span>My Classess</span>
-						<span class="options data-toggle" data-toggle="dropdown"> <i class="fa fa-ellipsis-h" ></i>  </span>
-						<ul class="dropdown-menu">
-							<?php if(getRole() == 'teacher'): ?>
-								<li class="createClassModal"><a href="#" >  Create a Class</a></li> 
-                            	<li><a href="#">  View Archived Classess</a></li>	
-							<?php endif; ?>
-							 
-                           		<li class="joinClassModal" ><a href="#joinClass" data-toggle="modal" >  Join a Class </a></li> 
-						</ul>
-					</div>
-					<div class="content row">
- -->
-					<!-- 	<?php if( count($classes) == 0 ): ?>
-							<div class="placeholders p-4">
-								<?php if ( getRole() == 'teacher'): ?>
-									<p class="text-center">Teacher has no class yet.  Create one and start interacting with your students</p>
-									<p class="text-center"> <a href="#" class="createClassModal"> <i class="fa fa-plus"></i> Create a Class </a> </p>
-								<?php else: ?>
-									<p class="text-center">Student has no class yet,   enroll now to enjoy the perks of being in a class</p>
-									<p class="text-center"> <a href="#joinClass" data-toggle="modal"> <i class="fa fa-plus"></i> Join a Class </a> </p>
-								<?php endif ?>
-								
+							<div class="row">
+								<div class="column">
+									<h2>Badges</h2>
+								</div>
+								<div class="column">
+									<h2>Likes</h2>
+								</div>
 							</div>
-						<?php else: ?>
-							<ul class="no-style mt-3 div-list  full-width mb-0">
-								<?php foreach ($classes as $class) : ?>
-									<li>
-										<a href="<?=getSiteLink('classes/class-' . $class['class_id']);?>" class="pl-4"> 
-											<i class="fa fa-circle bullet-type" style="color:<?=$class['sc_color']?>"></i> <?=$class['class_name']?>
-										</a> 
-									</li>
-								<?php endforeach; ?>
-								<li class="mt-3"> <a href="<?=getSiteLink('classes')?>" class="pl-4 pt-2 pb-2"> <i class="fa fa-chevron-right "></i> ALL CLASSES</a> </li>
 
-							</ul>
-						<?php endif; ?>
-						
-						 -->
 
-			<!-- 		</div>
-				</div> -->
-
-			<!-- 	<div class="divider2"></div>
-				<div class="panel-content">
-					<div class="heading dropdown">
-						<span>My Groups</span>
-						<span class="options data-toggle" data-toggle="dropdown"> <i class="fa fa-ellipsis-h" ></i>  </span>
-						<ul class="dropdown-menu">
-							<li><a href="#"> Create a Group</a></li> 
-                            <li><a href="#"> View Archived Group</a></li> 
-                            <li><a href="#"> Join a Group </a></li> 
-						</ul>
-					</div>
-					<div class="content row">
-
-						<div class="placeholders p-4">
-							<p class="text-center">Share resources and collaborate with educators like you.</p>
-							<p class="text-center"> <a href="#"> <i class="fa fa-plus"></i> Create a Group </a> </p>
+							</div>
 						</div>
-						<ul class="no-style  mt-3 div-list  full-width d-none">
-							<li> <a href="#"> <i class="fa fa-chevron-right"></i> Math</a> </li>
-							<li> <a href="#"> <i class="fa fa-chevron-right"></i> Filipino</a> </li>
-							<li> <a href="#"> <i class="fa fa-chevron-right"></i> Science</a> </li>
-							<li> <a href="#"> <i class="fa fa-chevron-right"></i> History</a> </li>
-							<li> <a href="#"> <i class="fa fa-chevron-right"></i> MAPEH	</a> </li>
-						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-		 -->
-<!-- 
-		<div class="col col-sm-12  col-md-6 col-lg-6 pl-2 pr-2">
-			<?php $this->load->view('shared/posts/my-post'); ?>
-			<?php $this->load->view('shared/posts/posts'); ?>
-		</div>
-		<div class="col col-sm-12  col-md-3 col-lg-3 pl-2">
-			<div class="panel">
-				<div class="panel-content">
-					<div id="Calendar"></div>
-				</div>
-				<div class="divider2"></div>
-				<div class="panel-header heading bor" >
-				 	<strong>Due this week.</strong>	 
-				</div>
-				<div class="border-top border-bottom pl-3 pr-3 p-2 text-center">
-					<span> ( May 11-16 ) </span>
-				</div>
-				<div class="panel-content">
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-math-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Math <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-math-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-filipino-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Filipino <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-filipino-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-science-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Science <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-science-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-				</div>
+ -->
 
-			</div> -->
+
+
+
+
+
+
+<div class="col col-sm-12  col-md-6 col-lg-6 pr-6" style="
+    margin: 0px;
+    padding: 16px;
+">
+		
+			<div class="panel mt-1">
+				<div class="panel-content">
+						<span>POST</span>
+						
+					</div>
+
+				</div>
+			</div>
+
+
+	
 
 	<!-- 		<div class="links page-map mt-3">
 				<ul class="no-style">

@@ -2594,4 +2594,23 @@ ul.overview-items{
 
 h4.display-full-name.pt-1{
     font-size: 30px;
+    padding-top: 1.25rem!important;
+}
+
+li.p-0.list-group-item{
+    border: none;
+    
+}
+
+ul.navigation-list.qa-test-list-group.navigation-list-container-horizontal-on-mobile.list-group{
+        margin: 10px;
+    margin-top: 80px;
+}
+
+li.p-0.list-group-item{
+        margin-top: 12px;
+}
+
+.navigation-list-container.navigation-list-container-gray{
+    font-size: 20px;
 }
