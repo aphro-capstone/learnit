@@ -2590,6 +2590,7 @@ ul.overview-items{
     width: 300px;
     background: #FFF;
     padding: 20px;
+    float: left;
 }
 
 h4.display-full-name.pt-1{
