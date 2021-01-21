@@ -2595,3 +2595,8 @@ ul.overview-items{
 .profile-info-section2{
     margin-left: 80px;
 }
+
+.successful-hidden{
+    background-color: #7997e140!important;
+}
+.post-option{ cursor: pointer;}

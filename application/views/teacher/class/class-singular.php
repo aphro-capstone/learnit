@@ -143,7 +143,7 @@
 					
 				</div>
 				<div class="col col-sm-12 col-md-4">
-					<?php $this->load->view('/shared/side-due-template'); ?>
+					<?php $this->load->view('/shared/side-due-task/side-due-template'); ?>
 
 					<?php if( getRole() == 'teacher' ): ?>
 						<div class="panel mt-3 p-3">

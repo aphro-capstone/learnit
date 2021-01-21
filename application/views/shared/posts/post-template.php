@@ -17,7 +17,6 @@
 
 	$assignees_ = array();
 
-	//  var_dump($post);
 	if( isset($assignees) ){
 		if( is_string( $assignees )  ){
 			$assignees_[] = $assignees;
@@ -47,16 +46,16 @@
 
 			<span class="options data-toggle" data-toggle="dropdown"> <i class="fa fa-ellipsis-h" ></i>  </span>
 			<ul class="dropdown-menu">
-				<li><a href="#"> <i class="fa fa-link text-info"></i> Post Link </a></li> 
+				<li><a href="<?=getSiteLink('post/post-' . $p_id);?>" class=""> <i class="fa fa-link text-info"></i> Post Link </a></li> 
 					<?php if($author_id == getUserID()):  ?>
 						<?php if( !isset( $tsk_id )) : ?> 
-							<li><a href="#" > <i class="fa fa-edit text-info"></i> Edit Post</a></li> 
+							<li><a href="#" class="post-option edit-psot" > <i class="fa fa-edit text-info"></i> Edit Post</a></li> 
 						<?php endif; ?>
 						
-						<li><a href="#" class="delete-post "> <i class="fa fa-trash text-danger"></i> Delete Post</a></li> 
+						<li><a href="#" class="delete-post post-option"> <i class="fa fa-trash text-danger"></i> Delete Post</a></li> 
 					<?php endif; ?>
-				<li><a href="#"> <i class="fa fa-eye-slash text-danger"></i> Hide Post</a></li> 
-				<li><a href="#"> <i class="fa fa-bell text-info"></i> Turn off notification for this post</a></li> 
+				<li><a href="#" class="post-option hide-post"> <i class="fa fa-eye-slash text-danger"></i> Hide Post</a></li> 
+				<li><a href="#" class="post-option turn-on-notification	"> <i class="fa fa-bell text-info"></i> Turn off notification for this post</a></li> 
 			</ul>
 		</div>
 	</div>

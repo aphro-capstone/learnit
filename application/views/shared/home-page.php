@@ -105,54 +105,8 @@
 					<div id="Calendar"></div>
 				</div>
 				<div class="divider2"></div>
-				<div class="panel-header heading bor" >
-				 	<strong>Due this week.</strong>	 
-				</div>
-				<div class="border-top border-bottom pl-3 pr-3 p-2 text-center">
-					<span> ( May 11-16 ) </span>
-				</div>
-				<div class="panel-content">
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-math-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Math <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-math-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-filipino-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Filipino <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-filipino-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-					<div class="collapsible-item pt-1">
-					 	<div class="collapse-toggle clickable-content collapsed" data-toggle="collapse" data-target="#due-science-div"> <i class="fa fa-circle bullet-type" aria-hidden="true"></i> Science <span class="pull-right"> <i class="fa fa-chevron-down"></i> </span> </div>
-						<div class="collapse collapsible-list" id="due-science-div">
-						  <div class="item due-date-item">
-						  		<span class="due-title pull-left">Ass. 1</span>
-						  		<span class="due-due pull-right">Thurs @ 1pm</span>
-						  </div>
-						  <div class="item due-date-item">
-						  		<span class="due-name pull-left">Ass. 2</span>
-						  		<span class="due-name pull-right">Wed @ 1pm</span>
-						  </div>
-						</div>
-					</div>
-				</div>
-
+				
+				<?php $this->load->view('shared/side-due-task/side-due-template'); ?>
 			</div>
 
 			<div class="links page-map mt-3">

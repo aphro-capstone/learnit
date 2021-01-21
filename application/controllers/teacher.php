@@ -392,11 +392,12 @@ class Teacher extends MY_Controller {
 			if( !empty( $task ) ){
 				$task = $task[0];
 				$submissionArgs =  array(
-							'select'	=> 'tsq_id, duration_consumed,quiz_score,ts.ts_id,status,datetime_submitted, concat( ui_firstname," ", ui_lastname ) as studname',
+							'select'	=> 'tsq_id, duration_consumed,quiz_score,ts.ts_id,status,datetime_submitted,total_points, concat( ui_firstname," ", ui_lastname ) as studname',
 							'from'		=> 'task_submissions as ts',
 							'join'		=> array( 
 												array( 'table' => 'task_submission_quiz as tsq', 'cond' => 'tsq.ts_id = ts.ts_id'),
 												array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = ts.student_id'),
+												array( 'table' => 'quizzes as q', 'cond' => 'q.task_id = ts.task_id'),
 											),
 							'where'		=> array( array( 'field' => 'ts.task_id', 'value' => $task['tsk_id'] ) )
 					);
@@ -418,14 +419,14 @@ class Teacher extends MY_Controller {
 				$var['submissions'] = $submissions;
 				$var['assignees'] = $assignees;
 
-
+				
 				$this->load->template('teacher/class/quiz-details', $var);
 			}else{
 				show_404();
 			}
 		}else if( strpos($seg, 'submission') !== false  ){
 			$var['projectScripts'] = array(	'Project.quiz', 'project.attachments' );
-			$var['pageTitle']	= 'Create Quiz';
+			$var['pageTitle']	= 'Submitted Quiz';
 			$id = explode(':', $seg);
 			$id = $id[1];
 
@@ -433,6 +434,7 @@ class Teacher extends MY_Controller {
 					'select'	=> 'ts.task_id,
 									quiz_questions,
 									quiz_count,
+									quiz_id,
 									quiz_duration,
 									tsk_duedate,
 									quiz_answers,
@@ -440,11 +442,13 @@ class Teacher extends MY_Controller {
 									quiz_score,
 									datetime_submitted,
 									total_points as quiz_total,
-									tsk_title',
+									tsk_title,
+									concat(ui_firstname," ", ui_lastname ) as studname',
 					'from'		=> 'tasks as tsk',
 					'join'		=> array( 
 										array( 'table' => 'quizzes as q', 'cond' => 'q.task_id = tsk.tsk_id'),
 										array( 'table' => 'task_submissions as ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
+										array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = ts.student_id'),
 										array( 'table' => 'task_submission_quiz as tsq', 'cond' => 'tsq.ts_id = ts.ts_id')
 									),
 					'where'		=> array( array( 'field' => 'ts.ts_id', 'value' => $id ) )
@@ -454,6 +458,8 @@ class Teacher extends MY_Controller {
 
 			if(!empty( $quizsubmissiondetais )){
 				$var['QSD'] = $quizsubmissiondetais[0];
+				$var['isView'] =  TRUE ; 
+				$var['teacherView'] = true;
 				$this->load->template('student/quiz-template', $var);
 			}else{
 				show_404();
@@ -749,17 +755,16 @@ class Teacher extends MY_Controller {
 		$this->load->template("shared/profile");
 	}
 
-	public function delPost(){
+	public function postAction(){
 		$id = $this->input->post('postid');
-		echo $this->removePost($id) ;
+		$action = $this->input->post('action'); 
+		// $actpo = $this->uri->segment(3);
+		echo $this->userPostSetting_($action,$id) ;
 		die();
 	}
 
-
-
-
-
-
-
+	public function getDueTask(){
+		return $this->_getDueTasks('weekly','shared/side-due-task/die-due-template',true);
+	}  
 
 }

@@ -229,7 +229,7 @@ class Student extends MY_Controller {
 	public function quiz($quizID = null){
 		if($quizID){
 			$var['projectScripts'] = array(	'Project.quiz', 'project.attachments' );
-			$var['pageTitle']	= 'Create Quiz';
+			
 			$id = explode(':', $quizID);
 			$pref = $id[0];
 			$id = $id[1]; 
@@ -270,7 +270,7 @@ class Student extends MY_Controller {
 				$var['QSD'] = $quizDetails[0];
 				$var['isView'] = $pref == 'view' ? TRUE : FALSE;
 				$var['quizid'] = $id;
-
+				$var['pageTitle']	= 'Quiz';
 				// var_dump($var['QSD']);
 				$this->load->template('student/quiz-template', $var);
 			}else{
@@ -751,6 +751,16 @@ class Student extends MY_Controller {
 		return $score;
 
 	}
+
+
+	public function postAction(){
+		$id = $this->input->post('postid');
+		$action = $this->input->post('action'); 
+		// $actpo = $this->uri->segment(3);
+		echo $this->userPostSetting_($action,$id) ;
+		die();
+	}
+
 
  
 }

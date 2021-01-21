@@ -28,11 +28,11 @@ const iniClassDue = () => {
                                 <div class="student-image img-container ">\
                                 <img src="'+ SITE_URL +'/assets/images/avatars/user2.png">\
                                 </div>\
-                                <div class="student-name"> Aphrodite Gajo</div>\
+                                <div class="student-name"> Aphroditea Gajo</div>\
                             </div>\
                         </td>\
                         <td class="text-center v-mid date-submitted"> June 10, 2020 @ 11:00 PM </td>\
-                        <td class="text-center v-mid grades"> 30 out of 40 </td>\
+                        <td class="text-center v-mid grades"> <span class="score"></span> out of <span class="over"></span> </td>\
                         <td class="action v-mid text-center"> </td>\
                     </tr>');
 
@@ -59,8 +59,9 @@ const iniClassDue = () => {
                 let el = element.clone();
                     el.find('.student-name').text(b.studname);
                     el.find('.date-submitted').text( moment( b.datetime_submitted ).format('MMMM DD, YYYY @ hh:mm A') );
-                    el.find('.grades').text( '30 out of 40' );  
                     el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
+                    el.find('.score').text(b.quiz_score);
+                    el.find('.over').text(b.total_points);
                     table.append(el);
             } );
         }else{

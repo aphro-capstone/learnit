@@ -35,31 +35,74 @@ jQuery(($) => {
 
 
     
-	$('.delete-post').on('click',function(e){
-		e.preventDefault();
+
+    $(document).on('click','.post-option',function(e){
+        console.log(e);
+        e.preventDefault();
+        let action  = null;
         let id = $(this).closest('.post-panel').attr('data-post-id');
         // let jsquery = jQuery;
         let ths_ = $(this);
 
-		jQuery.ajax({
-            url: SITE_URL + USER_ROLE + '/delPost', 
-                type: 'post',
-                dataType : 'json',
-                data: {postid : id},
-                success: function(Response) {
-                    if( Response.Error == null ){
-                        ths_.closest('.post-panel').remove();
-                        notify('success','Post deleted successfully');
-                    }else{
-                        notify('error',Response.Error,undefined,false,3000);
-                    } 
-                },error:function(e){
-                    console.error(e.responseText);
-                }
-        });
-		// jConfirm( 'red', 'Are you sure?',function(){ doajax2(); } );
+        let ajaxAction = function(){
+            jQuery.ajax({
+                url: SITE_URL + USER_ROLE + '/postAction', 
+                    type: 'post',
+                    dataType : 'json',
+                    data: {postid : id,action : action},
+                    success: function(Response) {
+                        if( Response.Error == null ){
+                            if( action == 1 ){
+                                ths_.closest('.post-panel').remove();
+                                notify('success','Post deleted successfully');
+                            }else if( action == 3 ){
+                                ths_.closest('.post-panel').hide().before('<div class="successful-hidden panel panel2 p-3 post-panel" data-post-id="'+ id +'">Post successfully hidden, click <span class="undo-hide post-option text-primary"> here </span> to undo action </div>');
+                            }else if( action == 4 ){ 
+                                notify('successful-hidden','Post showed');
+                                $('.post-panel[data-post-id="'+ id +'"]').show();
+                                ths_.closest('.successful-hidden').remove();
+                            }
+                            else if( action == 5 ){
+                                notify('success','Notification Turned Off for this post');
+                                ths_.replaceWith('<a href="#" class="post-option turn-off-notification"> \
+                                                    <i class="fa fa-bell text-danger"></i> \
+                                                        Turn off notification for this post\
+                                                    </a>');
+                            }
+                            else if( action == 6 ){
+                                notify('success','Notification Turned off for this post');
+                                ths_.replaceWith('<a href="#" class="post-option turn-on-notification"> \
+                                                    <i class="fa fa-bell text-info"></i> \
+                                                        Turn on notification for this post\
+                                                    </a>');
+                            } 
+                            
+                        }else{
+                            notify('error',Response.Error,undefined,false,3000);
+                        } 
+                    },error:function(e){
+                        console.error(e.responseText);
+                    }
+            });
+        };
+
+
+        if( $(this).hasClass('delete-post') ) {
+            action = 1
+            jConfirm( 'red', 'Are you sure?',ajaxAction );
+            return;
+        }
+        else if ( $(this).hasClass('edit-post') ) action = 2;
+        else if ( $(this).hasClass('hide-post') ) action = 3;
+        else if ( $(this).hasClass('undo-hide') ) action = 4;
+        else if ( $(this).hasClass('turn-on-notification') ) action = 5;
+        else if ( $(this).hasClass('turn-off-notification') ) action = 6;
+        ajaxAction();
     });
-    
+
+
+ 
+ 
 });
 
 

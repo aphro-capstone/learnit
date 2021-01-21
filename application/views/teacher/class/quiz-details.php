@@ -3,7 +3,7 @@
     const viewType = 'quiz';
     const submissions = <?= json_encode($submissions);?>;
     const isOntaskindividualpages = true;
-</script>
+</script> 
  
 
 <div class="container">
@@ -15,6 +15,7 @@
                 <div class="left">
                     <span class="task-title"> <a href="#"> <strong><?= ucfirst($taskinfo['tsk_title']); ?></strong> </a>   </span>
                     <span class="d-block"> <i class="fa fa-clock-o"></i> Due on  <?= date_format( new Datetime( $taskinfo['tsk_duedate'] ), 'F j, Y @ h:i A' )?> </span>
+                    <span class="d-block"> <i class="fa fa-clock-o"></i> Duration :   <?= $taskinfo['quiz_duration'] ?> minutes </span>
                     <p class="classlist mt-2"> 
                         <span class=""> Assigned to Classes : </span>
 

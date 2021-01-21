@@ -94,7 +94,7 @@
 		</div>
 		<div class="col col-sm-12 col-md-3 col-lg-3 pl-2">
 
-			<?php $this->load->view('shared/side-due-template') ?>
+			<?php $this->load->view('shared/side-due-task/side-due-template'); ?>
 		</div>
 	</div>
 </div>

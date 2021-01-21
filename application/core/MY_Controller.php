@@ -64,6 +64,7 @@ class MY_Controller extends CI_Controller
                 $args['limit']  = $limit;
             }
 
+            
             return $this->ProjectModel->do_CI_Query($args);
         }else{
             $query = 'SELECT ' . (isset($select)? $select:'*') .' FROM ' . $table . (isset($join) ? " inner join $join on $join_cond " : '') . ((isset($cond)) ? 'WHERE ' . $cond : '') . ((isset($ord)) ? ' order by ' . $ord : '' ). (isset($path) ? ' ' .$path : ' asc');
@@ -364,7 +365,7 @@ class MY_Controller extends CI_Controller
         
 		$npArgs =  array(
                         'select'    => 'p.p_id,
-                                        user_id,
+                                        user_id as author_id,
                                         p.post_ref_type,
                                         p.spa_id,
                                         p.timestamp_created,
@@ -377,7 +378,11 @@ class MY_Controller extends CI_Controller
                                             array( 'table' => 'normal_posts as np', 'cond' => 'np.np_id = p.post_info_ref_id'),
                                             array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = p.user_id')
                                         ),
-						'where'     => array( array( 'field'    => 'post_ref_type', 'value' =>  0 ) ),
+						'where'     => array( 
+                                            array( 'field'    => 'post_ref_type', 'value' =>  0 ),
+                                            array( 'field'    => '( SELECT COUNT(post_id) as existing from li_user_utility_hidden_posts_log where user_id = '. getUserID() .' and post_id = p.p_id  ) = ' , 'value' => 0 ),
+
+                                        ),
 						'order'		=> array( array( 'by'	=> 'p.timestamp_created', 'path'	=> 'desc' ))
 					); 
         
@@ -406,14 +411,19 @@ class MY_Controller extends CI_Controller
                                             array( 'table' => 'tasks as tsk', 'cond' => 'tsk.tsk_id = p.post_info_ref_id'),
                                             array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = p.user_id'),
                                         ),
-						'where'     => array(  array( 'field'    => 'post_ref_type', 'value' =>  1 ) ),
+						'where'     => array(  
+                                            array( 'field'    => 'post_ref_type', 'value' =>  1 ),
+                                            array( 'field'    => '( SELECT COUNT(post_id) as existing from li_user_utility_hidden_posts_log where user_id = '. getUserID() .' and post_id = p.p_id  ) = ' , 'value' => 0 )    
+                                        ),
 						'order'		=> array( array( 'by'	=> 'p.timestamp_created', 'path'	=> 'desc' ))
                     ); 
                     
 
         if( getRole() == 'teacher' ){
-            $npArgs['join'][] =  array( 'table' => 'classes as c', 'cond' => 'c.class_id = np.class_id');
-            $npArgs['where'][] = array( 'field'    => 'c.teacher_id', 'value' =>  getUserID() );
+            if( $classID  != 0){
+                $npArgs['join'][] =  array( 'table' => 'classes as c', 'cond' => 'c.class_id = np.class_id');
+                $npArgs['where'][] = array( 'field'    => 'c.teacher_id', 'value' =>  getUserID() );
+            } 
         } else if( getRole() == 'student' ){
             $taskArgs['select'] = $taskArgs['select'] . '(select count(ts_id) from li_task_submissions as ltsk where ltsk.task_id = tsk.tsk_id and ltsk.student_id = '. getUserID() .' ) as student_sub_count';
         }
@@ -423,8 +433,7 @@ class MY_Controller extends CI_Controller
         }             
 
         $tasks = $this->prepare_query( $taskArgs )->result_array();
-        $np = $this->prepare_query( $npArgs )->result_array();
-
+        $np = $this->prepare_query( $npArgs )->result_array();  
         $tasks = array_map(function($a){
                     $assigneeArgs = array(
                         'select'	=> 'c.class_id,class_name',
@@ -500,7 +509,7 @@ class MY_Controller extends CI_Controller
     protected function getSinglePost($id){
         
         $args = array(
-                    'select' => 'concat(ui_firstname,\' \', ui_lastname) as poster_name, p_id,post_info_ref_id,post_ref_type,spa_id,p.timestamp_created',
+                    'select' => 'concat(ui_firstname,\' \', ui_lastname) as poster_name, user_id as author_id,p_id,post_info_ref_id,post_ref_type,spa_id,p.timestamp_created',
                     'from'  => 'posts as p',
                     'join'  => array( array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = p.user_id') ),
                     'where' => array( array(  'field' => 'p_id',  'value'  => $id ) )
@@ -563,7 +572,7 @@ class MY_Controller extends CI_Controller
 		$npID = $this->ProjectModel->insert_CI_Query( $normalpostAdd, 'normal_posts',true );
         
         $postAdd = array(							
-			'user_id' 				=> intval( getUserID() ),								
+            'user_id' 				=> intval( getUserID() ),								
 			'post_info_ref_id'	 	=> $npID,								
 			'post_ref_type' 		=> 0,	
 			'spa_id' 			    => $spaid ? $spaid : 0,								
@@ -578,7 +587,7 @@ class MY_Controller extends CI_Controller
                                     'normal_posts', 
                                     array( 'p_content' => json_encode($content) ) );
 
-
+        
         $newPost = array_merge( $normalpostAdd,$postAdd );
         $timestamp = new DateTime();
         $newPost['timestamp_created'] = $timestamp->format('Y-m-d H:i:s');
@@ -587,11 +596,12 @@ class MY_Controller extends CI_Controller
         $newPost['comments'] = array();
         $newPost['p_id'] = $postID;
         $newPost['poster_name'] = getUserName();
+        $newPost['author_id'] = intval( getUserID() );
 
         // var_dump()
 		$newPost = $this->load->view('shared/posts/post-template',array('post' => $newPost),true); 
 
-        $this->returnResponse( 'Successfuly joined class.',null,array('newpost' => $newPost) ); 
+        $this->returnResponse( 'New Post added.',null,array('newpost' => $newPost) ); 
     }
     
 
@@ -711,7 +721,7 @@ class MY_Controller extends CI_Controller
    }
 
 
-   protected function removePost($postID){
+   private function removePost($postID){
     
     if( !isset($postID) && $postID ) return false;
 
@@ -745,15 +755,82 @@ class MY_Controller extends CI_Controller
         $s = $s[0];
 
         if( $s['submissions'] > 0 ){
-            echo json_encode(  array('Error' => 'Cannot delete post. It is connected to a task that has submissions.' )  );
+            return json_encode(  array('Error' => 'Cannot delete post. It is connected to a task that has submissions.' )  );
         }else{
             $this->ProjectModel->delete( $postID, 'p_id', 'posts');
             $this->ProjectModel->delete( $post['post_info_ref_id'], 'tsk_type', 'tasks');
-            echo json_encode( array( 'Error' => null) );
+            return json_encode( array( 'Error' => null) );
         }
     }
+   }
+
+   private function postNotification($postID,$type){
+       if($type == 2 ){
+            return $this->ProjectModel->delete( 
+                array( 
+                        'userid'   => getUserID(), 
+                        'postid'   => $postID  
+                    ), null, 'user_utility_post_notification');
+       }else{
+            $args = array(
+                'userid'			=>  getUserID(), 
+                'postid'			=>	$postID, 
+            );
+            return $this->ProjectModel->insert_CI_Query($args, 'user_utility_post_notification');
+       }
+   }
+
+
+   private function postHidden($postID,$type){
+        if( $type == 2 ){
+            return $this->ProjectModel->delete( 
+                    array( 
+                            'user_id'   => getUserID(), 
+                            'post_id'   => $postID  
+                        ), null, 'user_utility_hidden_posts_log');
+        }else{ 
+            $args = array(
+                            'user_id'			=>  getUserID(), 
+                            'post_id'			=>	$postID, 
+                        );
+            return $this->ProjectModel->insert_CI_Query($args, 'user_utility_hidden_posts_log');
+        }
+    
+   }
+
+   protected function userPostSetting_($action, $postID){
+       if($action == 1) return $this->removePost($postID);
+       else if ($action == 3) return $this->postHidden($postID,1);
+       else if ($action == 4) return $this->postHidden($postID,2);
+       else if( $action == 5 ) return $this->postNotification( $postID,1 );
+       else if( $action == 6 ) return $this->postNotification( $postID,2 );
+        else  show_404(); 
+   }
+
+
+
+   protected function _getDueTasks($range = 'weekly',$template,$returnTemplate = false){
+       $args = array( 
+                'from'      => 'tasks'
+       );
         
-        die();
+       if( $range ==  'weekly' ){
+            $dto = new DateTime(); 
+            $dto->setISODate($dto->format("Y"), $dto->format("W"));
+            $ret['week_start'] = $dto->format('Y-m-d');
+            $dto->modify('+6 days');
+            $ret['week_end'] = $dto->format('Y-m-d');
+            $args['where'][] = array( 'field' => 'tsk_duedate >= ' , 'value' =>  $ret['week_start']);
+            $args['where'][] = array( 'field' => 'tsk_duedate <= ' , 'value' =>  $ret['week_end'] );
+       }
+
+        $res = $this->prepare_query($args)->result_array();
+        
+        if( $returnTemplate ){
+            return $this->load->view( $template,$res,$returnTemplate );
+        }
+
+        $this->load->template( $template,$res);
    }
 
 }

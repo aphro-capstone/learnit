@@ -100,12 +100,21 @@ class ProjectModel extends CI_Model {
         return $this->db->update($table, $dataSet);
     }
 
-    public function delete($val,$field, $table) {
-        $this->db->where($field, $val);
-        $this->db->limit(1);
+    public function delete($whereval,$field, $table) {
+        if( is_array( $whereval ) ){
+            foreach($whereval as $key => $val){
+                $this->db->where($key, $val); 
+            }
+        }else{
+            $this->db->where($field, $whereval); 
+        }
+       
         $this->db->delete($table);
         return $this->db->affected_rows();
     }
+
+
+    
 
     public function printLastquery(){
         print_r($this->db->last_query());
