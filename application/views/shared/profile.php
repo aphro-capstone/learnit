@@ -67,8 +67,57 @@
 						
 					</div>
 
+
+
+<!-- <div id="respond">
+
+
+  <form action="post_comment.php" method="post" id="commentform">
+
+
+    <label for="comment" class="required">Your message</label>
+    <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>
+
+    <input type="hidden" name="comment_post_ID" value="1" id="comment_post_ID" />
+    <input name="submit" type="submit" value="Submit comment" />
+
+  </form>
+
+</div> -->
+
+
+
+<div class="panel-content expanded-content pb-0">
+	<div class="content" id="postt">
+		<textarea class="textarea" placeholder="POST"></textarea>
+		
+	</div>
+	
+</div>
+
+
+
+
+
 				</div>
-			</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- 
 <div class="profile-page-header p-3 pt-6 pb-6">
@@ -106,16 +155,7 @@
 				</div>
 			</div>
 		</div>
- -->
-
-
-
-
-
-
-
-
-	
+ -->	
 
 	<!-- 		<div class="links page-map mt-3">
 				<ul class="no-style">
@@ -137,3 +177,4 @@
 	</div>
 </div>
  -->
+
