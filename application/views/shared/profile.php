@@ -1,7 +1,7 @@
 <div class="container" id="user-profile-page">
 
 		<div class="left">
-			<div class="column-panel-multi-row d-flex">
+			<div class="column-panel-multi-row d-flex mb-3">
 				<div class="m-auto">
 						
 
@@ -26,47 +26,63 @@
 								<ul class="personal-info no-style mt-3 pl-3" >
 								<li class="" > <i class="fa fa-home"></i> Davao del norte State College</li>
 								<span class="icon-edit qa-test-profilePage-editIcon"></span></ul>
-								<button class="btn btn-primary">Edit Profile</button>
 					</div>
 					
 
 				</div>
 			</div>
-
-
-			<div class="container" class="aboutpart">
-				<div class="navigation-list-container navigation-list-container-gray">
-
-					<ul class="navigation-list qa-test-list-group navigation-list-container-horizontal-on-mobile list-group">
-						<li class="p-0 list-group-item">
-							<a class="navigation-list-item qa-test-profile-nav-post selected">
-							<button class="btn btn">Post</button>
-							</a>
-						</li>
-						<li class="p-0 list-group-item">
-							<a class="navigation-list-item qa-test-profile-nav-classes selected">
-							<button class="btn btn">Class Enrolled</button>
-							</a>
-						</li>
-						<li class="p-0 list-group-item">
-							<a class="navigation-list-item qa-test-profile-nav-abo selected">
-							<button class="btn btn">About</button>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
+				<ul class="tabs nav nav-tabs vertical-nav-tabs no-style mt-4 mb-1">
+					<li> <a href="#about" data-toggle="tab" class="pl-3 pr-3 pt-2 pb-2 content-hover active">About</a>  </li>
+					<li> <a href="#classen" data-toggle="tab" class="pl-3 pr-3 pt-2 pb-2 content-hover">Class Enrolled</a>  </li>
+				</ul>
 		</div>
 
 
-<div class="right">
-		
-			<div class="panel mt-1">
-				<div class="panel-content">
-						<span>POST</span>
-						
-					</div>
+<!-- 		<div class="tab=pane active" id="about">
+			<div class="panel panel2">
+				<div class="panel-header d-table full-width">
+					<h5 class="pull-left">About</h5>
+					
+				</div>
+				
+			</div>
+			
+		</div> -->
 
+
+
+
+		<div class="right">
+			<?php $this->load->view('shared/posts/my-post',array('isprofilepage' => true)); ?>
+
+			<div class="tab-content mt-2">
+				<div class="tab-pane fade active show" id="about">
+					<div class="panel panel2">
+						<div class="panel-header"> <h2>About</h2></div>
+						<div class="panel-content">
+							panel content dri
+						</div>
+
+					</div>
+				</div>		
+				<div class="tab-pane fade " id="classen">
+					<div class="panel panel2">
+						<div class="panel-header"> <h2>Class Enrolled</h2></div>
+						<div class="panel-content">
+							panel content dri
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			
+			
+			
+		</div>
+
+</div>
 
 
 <!-- <div id="respond">
@@ -84,36 +100,6 @@
   </form>
 
 </div> -->
-
-
-
-<div class="panel-content expanded-content pb-0">
-	<div class="content" id="postt">
-		<textarea class="textarea" placeholder="POST"></textarea>
-		
-	</div>
-	
-</div>
-
-
-
-
-
-				</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
 
 
 
