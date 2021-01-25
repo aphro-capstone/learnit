@@ -60,16 +60,54 @@
 					<div class="panel panel2">
 						<div class="panel-header"> <h2>About</h2></div>
 						<div class="panel-content">
-							panel content dri
-						</div>
+							
+							<form class="form">
+								<div class="form-group row">
+								    <label for="staticEmail" class="col-sm-2 col-form-label">Date of Birth</label>
+								    <div class="col-sm-10">
+								      <input type="date" readonly="true" class="form-control-plaintext" id="staticEmail" value="email@example.com">
+								    </div>
 
+								</div>
+								
+								<div class="row">
+									 <label for="staticEmail" class="col-sm-2 col-form-label">Gender</label>
+									<div  class="col-sm-10 d-flex">
+										<div class="form-check form-check-inline m-auto ml-0 mr-1">
+											<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
+											<label class="form-check-label" for="inlineRadio1">Male</label>
+										</div>
+										<div class="form-check form-check-inline m-auto ml-1">
+											<input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="Female">
+											<label class="form-check-label" for="inlineRadio2">Female</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group row">
+								    <label for="staticEmail" class="col-sm-2 col-form-label">Contact Number</label>
+								    <div class="col-sm-10">
+								      <input type="text" readonly="true" class="form-control-plaintext" id="staticEmail" value="email@example.com">
+								    </div>
+								</div>
+							</form>
+
+							<div class="d-table">
+								<button class="btn btn-outline-primary hoverable-btn pull-right editprofileBtn">
+									<i class="fa fa-edit mr-1"></i> Edit Profile
+								</button>
+								<button class="btn btn-outline-secondary hoverable-btn pull-right saveProfileBtn">
+									<i class="fa fa-save mr-1"></i>  Save
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>		
 				<div class="tab-pane fade " id="classen">
 					<div class="panel panel2">
 						<div class="panel-header"> <h2>Class Enrolled</h2></div>
 						<div class="panel-content">
-							panel content dri
+							
 						</div>
 
 					</div>
