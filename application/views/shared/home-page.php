@@ -1,3 +1,4 @@
+ 
 <div class="container">
 	<div class="row">
 		<div class="col col-sm-12  col-md-3 col-lg-3 pr-2">
@@ -106,7 +107,7 @@
 				</div>
 				<div class="divider2"></div>
 				
-				<?php $this->load->view('shared/side-due-task/side-due-template'); ?>
+				<?php $this->load->view('shared/side-due-task/side-due-template',array('duetasks' => $duetasks)); ?>
 			</div>
 
 			<div class="links page-map mt-3">

@@ -397,9 +397,9 @@ class MY_Controller extends CI_Controller
 												tsk_type,
 												tsk_title,
 												tsk_instruction,
-												tsk_duedate,
-                                                tsk_status,
-                                                concat( ui_firstname, " ",ui_midname," ", ui_lastname ) as poster_name,
+												tsk_duedate,' .
+                                                // tsk_status,
+                                                'concat( ui_firstname, " ",ui_midname," ", ui_lastname ) as poster_name,
                                                 (select count(ts_id) from li_task_submissions where task_id = tsk.tsk_id) as submissionCount,
                                                 (select quiz_id from li_quizzes as q where q.task_id = tsk.tsk_id) as quiz_id,
                                                 (select quiz_duration from li_quizzes as q where q.task_id = tsk.tsk_id) as duration,
@@ -809,28 +809,129 @@ class MY_Controller extends CI_Controller
 
 
 
-   protected function _getDueTasks($range = 'weekly',$template,$returnTemplate = false){
-       $args = array( 
-                'from'      => 'tasks'
-       );
-        
-       if( $range ==  'weekly' ){
-            $dto = new DateTime(); 
-            $dto->setISODate($dto->format("Y"), $dto->format("W"));
-            $ret['week_start'] = $dto->format('Y-m-d');
-            $dto->modify('+6 days');
-            $ret['week_end'] = $dto->format('Y-m-d');
-            $args['where'][] = array( 'field' => 'tsk_duedate >= ' , 'value' =>  $ret['week_start']);
-            $args['where'][] = array( 'field' => 'tsk_duedate <= ' , 'value' =>  $ret['week_end'] );
-       }
 
-        $res = $this->prepare_query($args)->result_array();
+   
+   protected function _getDueTasks($template,$classID = null, $returnTemplate = false){
+
+       
+
+       $args = array( 
+                'select'    => 'tsk_title,tsk_id,tsk_duedate,tsk_status,tsk_type, tsk_type,
+                                 (Select count(ts_id) from li_task_submissions as ts where ts.task_id = tsk_id) as sub_count',
+                'from'      => 'tasks as tsk',
+                'where'     => array()
+       );
+
+        if( getRole() == 'teacher' ){
+            $args['where'][] = array( 'field' => '(select count(c.class_id) from li_classes c join li_task_class_assignees tca on tca.class_id = c.class_id  where c.teacher_id = '. getUserID() .') >', 'value' => 0 );
+        }else{
+            $args['where'][] = array('field' => '( select count(cs.class_id) from li_classes c join li_class_students as cs on cs.class_id = c.class_id where cs.admission_status = 1 and student_id = '. getUserID() .') > ', 'value'=> 0 );
+            $args['select'] = $args['select'] . ',(select quiz_id from li_quizzes where task_id = tsk_id) as quiz_id,
+                                                    (select ass_id from li_assignments where task_id = tsk_id) as as_id';
+        } 
+
+        if( isset($classID) ){
+            var_dump( $classID );
+            $args['where'][] = array( 'field' => '(select count(ta_id) from li_task_class_assignees tca where tca.task_id = tsk.tsk_id and class_id = '. $classID .') > ', 'value'  => 0  );
+        } 
+
+
         
-        if( $returnTemplate ){
-            return $this->load->view( $template,$res,$returnTemplate );
+        $dto = new DateTime(); 
+        $dto->setISODate($dto->format("Y"), $dto->format("W"));
+        $ret['week_start'] = $dto->format('Y-m-d 00:00:00');
+        $dto->modify('+6 days');
+        $ret['week_end'] = $dto->format('Y-m-d 23:59:59');
+ 
+        $res = $this->prepare_query($args)->result_array();
+ 
+        $res = array_map(function($a){
+            $assignee = array(
+                        'select'	=> 'class_name',
+                        'from'		=> 'task_class_assignees as tca',
+                        'join'		=> array( 
+                                            array( 'table' => 'classes as c', 'cond' => 'tca.class_id = c.class_id'),
+                                    ),
+                        'where'		=> array( array( 'field' => 'tca.task_id', 'value' => $a['tsk_id'] ) )
+            );
+            
+            if( getRole() == 'student' ){
+                $assignee['where'][] = array('field' => '(select count(cs_id) from li_class_students as cs where cs.class_id = c.class_id and student_id = '. getUserID() .' ) > ', 'value' => 0);
+            } 
+            
+            $ass = $this->prepare_query( $assignee )->result_array();
+            
+            $assignees = array();
+            foreach( $ass as $t ){ 
+                $assignees[] = $t['class_name'];
+            }
+            
+            $a['assignees'] = implode(',',$assignees);
+            return $a;
+        },$res); 
+
+
+        $d1 =  new DateTime( $ret['week_start']);
+        $d2 =  new DateTime( $ret['week_end']);
+
+        $range1 = $d1->format( 'F d')   ;
+        $range2 = $d2->format('d'  );
+
+
+        $daterange = array(
+                                    'month_start' => $d1->format('F'),
+                                    'year_start' => $d1->format('Y'),
+                                    'month_end' => $d2->format('F'),
+                                    'year_end' => $d2->format('Y'),
+        );
+
+        if( $daterange['month_start'] != $daterange['month_end'] ){
+            $range2 .= $daterange['month_start'] . ' ' . $range2;
+        } 
+
+
+        if( $daterange['year_start'] != $daterange['year_end'] ){
+            $range1 .= ', ' . $daterange['year_start'];
+            $range2 .= ',' . $daterange['year_end'];
         }
 
-        $this->load->template( $template,$res);
+        $var['daterange'] = implode(' - ', array( $range1,$range2 ));
+      
+        
+
+
+        //  Check Remarks if late/submitted/or today
+
+        $curDate = new DateTime();
+        for($x = 0; $x < count($res);$x++){
+            $duedate = new DateTime( $res[$x]['tsk_duedate'] ); 
+
+
+            if( $res[$x]['tsk_status'] == 0 )  $res[$x]['remark'] = 'closed';
+            else if ( $duedate->format('Y-m-d') == $curDate->format('Y-m-d')) $res[$x]['remark'] = 'today';
+            else if( $curDate < $duedate  ) $res[$x]['remark'] = 'active';
+            else if ($curDate > $duedate ) {
+                if( getRole() == 'student' && $res[$x]['sub_count'] > 0 ) $res[$x]['remark'] = 'submitted';
+                else $res[$x]['remark'] = 'late';
+            }
+           
+        }
+        
+
+        
+        
+        $var['result'] = $res;
+
+        if( $returnTemplate ){
+            return $this->load->view( $template,$var,$returnTemplate );
+        }
+        return $var;
+   }
+
+
+
+   protected function setPostReaction($reactiontype,$postid){
+
    }
 
 }

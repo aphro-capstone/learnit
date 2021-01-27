@@ -37,6 +37,7 @@ class Teacher extends MY_Controller {
 										'Project.post');
 		$vars['modals'] = $this->projectModals();
 		$vars['posts']	= $this->getPosts();
+		$vars['duetasks'] = $this->getDueTask();
 
  
 
@@ -56,7 +57,7 @@ class Teacher extends MY_Controller {
 			$this->getClassDue();
 		}else if ($sub == 'gradebook'){
 			$this->getClassGradebook();
-		}else if($sub == 'quiz'){
+		}else if($sub == 'quiz'){	
 			$this->Quizzes();
 		}else if ( $sub == 'assignment'){
 			$this->Assignments();
@@ -88,6 +89,7 @@ class Teacher extends MY_Controller {
 				)
 			);
 			$vars[ 'classes' ] =  $this->prepare_query( $classArgs )->result_array();
+			$vars['duetasks'] = $this->getDueTask();
 
 			
 
@@ -277,7 +279,8 @@ class Teacher extends MY_Controller {
 													'project.assignment',
 													'project.post'),
 						'projectCss'		=> array('project.library'),
-						'posts'			=> $this->getPosts($id)
+						'posts'			=> $this->getPosts($id),
+						'duetasks'		=> $this->getDueTask( $id )
 
 		);
 
@@ -296,9 +299,10 @@ class Teacher extends MY_Controller {
 		$datetime = date_format(new Datetime(), 'Y-m-d H:i:s');
 		
 		$tasksArgs = array(
-						'select'	=> 'tsk_title, tsk_id,tsk_type,tsk_duedate,tsk_status',
+						'select'	=> 'tsk_title, tsk_id,tsk_type,tsk_duedate,timestamp_created as assigned_date,tsk_status,is_reviewed',
 						'from'		=> 'tasks as tsk',
-						'where'		=> array( array( 'field' => 'tsk_duedate > ', 'value' => $datetime ) )
+						'where'		=> array( 
+									array( 'field' => '(select count(c.class_id) from li_classes c join li_task_class_assignees tca on tca.class_id = c.class_id  where c.teacher_id = '. getUserID() .') >', 'value' => 0 ) ),
 			);
 
 		$classlist = array(
@@ -324,7 +328,7 @@ class Teacher extends MY_Controller {
 				);
 
 				$assignee = array(
-							'select'	=> 'class_name,sc_color',
+							'select'	=> 'class_name,sc_color,c.class_id',
 							'from'		=> 'task_class_assignees as tca',
 							'join'		=> array( 
 												array( 'table' => 'classes as c', 'cond' => 'tca.class_id = c.class_id'),
@@ -763,8 +767,35 @@ class Teacher extends MY_Controller {
 		die();
 	}
 
-	public function getDueTask(){
-		return $this->_getDueTasks('weekly','shared/side-due-task/die-due-template',true);
+	private function getDueTask( $classID = null ){
+		return $this->_getDueTasks('shared/side-due-task/die-due-template',$classID);
 	}  
+
+
+	public function task(){
+		$action = $this->input->post('action');
+		$tid = $this->input->post('tid'); 
+		$whereArray = array( 'tsk_id' => $tid);
+		$msg = '';
+
+		if( $action == 'review' ){
+			$reviewVal = $this->input->post('val');			
+			$dataUpdate	= array( 'is_reviewed'	=> $reviewVal); 
+			$msg = 'Update successful';
+		}else{
+			$dataUpdate	= array( 'tsk_status'	=> 0 );
+			$msg = 'Task closed succesfully';
+		}
+
+		if($this->ProjectModel->update($whereArray,'tasks',$dataUpdate)){
+			if(  $action == 'review' && $reviewVal == 1 ){
+				$dataUpdate	= array( 'tsk_status'	=> 0 );
+				$this->ProjectModel->update($whereArray,'tasks',$dataUpdate);
+			}
+			echo json_encode( array( 'Error' => null, 'msg' => $msg) );
+		}else{
+			echo json_encode( array( 'Error' => 'An error occured, please contact support.' ) );
+		}
+	} 
 
 }

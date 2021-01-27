@@ -27,7 +27,7 @@
                 );
   if( getRole() == 'teacher' ){
     $navsArr[1]['sub-navs'][] = array(
-                                    'label' => "Due Tasks",
+                                    'label' => "Tasks",
                                     'link'  => getSiteLink('classes/whats-due'),
                                     'icon'  => 'fa-tasks',
                                 );

@@ -61,6 +61,29 @@ function Teacher(){
 		   }
 	   });
 	} 
+
+	this.closeTask = (el) => {
+		console.log(el);
+		const T_ID = el.attr('data-task-id'); 
+
+		console.log( { tid : T_ID });
+		$.ajax({
+			url: SITE_URL + 'teacher/task',
+			type: 'post',
+			data :{ tid : T_ID },
+			dataType : 'json',
+			success: function(Response) {
+				if( Response.Error == null ){
+					el.removeClass('remark-late remark-today remark-submitted').addClass('remark-closed');
+					el.find('.closeTaskBtn').remove();
+					notify('success', Response.msg);
+				}else{ notify('error', Response.Error); }
+
+		   },error:function(e){
+			   console.log(e.responseText);
+		   }
+	   });
+	}
 }
 
 
@@ -97,6 +120,29 @@ jQuery(function($){
 	$('.unarchiveClass').on('click',function(e){
 		e.preventDefault();  
 		teacher.updateStatus(  $(this).closest('[data-id]').attr('data-id'),1,$(this).closest('[data-id]'));
+	});
+
+	$('.closeTaskBtn').on('click',function(){
+		teacher.closeTask( $(this).closest('.task-container') );
+	});
+
+	$('.due-task-filter li a').on('click',function(e){	
+		e.preventDefault();
+		$(this).closest('.due-task-filter').find('li').removeClass('active');
+		$(this).parent().addClass('active');
+
+		let toShow = $(this).parent().attr('divs');
+		if(toShow == 'all'){
+			$('.due-task-item').show();
+		}else{
+			$('.due-task-item.remark-' + toShow).show();
+			$('.due-task-item:not(.remark-' + toShow + ')').hide();
+		}	
+		$('.no-task-show').remove();
+		if( !$('.due-task-item').is(':visible')  ){
+			$('.due-task-item:last-child').after('<p class="no-task-show faded text-center"> No Task to show </p>');
+		} 
+
 	});
 
 

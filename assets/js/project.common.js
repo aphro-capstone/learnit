@@ -48,7 +48,7 @@ jQuery( ($) => {
 	});
 
 	$('[data-toggle="collapse"]').on('click',(e) => {
-		$( $(e.currentTarget).attr('data-target') ).collapse();
+			$( $(e.currentTarget).attr('data-target') ).collapse();
 	});
 
 	$('#visibletolist .item').on('click',(e) => {

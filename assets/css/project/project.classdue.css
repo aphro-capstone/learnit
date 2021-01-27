@@ -42,8 +42,8 @@
 
 .dropdown-w-search .search input{
     line-height: 30px;
-    padding-left: 30px;
-    padding-right: 10px;
+    padding-right: 30px;
+    padding-left: 10px;
     border: 1px solid #b0b0b0;
     border-radius: 5px;
     outline: none;
@@ -61,6 +61,11 @@
     padding: 10px;
     display: block;
     font-size: 15px;
+    padding-left: 15px;
+}
+
+.classes-dropdown .class-item.active a{
+    background: #7997e126;
 }
 
 
@@ -215,3 +220,44 @@ tr:hover .hover-btn{opacity:1;}
 .answer-item.answer-wrong{
     border-color: #ff0000;
 }
+ 
+
+.due-item .status-td span{
+    background: #1bff0087;
+    padding: 7px 20px;
+    position: relative;
+}
+
+.due-item .status-td span:before,
+.due-item .status-td span:after{
+    content : ' ';
+    position: absolute;
+    top: 0;
+    border: 15px solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.due-item .status-closed span{
+    background: #ff4b4b;
+}  
+
+.due-item .status-td span:before{
+    border-left-color: transparent;
+    right: 100%;
+}
+.due-item .status-td span:after{
+    border-right-color: transparent;
+    left: 100%;
+}
+
+.due-item .status-td .status-open span:before,
+.due-item .status-td .status-open span:after{
+    color: #97ff8f;
+}
+
+.due-item .status-td .status-closed span:before,
+.due-item .status-td .status-closed span:after{
+    color: #ff4b4b;
+}
+ 

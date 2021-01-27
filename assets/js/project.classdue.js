@@ -1,3 +1,8 @@
+let tasktypeshow = 0;
+let taskclassshow;
+let taskreviewshow = 'unreviewed';
+
+
 jQuery( ($) => {
     $('.backbtn').on('click',function(){
         window.location.href= SITE_URL + "/teacher/classes/whats-due";
@@ -9,11 +14,105 @@ jQuery( ($) => {
         $(this).parent().removeClass('focus');
     });
 
+    $('.toppart .search input').on('input',function(){
+        let search = $(this).val();
+
+        if( search == ''){
+            $(this).closest('.dropdown-w-search').find('.search-results .item').show();
+        }else{
+            $(this).closest('.dropdown-w-search').find('.search-results .item').each(function(){
+                if( $(this).text().trim().toLowerCase().startsWith( search.toLowerCase() ) ){
+                    $(this).show();
+                }else{
+                    $(this).hide();
+                }
+            });
+        }
+    });
+
+    $('.toppart .dropdown-w-search .search-results .class-item a').on('click',function(){
+        $(this).closest('.dropdown').find(' > .data-toggle .text').text( $(this).text().trim() );
+        $(this).parent().siblings().removeClass('active');
+        $(this).parent().addClass('active');
+        taskclassshow = $(this).parent().attr('cid');
+        showTasks();
+
+    });
+
+    $('.all-work-dd li a').on('click',function(){
+
+        tasktypeshow = $(this).attr('data-val');
+        $(this).closest('.dropdown').find('span[data-toggle="dropdown"] span.text').text( $(this).text().trim()  );
+        showTasks();
+    });
+
+    $('.mark-review,.mark-unreview').on('click',function(){
+        markasReviewed($(this), $(this).closest('.due-item').attr('data-tid'), $(this).hasClass('mark-review') ? 1 : 0 );
+    }); 
+
+    $('.toggle-tasks').on('click',function(){
+        if( !$(this).hasClass('active') ){
+            taskreviewshow = $(this).hasClass('forreview') ? 'unreviewed' : 'reviewed';
+            showTasks();
+        }
+    });
+
+    $('.unlock-quiz').on('click',function(e){
+        e.preventDefault();
+        console.log('aa');
+    });
+
+    showTasks();
     iniClassDue();
 });
 
 
 
+const showTasks = function(){ 
+    $('#div1 table tbody .no-show').remove();
+    if( taskclassshow == undefined ){ 
+        if( tasktypeshow == 0 ){ 
+            $('#div1 tr.due-item.' + taskreviewshow).show();
+        }
+        else if( tasktypeshow == 1 ){ 
+            $('#div1 tr.due-item.ass-item').show();
+            $('#div1 tr.due-item.quiz-item').hide();
+        }else if( tasktypeshow == 2 ){
+            $('#div1 tr.due-item.quiz-item').show();
+            $('#div1 tr.due-item.ass-item').hide();
+        }
+        $('#div1 tr.due-item:not(.' + taskreviewshow +')').hide();
+
+        if( !$('#div1 tr.due-item').is(':visible') ){
+            $('#div1 table tbody').append('<tr class="no-show"> <td colspan="4" class="text-center"> No task to show</td></tr>');
+        }
+    }else{
+        hasShow = false;
+        $('#div1 tr.due-item').each(function(){
+            classids = $(this).attr('data-cid');
+            classids = JSON.parse( classids );
+
+            typeshowclass = tasktypeshow == 1 ? 'ass-item' : (tasktypeshow == 2 ? 'quiz-item' : '');
+            if( classids.indexOf( parseInt(taskclassshow) ) > - 1 && (  typeshowclass == '' || $(this).hasClass(typeshowclass) ) ){
+                    $(this).show(300);
+                    hasShow = true;
+            }else{
+                $(this).hide();
+            }
+        });
+       
+        $('#div1 tr.due-item:not(.' + taskreviewshow +')').hide();
+
+        if( !$('#div1 tr.due-item').is(':visible') ){
+            $('#div1 table tbody').append('<tr class="no-show"> <td colspan="4" class="text-center"> No task to show</td></tr>');
+        }
+
+        if(!hasShow){
+            $('#div1 table tbody').append('<tr class="no-show"> <td colspan="4" class="text-center"> No task to show</td></tr>');
+        } 
+    }
+}
+ 
 const iniClassDue = () => {
 
     if( !isOntaskindividualpages ) return;
@@ -120,4 +219,56 @@ const iniClassDue = () => {
     }
 
     showClassSubmissions();
+}
+ 
+
+const markasReviewed = (el,tid,val) => {
+
+    let ajaxFunc = () => {
+        $.ajax({
+                url: SITE_URL + 'teacher/task', 
+                type: 'post',
+                dataType : 'json',
+                data : { tid : tid, action : 'review',val : val },
+                success: function(Response) {
+                    console.log(Response);
+                    if( Response.Error == null ){ 
+                        notify('success', Response.msg);
+                        if( val == 1 ){
+                            el.removeClass('btn-outline-primary')
+                              .removeClass('mark-review')
+                              .addClass('btn-outline-danger mark-unreview')
+                              .text('Marked as unreviewed');
+                            el.closest('tr')
+                              .removeClass('unreviewed')
+                              .addClass('reviewed')
+                              .find('td.status-td')
+                              .html('<div class="status-closed"> <span>Closed</span>  </div>');
+                              showTasks();
+                        }else{
+                            el.closest('tr')
+                              .removeClass('reviewed')
+                              .addClass('unreviewed');
+                            el.removeClass('btn-outline-danger')
+                              .removeClass('mark-unreview')
+                              .addClass('btn-outline-primary mark-review')
+                              .text('Marked as reviewed'); 
+                        }
+                    }else{
+                        notify('error',Response.Error);
+                    }
+                },error:function(e){
+                    console.log(e.responseText);
+                }
+        });
+    }
+
+    if( val == 1){
+        jConfirm( 'orange', 'Please confirm,  marking the task as reviewed will also set it automatically as closed.', ajaxFunc );
+    }else{
+        ajaxFunc();
+    }
+    
+
+    
 }

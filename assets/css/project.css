@@ -306,6 +306,9 @@ ul.no-style{
     width: 38px;
 
 }
+.hoverable-btn.btn-xs{
+    width: 32px;
+}
 
 .hoverable-btn span{
     opacity: 0;
@@ -315,6 +318,13 @@ ul.no-style{
 .hoverable-btn:hover{
     width: 200px;
 }
+
+.d-flex > .hoverable-btn:hover{
+    width: 100%;
+}
+
+
+
 .hoverable-btn:hover span{
     opacity: 1;
 }
@@ -883,7 +893,7 @@ header .right-content li.dropdown .dropdown-menu.show{
     cursor: pointer;
 }
 .collapsible-list .item {
-    padding: 10px 30px;
+    padding: 10px;
     border-bottom: 1px solid #dfdfdf;
         display: table;
     width: 100%;
@@ -2600,3 +2610,109 @@ ul.overview-items{
     background-color: #7997e140!important;
 }
 .post-option{ cursor: pointer;}
+
+
+.due-task-item{
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #7997e1;
+    box-shadow: 1px 1px 2px #647cb6;
+    cursor: pointer;
+    margin-bottom: 15px;
+    position: relative; 
+}
+
+
+.due-task-item .icon-hold{
+    position: absolute;
+    right: 0;
+    top: 5px;
+}
+.due-task-item .icon{
+    position: relative;
+    background: #7997e1;
+    padding: 5px 10px;
+    float: left;
+    color: #fff;
+    top: -15px;
+    margin-right: 10px;
+    padding-bottom: 0;
+}
+.due-task-item .icon:before{
+    content: " ";
+    border-top: 10px solid #bc121200;
+    border-bottom: 10px solid #627ab6;
+    border-left: 10px solid #ff373700;
+    position: absolute;
+    bottom: calc(100% - 10px);
+    left: -10px;
+    z-index: 1;
+}
+
+.due-task-item .icon:after{
+    content: " ";
+    border-top: 9px solid #7997e1;
+    border-right: 17px solid transparent;
+    border-left: 17px solid transparent;
+    position: absolute;
+    top: 100%;
+    border-bottom-color: transparent;
+    left: 0;
+}
+
+.due-task-item .title{ font-weight: 600;    padding-right: 45px;}
+
+.due-task-item.remark-today {
+    border-color: #ff7600;
+    background: #ff760061;
+    box-shadow: 1px 1px 2px #ff76008c;
+}
+
+.due-task-item.remark-today .icon { background: #ff7600; }
+.due-task-item.remark-today .icon:before { border-bottom-color: #dd6905; }
+.due-task-item.remark-today .icon:after { border-top-color: #ee7207; }
+
+
+.due-task-item.remark-late {
+    border-color: #ff7600;
+    background: #ff760061;
+    box-shadow: 1px 1px 2px #ff76008c;
+}
+
+.due-task-item.remark-late .icon { background: #ff7600; }
+.due-task-item.remark-late .icon:before { border-bottom-color: #dd6905; }
+.due-task-item.remark-late .icon:after { border-top-color: #ee7207; }
+
+.due-task-item.remark-closed {
+    border-color: #ff0000;
+    background: #ff000061;
+    box-shadow: 1px 1px 2px #ff00008c;
+}
+
+.due-task-item.remark-closed .icon { background: #ff0000; }
+.due-task-item.remark-closed .icon:before { border-bottom-color: #d11d06; }
+.due-task-item.remark-closed .icon:after { border-top-color: #f41f04; }
+.due-task-item.remark-submitted,.due-task-item.has-submits{
+    border-color: #00ea53;
+    background: #02ea5329;
+    box-shadow: 1px 1px 2px #02ea5359;
+}
+ 
+.due-task-item.remark-submitted .icon,
+.due-task-item.has-submits .icon
+{ background: #05d84e; }
+.due-task-item.remark-submitted .icon:before,
+.due-task-item.has-submits .icon:before{border-bottom-color: #05d84e;}
+.due-task-item.remark-submitted .icon:after,
+.due-task-item.has-submits .icon:after
+{border-top-color: #05d84e;}
+
+/* .due-task-item .collapsible-div.w-button {
+    margin-bottom: 35px;
+} */
+/* .due-task-item button{
+    position: absolute;
+    width: calc(100% - 20px);
+    left: 10px;
+}  */
+

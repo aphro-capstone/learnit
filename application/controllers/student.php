@@ -50,7 +50,7 @@ class Student extends MY_Controller {
 
 		$vars['modals'] = $this->projectModals();
 		$vars['posts']	= $this->getPosts();
-
+		$vars['duetasks'] = $this->getDueTask();
 
 		$this->load->template('shared/home-page',$vars);
 	}
@@ -99,6 +99,7 @@ class Student extends MY_Controller {
 			);
 
 			$vars['classes'] = $this->prepare_query( $classArgs )->result_array();
+			$vars['duetasks'] = $this->getDueTask();
 
 			$this->load->template('teacher/class/classes-archive',$vars);	
 		}
@@ -172,7 +173,8 @@ class Student extends MY_Controller {
 														'project.post'),
 							'projectCss'		=> array('project.library'),
 							'posts'			=> $this->getPosts(),
-							'modals'		=>  $this->projectModals()
+							'modals'		=>  $this->projectModals(),
+							'duetasks'		=> $this->getDueTask( $id)
 
 			); 
 
@@ -761,6 +763,10 @@ class Student extends MY_Controller {
 		die();
 	}
 
+
+	private function getDueTask($classid = null){
+		return $this->_getDueTasks('shared/side-due-task/side-due-template',$classid);
+	}  
 
  
 }
