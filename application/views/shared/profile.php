@@ -37,21 +37,6 @@
 				</ul>
 		</div>
 
-
-<!-- 		<div class="tab=pane active" id="about">
-			<div class="panel panel2">
-				<div class="panel-header d-table full-width">
-					<h5 class="pull-left">About</h5>
-					
-				</div>
-				
-			</div>
-			
-		</div> -->
-
-
-
-
 		<div class="right">
 			<?php $this->load->view('shared/posts/my-post',array('isprofilepage' => true)); ?>
 
@@ -63,34 +48,44 @@
 							
 							<form class="form">
 								<div class="form-group row">
-								    <label for="staticEmail" class="col-sm-2 col-form-label">Date of Birth</label>
+								    <label class="col-sm-4 col-form-label">
+								    	<i class="fa fa-calendar mr-1"></i> Date of Birth</label>
 								    <div class="col-sm-10">
-								      <input type="date" readonly="true" class="form-control-plaintext" id="staticEmail" value="email@example.com">
+								      <input type="date" readonly="true" class="form-control-plaintext">
 								    </div>
 
-								</div>
-								
-								<div class="row">
-									 <label for="staticEmail" class="col-sm-2 col-form-label">Gender</label>
-									<div  class="col-sm-10 d-flex">
-										<div class="form-check form-check-inline m-auto ml-0 mr-1">
-											<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
-											<label class="form-check-label" for="inlineRadio1">Male</label>
-										</div>
-										<div class="form-check form-check-inline m-auto ml-1">
-											<input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="Female">
-											<label class="form-check-label" for="inlineRadio2">Female</label>
-										</div>
+								    <label class="col-sm-4 col-form-label mt-3">
+									 	<i class="fa fa-transgender mr-1"></i> Gender</label>
+									 <div class="col-sm-10 mt-3">
+									 	<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
+										<label class="form-check-label" for="inlineRadio1">Male</label>
+										<input class="form-check-input ml-4" type="radio" name="gender" id="inlineRadio2" value="Female">
+										<label class="form-check-label" for="inlineRadio2">Female</label>
+										</div>	
 									</div>
-								</div>
 
-								<div class="form-group row">
-								    <label for="staticEmail" class="col-sm-2 col-form-label">Contact Number</label>
-								    <div class="col-sm-10">
-								      <input type="text" readonly="true" class="form-control-plaintext" id="staticEmail" value="email@example.com">
+									<label class="col-sm-4 col-form-label mt-4">
+								    	<i class="fa fa-phone mr-1"></i> Contact #</label>
+								    <div class="col-sm-10 mt-2">
+								      <input type="number" readonly="true" class="form-control-plaintext" placeholder="Contact Number">
 								    </div>
+
+								    <label class="col-sm-4 col-form-label mt-3">
+								    	<i class="fa fa-envelope mr-1"></i> Email Address</label>
+								    <div class="col-sm-10 mt-2">
+								      <input type="text" readonly="true" class="form-control-plaintext" placeholder="@gmail.com">
+								    </div>
+
+								    <label class="col-sm-4 col-form-label mt-3">
+								    	<i class="fa fa-home mr-1"></i> Address</label>
+								    <div class="col-sm-10 mt-2">
+								      <input type="text" readonly="true" class="form-control-plaintext" placeholder="Current Address">
+								    </div>
+
 								</div>
 							</form>
+
 
 							<div class="d-table">
 								<button class="btn btn-outline-primary hoverable-btn pull-right editprofileBtn">

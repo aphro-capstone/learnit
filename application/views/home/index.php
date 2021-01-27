@@ -13,11 +13,35 @@
 	</head>
 	<body class="login-page">
 
-		<div class="overlay"></div>
-
-		<div class="cont1 d-flex">
+			<header class="container-fluid ">
+				<div class="container">
+					<nav class="navbar navbar-expand-lg p-0 pull-right"> 
+							  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+							    <span class="navbar-toggler-icon"></span>
+							  </button>
+							 <div class="collapse navbar-collapse" id="navbarNav">
+							    <ul class="navbar-nav ">					      
+							        <li class="nav-item  ">
+							          <a class="nav-link" href="http://localhost/learnit/home/">
+							            <i class="fa fa-home"></i>  Home </a>
+									</li>
+									<li class="nav-item  ">
+							          <a class="nav-link" href="http://localhost/learnit/home/">
+							            <i class="fa fa-home"></i>  About </a>
+									</li>
+									<li class="nav-item  ">
+							          <a class="nav-link" href="http://localhost/learnit/home/">
+							            <i class="fa address-card"></i>  Activities </a>
+									</li>
+		         				 </ul>
+		  					</div>
+					</nav>
+				</div>	
+			</header>
+			
+		<div class="cont1 d-flex"> 
 			<div class="logo img-container">
-				<img src="<?= base_url(); ?>/assets/images/logo white.png">
+				<img src="<?= base_url(); ?>/assets/images/logo-light.png">
 			</div>
 			<div class="loginContainers" id="loginContainer">
 				<div class="overlay"></div>
