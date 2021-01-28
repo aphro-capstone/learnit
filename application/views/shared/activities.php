@@ -9,7 +9,6 @@
 						
 							<div class="text-content">
 								<div class="head-text" style="top: 5px; font-weight: 500;"> IT GAME</div>
-								<!-- <div class="head"> KKKK </div> -->
 							</div>
 					</div>
 				</div>

@@ -117,6 +117,14 @@ jQuery(function($){
         });
     });
 
+    $('[data-toggle="scrollto"]').on('click',function(){
+       let target = $(this).attr('data-target');
+
+       $([document.documentElement, document.body]).animate({
+          scrollTop: $(target).offset().top - 50
+      }, 1000);
+    });
+
    
 });
 

@@ -333,8 +333,6 @@ header .dropdown-menu li a i{
 /*  GLOBAL CSS END */
 
 
-
-
  /*     LOGIN PAGE */
 
 body.login-page,
@@ -342,6 +340,7 @@ body.error-page
 {
     background-color: #f8f8f8;
 }
+
 
 
 
@@ -354,12 +353,13 @@ body.login-page .logo{
     z-index: 5;
 }
 
+
 body.login-page .cont1{
     width: 100%;
     margin: auto;
-    position: absolute;
     height: 100%;
-    margin-top: 
+    /*margin-top: */
+    padding: 100px 0px;
 }  
 #loginContainer{
     position: relative;
@@ -384,6 +384,9 @@ body.login-page .cont1{
 #loginContainer .semi-title{
 	margin-bottom: 30px;
 }
+
+
+
 
 div.selection div.option{
     margin-bottom: 15px;
@@ -2644,27 +2647,27 @@ li.p-0.list-group-item{
 #about .panel-content:not(.editing) .saveProfileBtn
 { display: none; }
 
-/*POST*/
-/*
+.ffeat {
 
-#respond {
-  margin-top: 40px;
 }
 
-#respond input[type='text'],
-#respond input[type='email'], 
-#respond textarea {
-  margin-bottom: 10px;
-  display: block;
-  width: 100%;
+.block-container.w-img-left > .row > div:nth-child(2),
+.block-container.w-img-right > .row > div:nth-child(1){
+        padding: 50px;
+}
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border-radius: 5px;
+.block-container .block-title{
+        font-size: 2em;
+    font-weight: 700;
+    text-align: center;
+        margin-bottom: 20px;
+}
 
-  line-height: 1.4em;
-}*/
+.block-container .block-title span{
+    border-bottom: 3px solid #7996e0;
+}
+
+.block-container .block-text{
+    text-indent: 2em;
+    text-align: justify;
+}
