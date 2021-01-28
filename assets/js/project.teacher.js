@@ -63,10 +63,8 @@ function Teacher(){
 	} 
 
 	this.closeTask = (el) => {
-		console.log(el);
 		const T_ID = el.attr('data-task-id'); 
 
-		console.log( { tid : T_ID });
 		$.ajax({
 			url: SITE_URL + 'teacher/task',
 			type: 'post',

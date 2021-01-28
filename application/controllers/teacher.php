@@ -363,6 +363,9 @@ class Teacher extends MY_Controller {
 	private function Quizzes(){
 		$seg = $this->uri->segment(4);
 		$var = array( 'nav' => array( 'menu' => 'class') );
+		// $seg = strpos($seg, ':') !== false ? explode(':',$seg) : $seg;
+
+	 
 
 		if ( $seg == 'createquiz'){
 			$classesListArgs = array(  
@@ -378,7 +381,81 @@ class Teacher extends MY_Controller {
 			$var['modals'] = $this->projectModals('create-quiz');
 			$this->load->template('teacher/class/class-quiz', $var);
 
-		}else if( strpos($seg, 'quiz') !== false ){
+		}else if( strpos($seg, 'view') !== false ){
+			$var['pageTitle']	= 'View Quiz ';
+			$var['projectScripts'] = array(	'Project.quiz', 'project.attachments' );
+			$id = explode(':', $seg);
+			$id = $id[1];
+			$quizDetails =  array(
+					'select'	=> 'quiz_questions,
+									quiz_count,
+									quiz_duration,
+									tsk_duedate,  
+									total_points as quiz_total,
+									tsk_title,
+									tsk_id,
+									tsk_instruction,
+									timestamp_created',
+					'from'		=> 'tasks as tsk',
+					'join'		=> array(  array( 'table' => 'quizzes as q', 'cond' => 'q.task_id = tsk.tsk_id'), ),
+					'where'		=> array( array( 'field' => 'q.quiz_id', 'value' => $id ) )
+			);
+
+			$quizDetails = $this->prepare_query( $quizDetails )->result_array();
+
+			 
+			if(!empty( $quizDetails )){
+				$var['QSD'] = $quizDetails[0];
+				$var['isView'] = TRUE;
+				$var['quizid'] = $id;
+				$var['VQWS_'] = false;
+				$this->load->template('student/quiz-template', $var);
+			}else{
+				show_404();
+			} 
+		}else if( strpos($seg, 'edit') !== false){
+			$var['pageTitle']	= 'Create Quiz';
+			$var['projectScripts'] = array('Project.quiz', 'project.attachments');
+			$var['modals'] = $this->projectModals('create-quiz');
+			$id = explode(':', $seg);
+			$id = $id[1];
+
+			$classesListArgs = array(  
+							'select' 	=> 	'class_id,class_name',
+							'from'		=>	'classes as lc',
+							'where'		=> array( array( 'field' => 'lc.teacher_id', 'value'  =>  getSessionData('sess_userID')),
+							array( 'field' => 'lc.class_status', 'value'  =>  1) )
+			);
+
+			$tskArgs =  array(
+					'select'	=> '*',
+					'from'		=> 'tasks as tsk',
+					'join'		=> array( array( 'table' => 'quizzes as q', 'cond' => 'tsk.tsk_id = q.task_id') ),
+					'where'		=> array( array( 'field' => 'quiz_id', 'value' => $id ) )
+			);
+
+
+
+			$task = $this->prepare_query( $tskArgs )->result_array();	
+
+			if( !empty($task) ){
+				$task = $task[0];
+				$assigneeArgs = array(
+					'select'	=> 'class_id',
+					'from'		=> 'task_class_assignees as tca',
+					'where'		=> array( array( 'field' => 'tca.task_id', 'value' => $task['tsk_id'] ) ));
+
+				$var['assignees'] = $this->prepare_query( $assigneeArgs )->result_array();
+			
+				$var['classList'] = $this->prepare_query( $classesListArgs )->result_array();
+				$var['TI'] = $task;
+				$var['TE'] = 'true';
+			
+				$this->load->template('teacher/class/class-quiz', $var);
+			}else{
+				show_404();
+			}
+		}else if(strpos($seg, 'quiz') !== false ){
 			$var['projectScripts'] = array('project.classdue');
 			$var['projectCss']	= array('project.classdue');
 			$var['pageTitle']	= 'Quiz Details';
@@ -428,14 +505,14 @@ class Teacher extends MY_Controller {
 			}else{
 				show_404();
 			}
-		}else if( strpos($seg, 'submission') !== false  ){
+		}else if( strpos($seg, 'submission') !== false ){
 			$var['projectScripts'] = array(	'Project.quiz', 'project.attachments' );
 			$var['pageTitle']	= 'Submitted Quiz';
 			$id = explode(':', $seg);
 			$id = $id[1];
 
 			$quizsubmissiondetaisArgs =  array(
-					'select'	=> 'ts.task_id,
+					'select'	=> 'tsk_id,
 									quiz_questions,
 									quiz_count,
 									quiz_id,
@@ -478,9 +555,10 @@ class Teacher extends MY_Controller {
 		if( strpos($seg, 'assignment') !== false ){
 			$var = array(
 					'nav'			=> array( 'menu' => 'class'),
-					'projectScripts'	=> array(  'project.classdue' ),
+					'projectScripts'	=> array(  'project.classdue','project.assignment' ),
 					'projectCss'		=> array('project.classdue'),
-					'pageTitle'			=> 'Assignment Overview'
+					'pageTitle'			=> 'Assignment Overview',
+					'modals'			=> $this->projectModals()
 			);	
 
 			$id = explode(':', $seg);
@@ -515,20 +593,66 @@ class Teacher extends MY_Controller {
 							'where'		=> array( array( 'field' => 'tca.task_id', 'value' => $task['tsk_id'] ) )
 				);
 
+				$classesListArgs = array(  
+								'select' 	=> 	'class_id,class_name',
+								'from'		=>	'classes as lc',
+								'where'		=> array( array( 'field' => 'lc.teacher_id', 'value'  =>  getSessionData('sess_userID')),
+								array( 'field' => 'lc.class_status', 'value'  =>  1) )
+				);
+
 				$submissions = $this->prepare_query( $submissionArgs )->result_array();	
 				$assignees = $this->prepare_query( $assigneeArgs )->result_array();	
 
-				 $var['taskinfo'] = $task;
+				 $var['taskinfo'] = $task; 
 				 $var['submissions'] = $submissions;
 				 $var['assignees'] = $assignees;
+				 $var['classesInfo'] = $this->prepare_query( $classesListArgs )->result_array();
+				 $var['TE'] = 'true'; 
 				
 				$this->load->template('teacher/class/assignment-details',$var);	
 			}else{
 				show_404();	
 			}
 			
-		}else if( strpos($seg, 'submission') !== false ){
+		}else if( strpos($seg, 'view') !== false ){
+			 
+			$var['projectCss'] = array(  'project.library' );
+			$var['projectScripts'] = array(
+											'../plugins/dropzone-5.7.0/dist/min/dropzone.min',
+											'project.dragdrop',
+											'project.library',
+											'project.assignment');
+			$var['pageTitle']	= 'Assignment';							
+			$id = explode(':', $seg);
+			$id = $id[1];
+
+
+			$assD =  array(
+					'select'	=> '*',
+					'from'		=> 'tasks as tsk',
+					'join'		=> array(  
+											array( 'table' => 'assignments as a', 'cond' => 'a.task_id = tsk.tsk_id'),
+											array( 'table' => 'task_class_assignees as tca', 'cond' => 'tca.task_id = tsk.tsk_id'),
+											array( 'table' => 'classes c', 'cond' => 'c.class_id = tca.class_id'),
+											array( 'table' => 'userinfo ui', 'cond' => 'ui.cred_id = c.teacher_id'),
+										),
+					'where'		=> array( array( 'field' => 'a.ass_id', 'value' => $id ) )
+			);
+
+			$assD = $this->prepare_query( $assD )->result_array();
+
 			
+			if(!empty( $assD )){
+				$var['AD'] = $assD[0];
+				$var['teacherview'] = true;
+				$this->load->template('student/assignment-template',$var);
+			}else{
+				show_404();
+			}
+
+		}else if( strpos($seg, 'submission') !== false ){
+			$id = explode(':', $seg);
+			$id = $id[1];
 		}else{
 			show_404();	
 		}
@@ -573,6 +697,7 @@ class Teacher extends MY_Controller {
 		$otheroptions = $this->input->post('otheroptions');
 		$assignIDs = $this->input->post('assignIDs');
 		$due = $this->input->post('due');
+		$tid = $this->input->post('tid');
 		
 		$taskAdd = array(
 					'tsk_type'			=>  $type,   // 0 = quiz, 1 = assignment
@@ -580,30 +705,64 @@ class Teacher extends MY_Controller {
 					'tsk_instruction'	=>	$instruction,
 					'tsk_duedate'		=>	$due['datetime'],
 					'tsk_status'		=>	1,
-					'tsk_lock_on_due'		=>  $due['islockondue'] == true ? 1 : 0,
+					'tsk_lock_on_due'		=>  $due['islockondue'] == 'true'  ? 1 : 0,
 					'tsk_options'		=>  json_encode($otheroptions)
-		);
-		$taskID = $this->ProjectModel->insert_CI_Query( $taskAdd, 'tasks',true );
+		); 
+
+		if( isset( $tid ) && !is_null( $tid ) ){
+			$whereArray = array( 'tsk_id' => $tid); 
+			$this->ProjectModel->update($whereArray,'tasks',$taskAdd);
+			$postID = null; 
+			$taskID = $tid;
+
+			$assigneeAdd = array(); 
+
+			$ids = implode(',',$assignIDs);
+			$query = 'delete from li_task_class_assignees where class_id not in ('. $ids .') and task_id = ' . $taskID;
+			$this->ProjectModel->customQuery( $query );
+
+			
+			foreach( $assignIDs as $id ){
+				$assigneeAdd =  array( 
+					'task_id' => $taskID,
+					'class_id'	=> intval($id)
+				); 
+				$args = array(
+							'from' => 'task_class_assignees',
+							'where'	=> array(
+											array( 'field'	=> 'task_id', 'value' => $taskID ),
+											array( 'field'	=> 'class_id', 'value' => $id )
+							)
+				);
+				
+				$this->insertIfnotexist( $args,array( 'data' => $assigneeAdd, 'table' => 'task_class_assignees' ),'Success assigned classes to task',true);
+			}; 
+
+
+		}else{
+			$taskID = $this->ProjectModel->insert_CI_Query( $taskAdd, 'tasks',true );
+			$postAdd = array(
+				'user_id'			=>  getUserID(),
+				'post_info_ref_id'	=>	$taskID,
+				'post_ref_type'		=> 	1  
+			);
+			$postID = $this->ProjectModel->insert_CI_Query( $postAdd, 'posts',true );     // Add Post
+			
+			//  Add Task assigned classes
+			$assigneeAdd = array(); 
+			foreach( $assignIDs as $id ){
+				$assigneeAdd[] =  array( 
+					'task_id' => $taskID,
+					'class_id'	=> intval($id)
+				); 
+			} 
+
+			$this->ProjectModel->insert_CI_Query( $assigneeAdd, 'task_class_assignees',false,true );
+		}
+
+
+
 		
-
-		$postAdd = array(
-			'user_id'			=>  getUserID(),
-			'post_info_ref_id'	=>	$taskID,
-			'post_ref_type'		=> 	1  
-		);
-
-		$postID = $this->ProjectModel->insert_CI_Query( $postAdd, 'posts',true );     // Add Post
-
-		//  Add Task assigned classes
-		$assigneeAdd = array(); 
-		foreach( $assignIDs as $id ){
-			$assigneeAdd[] =  array( 
-				'task_id' => $taskID,
-				'class_id'	=> intval($id)
-			); 
-		} 
-
-		$this->ProjectModel->insert_CI_Query( $assigneeAdd, 'task_class_assignees',false,true );
 
 		if( $type == 0 ){
 			$this->createQuiz($taskID,$postID);
@@ -618,6 +777,9 @@ class Teacher extends MY_Controller {
 		$duration = $this->input->post('duration');
 		$questions = $this->input->post('questions'); 
 		$total_points = $this->input->post( 'totalpoints' );
+		$qid = $this->input->post('qid');
+
+
 		$quizAdd = array(
 					'task_id'			=> $taskID,
 					'quiz_questions'	=> json_encode($questions),
@@ -626,23 +788,35 @@ class Teacher extends MY_Controller {
 					'total_points'		=> intval($total_points)
 		);
 		
-		$quizID = $this->ProjectModel->insert_CI_Query( $quizAdd, 'quizzes',true );    // Add Quiz datails
-		$this->sendnewTasksEmail('Quiz',$taskID,$postID);
-		$this->returnResponse('Successfully created the quiz.'); 
-		
+		if( isset($qid) && !is_null($qid) ){
+			$whereArray = array( 'quiz_id' => $qid); 
+			$this->ProjectModel->update($whereArray,'quizzes',$quizAdd);
+			$this->returnResponse('Successfully updated the quiz.'); 
+		}else{
+			$quizID = $this->ProjectModel->insert_CI_Query( $quizAdd, 'quizzes',true );    // Add Quiz datails
+			$this->sendnewTasksEmail('Quiz',$taskID,$postID);
+			$this->returnResponse('Successfully created the quiz.'); 
+		}
 	}
 
 	private function createAssignment($taskID,$postID){
+		$aid = $this->input->post('aid');
 		$assAdd = array(
 			'task_id'			=> $taskID,
 			'ass_attachments'	=> json_encode( array() )
 		);
 
-		if( $this->ProjectModel->insert_CI_Query( $assAdd, 'assignments',true ) ){
-			$this->sendnewTasksEmail('Assignment',$taskID,$postID);
-			$this->returnResponse('Successfully created the assignment.');
-			
+		if(  isset($aid) && !is_null($aid) ){
+			$whereArray = array( 'ass_id' => $aid); 
+			$this->ProjectModel->update($whereArray,'assignments',$assAdd);
+			$this->returnResponse('Successfully updated the Assignment.');
+		}else{
+			if( $this->ProjectModel->insert_CI_Query( $assAdd, 'assignments',true ) ){
+				$this->sendnewTasksEmail('Assignment',$taskID,$postID);
+				$this->returnResponse('Successfully created the assignment.');
+			}
 		}
+		
 		
 	}
 
@@ -782,9 +956,17 @@ class Teacher extends MY_Controller {
 			$reviewVal = $this->input->post('val');			
 			$dataUpdate	= array( 'is_reviewed'	=> $reviewVal); 
 			$msg = 'Update successful';
+		}else if( $action == 'lockondue' ){
+			$reviewVal = $this->input->post('val');	
+			$dataUpdate	= array( 'tsk_lock_on_due'	=> $reviewVal); 
+			$msg = 'Update successful';
 		}else{
-			$dataUpdate	= array( 'tsk_status'	=> 0 );
-			$msg = 'Task closed succesfully';
+
+			$dataVal = $this->input->post('val');
+			$val = isset( $dataVal ) && $dataVal != null ? $dataVal : 0;
+
+			$dataUpdate	= array( 'tsk_status'	=> $val );
+			$msg =  'Task closed succesfully';
 		}
 
 		if($this->ProjectModel->update($whereArray,'tasks',$dataUpdate)){

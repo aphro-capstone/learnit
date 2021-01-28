@@ -53,7 +53,7 @@
   $navsArr[] =  array( 
       'label' =>  'Activities',
       'link'  => getSiteLink('activities'),
-      'icon'  => 'fa-play'
+      'icon'  => 'fa-gamepad'
   );
 
 

@@ -6,7 +6,7 @@ let quizStarted = false;
 
 
 
-function quizItem(QuestionNum){
+function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1){
 	this.qnum = QuestionNum;
 	this.selectionTypes = [ 
 			'True/False',
@@ -17,8 +17,8 @@ function quizItem(QuestionNum){
 			'Multiple Answers',
 	];
 
-	this.Selection = undefined;
-	this.Question	 = '';
+	this.Selection = Selection;
+	this.Question = Question;
 	this.Note = '';
 	this.responses = '';
 	this.grading = '';
@@ -26,17 +26,50 @@ function quizItem(QuestionNum){
 	this.selectedTypeString = '';
 	this.QuestionItem = $('<div class="question-item"></div>');
 	this.QuestionsListContainer = $('#questions-list');
-	this.questionPoints = 1;
+	this.questionPoints = points;
 	this.attachments = [];
+	this.preResponses = preRep;
 
-	this.predefinedQuestion = (questionObject) => {
-		console.log(questionObject);
-	};
+	 
 	this.setNum = (num) => {
 		this.qnum = num;
 		this.QuestionItem.find('.question-number').text( this.qnum );
 	}
 
+	this.placeAnswers = () => {
+		let i = this;
+		if( i.selectedType == 0 ){
+			i.responses.find('input[value="'+ i.preResponses +'"]').closest('.response-item').trigger('click');
+		}else if( i.selectedType == 1 || i.selectedType == 5 ){
+			i.preResponses.forEach((v,K) => {
+				if( i.responses.find('.response-item').eq( K ).length == 0 )  i.responses.find('.btn.btn-primary').trigger('click');
+				
+				let el = i.responses.find('.response-item').eq(K);
+					el.find('input[type="text"]').val(v.text);
+				
+				if( v.ischecked == 'true' ){
+					el.find( i.selectedType == 1 ? '.radioboxinput' : '.custom-checkbox .checkbox' ).trigger('click');
+				}
+			});
+		}else if( i.selectedType  == 4){
+			i.preResponses.matches.forEach((v,K) => {
+				if( i.responses.find('> .response-item').eq( K ).length == 0 )  i.responses.find('> .btn.btn-primary').trigger('click');
+				
+				let el = i.responses.find('.response-item').eq(K);
+					el.find('.custom_field').eq(0).find('input[type="text"]').val(v[0]);
+					el.find('.custom_field').eq(1).find('input[type="text"]').val(v[1]);
+			});
+			i.preResponses.fakes.forEach((v,K) => {
+				if( i.responses.find('> .additional-answers .response-item').eq( K ).length == 0 )  i.responses.find('> .additional-answers .btn.btn-primary').trigger('click');
+			
+				i.responses.find('> .additional-answers .response-item').eq( K ).find('input[type="text"]').val( v );
+			});
+		}else if( i.selectedType == 3 ){
+			 i.preResponses.forEach( (v,K) => {
+				i.responses.find('input').eq(K).val( v );
+			 });
+		}
+	};
 
 	this.createForm = () => {
 		let this_ = this;
@@ -64,14 +97,22 @@ function quizItem(QuestionNum){
 			right.append(collapsibletoggle);
 			right.append(right_full);
 			right.append(right_coll);
+ 
 
 
 		this.QuestionItem.append(left);
 		this.QuestionItem.append(right);
 		this.QuestionsListContainer.append(this.QuestionItem);
-
-		this.QuestionItem.find('[name="quiztype"]').trigger('change');
 		
+		if( this.Selection == null ){
+			this.QuestionItem.find('[name="quiztype"]').trigger('change');
+		}else{
+			this.QuestionItem.find('[name="quiztype"]').val(this.Selection).trigger('change');
+
+			this.placeAnswers();
+			getTotals();
+ 
+		}
 	};
 
 
@@ -90,7 +131,7 @@ function quizItem(QuestionNum){
 			instance.createResponsesSection(true);
 			instance.updateForm();
 		});
-
+ 
 		
 
 		container.append(select);
@@ -101,7 +142,7 @@ function quizItem(QuestionNum){
 		let a = $('<div class="form-group question-question"></div>'),
 			b = $('<textarea class="form-control question-textarea" placeholder="Question"></textarea>'),
 			i = this;
-			
+			b.text( this.Question );	
 			b.on('input',function(){
 				if( i.selectedType == 3 ){
 					 i.Question = $(this).val() ;
@@ -112,6 +153,8 @@ function quizItem(QuestionNum){
 					i.QuestionItem.find('.collapsed-view .question').text( $(this).val() );
 				}
 			});
+		
+		
 
 		a.append(b);
 		return a;
@@ -183,6 +226,8 @@ function quizItem(QuestionNum){
 
 
 	this.createResponsesSection = (isUpdate = false) => {
+		let i = this;
+
 		this.createInputBoxes = (x,useRadio = true) => {
 			let a =  $('<div class="custom_field text-boxes d-flex full-width img-capable mt-2 response-item"></div>'),
 				b =  $('<input type="text" placeholder="Enter Answer">'),
@@ -214,26 +259,28 @@ function quizItem(QuestionNum){
 		};
 
 		this.createTrueFalseResponse = ( qnam) =>{
-			return '<div class="row true_false_response response-div">\
-		        		<div class="col col-lg-6 col-md-6 col-sm-12">\
-		        			<div class="custom_field radioboxinput-container p-3 d-table full-width response-item selected" >\
-		        				<span class="text pull-left"> True </span>\
-		        				<div class="radioboxinput mr-2 m-auto pull-right checked">\
-					                <div class="frontend"></div>\
-					                <input type="radio" name="question_'+ qnam +'_response" value="true" checked>\
-					            </div>\
-		        			</div>\
-		        		</div>\
-		        		<div class="col col-lg-6 col-md-6 col-sm-12">\
-		        			<div class="custom_field radioboxinput-container p-3 d-table full-width response-item" >\
-		        				<span class="text pull-left"> False </span>\
-		        				<div class="radioboxinput mr-2 m-auto pull-right">\
-					                <div class="frontend"></div>\
-					                <input type="radio" name="question_'+ qnam +'_response" value="false">\
-					            </div>\
-		        			</div>\
-		        		</div>\
-		        	</div>';
+
+			let a = $('<div class="row true_false_response response-div">\
+						<div class="col col-lg-6 col-md-6 col-sm-12">\
+							<div class="custom_field radioboxinput-container p-3 d-table full-width response-item " >\
+								<span class="text pull-left"> True </span>\
+								<div class="radioboxinput mr-2 m-auto pull-right">\
+									<div class="frontend"></div>\
+									<input type="radio" name="question_'+ qnam +'_response" value="true">\
+								</div>\
+							</div>\
+						</div>\
+						<div class="col col-lg-6 col-md-6 col-sm-12">\
+							<div class="custom_field radioboxinput-container p-3 d-table full-width response-item" >\
+								<span class="text pull-left"> False </span>\
+								<div class="radioboxinput mr-2 m-auto pull-right">\
+									<div class="frontend"></div>\
+									<input type="radio" name="question_'+ qnam +'_response" value="false">\
+								</div>\
+							</div>\
+						</div>\
+					</div>'); 
+			return a;
 		};
 
 		this.createMultipleChoiceResponse = () => {
@@ -355,18 +402,17 @@ function quizItem(QuestionNum){
 
 		let responseDiv = $('<div class="quiz-responses mt-3"></div>');
 			responseDiv.append('<p class="normal-title"> Responses </p>');
-		let i = this;
+		
 		let response;
-
+		
+		
 		if( this.selectedType == 0 ) 		response =  this.createTrueFalseResponse(i.qnum);
 		else if(this.selectedType == 1) 	response =  this.createMultipleChoiceResponse()
 		else if( this.selectedType == 3 ) 	response =  this.createFillTheBlanksResponse();
 		else if( this.selectedType == 4 ) 	response =  this.createMatchingResponse();
 		else if( this.selectedType == 5 ) 	response =  this.createMultipleAnswerResponse();
-		
 
 		this.responses = response;
-
 		if( !isUpdate ){
 			responseDiv.append(response);
 			return responseDiv;
@@ -379,7 +425,7 @@ function quizItem(QuestionNum){
 		let gradingDiv = $('<div class="grading d-table full-width mt-5"></div>'),
 			left = $('<div class="pull-left form-group"></div>'),
 			right = $('<div class="pull-right"></div>'),
-			input = $('<input type="number" value="1" min="1" class="form-control" name="points" style="width:60px;display: initial;">'),
+			input = $('<input type="number" value="1" min="1" class="form-control" name="points" style="width:70px;display: initial;">'),
 			btnClone = $('<button class="btn btn-info mr-2"> <i class="fa fa-clone"></i> Duplicate Question </button>'),
 			btnDel = $('<button class="btn btn-danger"> <i class="fa fa-trash"></i> Delete Question </button>'),
 			i = this;
@@ -387,6 +433,9 @@ function quizItem(QuestionNum){
 
 			gradingDiv.append('<p class="normal-title"> Grading </p>');
 			left.append('<span> Points per correct answer : </span>');
+
+			input.val( i.questionPoints );
+
 
 			input.on('input',function(){
 				i.questionPoints = parseInt( $(this).val() );
@@ -507,6 +556,11 @@ const submitQuiz = () => {
 	dataSend['questions'].forEach(function(a){
 		dataSend['totalpoints'] = dataSend.totalpoints + a.total_points;
 	});
+
+	if( teacherEdit ){
+		dataSend['tid'] = TI.tsk_id;
+		dataSend['qid'] = TI.quiz_id;
+	}
 	$.ajax({
 		url: SITE_URL + USER_ROLE + '/creatTask/0',
 		type: 'post',
@@ -515,8 +569,14 @@ const submitQuiz = () => {
 		success: function(Response) {
 			if( Response.Error == null ){
 				$('.modal').modal('hide');
+				
 				notify('success', Response.msg, () => {
-					window.location.href=  SITE_URL + USER_ROLE + '/classes/class-' + activeClass;
+					if( teacherEdit ){
+						window.location.reload();
+					}else{
+						window.location.href=  SITE_URL + USER_ROLE + '/classes/class-' + activeClass;
+					}
+					
 				});
 			}
 	   },error:function(e){
@@ -680,7 +740,6 @@ const iniQuiz = () => {
 
 		iniQuizQuestions();
 	}else{
-
 		this.checkQuestions = () => {
 			let noerror = true;
 
@@ -750,6 +809,58 @@ const iniQuiz = () => {
 			
 		};
 
+		this.setUpSubmitModalEdits = () => {
+			let modal = $('#submitQuiz');
+			let duedate = moment( TI.tsk_duedate );
+
+			modal.find('.duedate-fg input.datepicker').datepicker('setDate', duedate.toDate());
+			modal.find('.duedate-fg [name="time_h"]').val( duedate.format('h'));
+			modal.find('.duedate-fg [name="time_m"]').val( duedate.format('m'));
+			modal.find('.duedate-fg [name="time_a"]').val( duedate.format('a'));
+			modal.find('[name="duration"]').val( TI.quiz_duration );
+
+			modal.find('.bootstrap-select button').prop('disabled',true);
+
+			if( TI.tsk_lock_on_due == 1 ){
+				modal.find('[name="islockondue"]').parent().addClass('checked');
+				modal.find('[name="islockondue"]').parent().find('input').prop('checked',true);
+
+			}else{
+				modal.find('[name="islockondue"]').parent().removeClass('checked');
+				modal.find('[name="islockondue"]').parent().find('input').prop('checked',false);
+			}
+
+			let options = JSON.parse( TI.tsk_options );
+
+			if( options.isaddtogradebook == 'true'  ){
+				modal.find('[name="isaddtogradebook"]').parent().addClass('checked');
+				modal.find('[name="isaddtogradebook"]').parent().find('input').prop('checked',true);
+			}else{
+				modal.find('[name="isaddtogradebook"]').parent().removeClass('checked');
+				modal.find('[name="isaddtogradebook"]').parent().find('input').prop('checked',false);
+			}
+
+			if( options.israndomize   == 'true'){
+				modal.find('[name="israndomize"]').parent().addClass('checked');
+				modal.find('[name="israndomize"]').parent().find('input').prop('checked',true);
+			}else{
+				modal.find('[name="israndomize"]').parent().removeClass('checked');
+				modal.find('[name="israndomize"]').parent().find('input').prop('checked',false);
+			}
+
+			if( options.ishowresult  == 'true' ){
+				modal.find('[name="ishowresult"]').parent().addClass('checked');
+				modal.find('[name="ishowresult"]').parent().find('input').prop('checked',true);
+			}else{
+				modal.find('[name="ishowresult"]').parent().removeClass('checked');
+				modal.find('[name="ishowresult"]').parent().find('input').prop('checked',false);
+			}
+
+
+
+
+
+		};
 
 		$('.addAnotherQuestion').on('click',function(){
 			let newQuestionnum = questions.length + 1;
@@ -762,14 +873,25 @@ const iniQuiz = () => {
 		});
 	
 		$('.createQuiz').on('click',function(){
-			if( inst.checkQuestions() )  $('#submitQuiz').modal('show');
+			if( inst.checkQuestions() ){
+				if( teacherEdit ){
+					inst.setUpSubmitModalEdits();
+				}
+
+				$('#submitQuiz').modal('show');
+			}
 		});
+
+		
+
+
+
 	
 		$('.submitQuiz').on('click',function(){
 			submitQuiz();
 		});
 		
-		$('.addAnotherQuestion').trigger('click');
+		
 
 		$('.jumptoinput').on('input',(e) => { 
 			let a = $(e.target).val(); 
@@ -779,6 +901,17 @@ const iniQuiz = () => {
 				}, 300);
 			}
 		});
+		
+		if( teacherEdit){
+			quiz_questions.forEach( function(v,K){
+				let newQuestion = new quizItem( (K+1), v.Question, v.type,v.responses, v.points );
+				questions.push(newQuestion);
+				newQuestion.createForm();
+			});
+		}else{
+			$('.addAnotherQuestion').trigger('click');
+		}
+		
 		
 	}
 } 
@@ -823,11 +956,11 @@ const iniQuizQuestions = ( )=> {
 					}
 				});
 
-				if( studQuizView && answer ){
+				if( (studQuizView && answer) || !VQWS ){
 
 					let score = { c: 0 ,o : 0,m : 0};
-					a.addClass('unclickable'); 
-					if( answer.indexOf( (index).toString() ) > -1 ){
+					a.addClass('unclickable');
+					if( answer && answer.indexOf( (index).toString() ) > -1 ){
 						a.addClass( 'selected-answer' );
 						f.addClass('checked');
 						f.find('input').prop('checked',true);
@@ -885,10 +1018,10 @@ const iniQuizQuestions = ( )=> {
 				}
 
 				return  { el : temp, sc : { c: 1 , o : 1 } };
+			}else if( !VQWS ){
+				temp.find('[data-index="'+ b.responses +'"]').addClass('correct-answer');
+				temp.find('.response-item').addClass('unclickable');
 			}
-
-
- 
 			return temp;
 		};
 
@@ -933,8 +1066,11 @@ const iniQuizQuestions = ( )=> {
 				b.append(text);
 				a.append(b);
 
-
-				if( studQuizView ){
+				if( !VQWS ){
+					b.find('input').each( (c,d) => {
+						$(d).val( RR[c] ).prop('readonly',true);
+					 });
+				}else if( studQuizView && answer ){
 					strFullSentence = '';
 					let score = { c: 0, o : RR.length};
 
@@ -974,7 +1110,7 @@ const iniQuizQuestions = ( )=> {
 			return a 
 		};
 
-		this.createMatchingResponse = ( R ) => {
+		this.createMatchingResponse = ( R ) => {	
 			this.creatematchingItem = (a,right,i) => {
 				let b = $('<div class="matching-item">\
 							<div class="box"> <p class="m-auto"> '+ a +' </p> </div>\
@@ -982,7 +1118,18 @@ const iniQuizQuestions = ( )=> {
 						</div>');
 				let c = $('<div class="box empty droppable-box">  </div>');
 
-				if(!studQuizView){
+				if((studQuizView && answer )){
+					c.addClass('has-answer');
+					c.append('<div class="answer m-auto">'+ right +'</div>');
+					b.append(c);
+
+					if( R.matches[i][1] == right ){
+						b.addClass('correct-answer');
+						return {el : b, c : 1 };
+					}
+					return {el : b, c : 0 };
+					
+				}else{
 					c.droppable({
 						accept: '.draggable-box',
 						over: function(event, ui) {
@@ -1012,17 +1159,10 @@ const iniQuizQuestions = ( )=> {
 						},
 					  })
 					  b.append(c);
+					  if( right ){
+						c.append('<div class="answer m-auto">'+ right +'</div>');
+					  }
 					return b; 
-				}else{
-					c.addClass('has-answer');
-					c.append('<div class="answer m-auto">'+ right +'</div>');
-					b.append(c);
-
-					if( R.matches[i][1] == right ){
-						b.addClass('correct-answer');
-						return {el : b, c : 1 };
-					}
-					return {el : b, c : 0 };
 				}
 			};
 
@@ -1056,16 +1196,46 @@ const iniQuizQuestions = ( )=> {
 								</div>\
 								<div class="col-sm-4 answers-div">\
 									<p class="small	"> Answer Choices</p>\
-									<div class="draggable-answers"></div>\
+									\
 								</div>\
 							</div>');
+			let dropablebox = $('<div class="draggable-answers"></div>');
+				dropablebox.droppable({
+							accept: '.draggable-box',
+							over: function(event, ui) {
+								// console.log('OVERRRRRRRR');
+							},
+							drop: function(event, ui) { 
+							//Get dragged Element (checked)
+							draggedElement = $(ui.draggable);
+						
+							//Get dropZone where element is dropped (checked)
+							dropZone = $(event.target);
+						
+							//Move element from list, to dropZone (Change Parent, Checked)
+							$(dropZone).append(draggedElement);
+						
+							//Get current position of draggable (relative to document)
+							var offset = $(ui.helper).offset();
+							xPos = offset.left;
+							yPos = offset.top;
+							$('#posX').text('x: ' + xPos);
+							$('#posY').text('y: ' + yPos);
+							
+							//Move back element to dropped position
+							$(draggedElement).css('top', yPos).css('left', xPos);
+						
+							//   console.log(draggedElement.position());
+							},
+						})
+				a.find('.answers-div').append(dropablebox);
 									
 			let i = this;
 			let colA = [];
 			let colB = [];
-			if( studQuizView ){
+			let colAns = [];
+			if( (studQuizView && answer)){
 				let score = {c :0, o :answer.length};
-				console.log(answer);
 				answer.forEach( (b,c) => {
 					let aaa = this.creatematchingItem(b.left,b.right,c);
 					score['c'] = score.c + aaa.c;
@@ -1074,9 +1244,11 @@ const iniQuizQuestions = ( )=> {
 				a.append(b);
 				return  { el : a, sc : score };
 			}else{
+				 
 				R.matches.forEach( b => {
 					colA.push(b[0]);
 					colB.push(b[1] );
+					colAns.push(b[1]);
 				});
 	
 				R.fakes.forEach( b => {
@@ -1084,8 +1256,13 @@ const iniQuizQuestions = ( )=> {
 				});
 				
 				 
-				colA.forEach( bb => {
-					a.find('.matching-columns').append( this.creatematchingItem(bb) );
+				colA.forEach( (bb,cc) => {
+					if( !VQWS ){
+						a.find('.matching-columns').append( this.creatematchingItem(bb,colAns[cc],cc) );
+					}else{
+						a.find('.matching-columns').append( this.creatematchingItem(bb) );
+					}
+				
 				});
 
 				colB.forEach( bb => {
@@ -1093,8 +1270,7 @@ const iniQuizQuestions = ( )=> {
 				});
 
 				a.append(b);
-
-				
+			 
 				return a;
 			}
 			
@@ -1210,7 +1386,13 @@ const iniQuizQuestions = ( )=> {
 		dflex.append(right);
 		aa.append(dflex	);	
 
-		let FR = ins.createForm(b, studQuizView && quiz_answers[a] ? quiz_answers[a] : undefined);
+
+		if( typeof quiz_answers !== 'undefined' ){
+			var FR = ins.createForm(b, studQuizView && quiz_answers[a] ? quiz_answers[a] : undefined);
+		}else{
+			var FR = ins.createForm(b);
+		}
+		
 		let callback = FR.cb; 
 		let score = FR.sc;
 		
@@ -1227,7 +1409,7 @@ const iniQuizQuestions = ( )=> {
 		}
 
 
-			FR = FR.el ? FR.el : FR;
+		FR = FR.el ? FR.el : FR;
 					
 		aa.append( FR ); 
 		aa.attr('data-type',b.type);
@@ -1288,7 +1470,7 @@ const iniQuizQuestions = ( )=> {
 		// overview
 		overviewitem = $('<li class="overview-item unanswered" > Question '+ (a+1) +' </li>');
 
-		if( studQuizView && b.type != 2 && quiz_answers[a] ){
+		if( studQuizView && b.type != 2 && typeof quiz_answers !== 'undefined' && quiz_answers[a] ){
 			// compute Remarks  
 			let r = score.c == score.o ? 1 : score.c == 0 ? 3: 2;
 			overviewitem.removeClass('unanswered').addClass('remark-' + r);

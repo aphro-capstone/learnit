@@ -1,8 +1,6 @@
 
 
 jQuery( ($) => {
-    
-	
 	iniAssignment();
 });
 
@@ -17,7 +15,12 @@ var iniAssignment = function(){
 		this.submitAss = () => {
 			let modal = $('#assignmentModal');
 			let dataSend = getTaskDataObject( modal );
-			console.log(dataSend);
+
+			if( typeof tid !== 'undefined' ){
+				dataSend['tid'] = tid;
+				dataSend['aid'] = aid;
+			}
+ 
 			$.ajax({
 				url: SITE_URL + USER_ROLE + '/creatTask/1',
 				type: 'post',

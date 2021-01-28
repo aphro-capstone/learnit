@@ -58,9 +58,36 @@ jQuery( ($) => {
     });
 
     $('.unlock-quiz').on('click',function(e){
-        e.preventDefault();
-        console.log('aa');
+        e.preventDefault(); 
+        lockunlockQuiz(1);
     });
+
+    $('.lock-quiz').on('click',function(e){
+        e.preventDefault(); 
+        lockunlockQuiz(0);
+    });
+
+    $('.lock-quiz-due').on('click',function(e){
+        e.preventDefault(); 
+        lockunlockQuiz(1,'lockondue');
+    });
+    $('.remove-lock-quiz-due').on('click',function(e){
+        e.preventDefault(); 
+        lockunlockQuiz(0,'lockondue');
+    });
+    
+
+    $('.lockassondue').on('click',function(){
+            let temp = $(this).parent().hasClass('checked') ? 1 : 0;
+            lockunlockQuiz( temp, 'lockondue');
+    }); 
+
+    $('.edit-assignment').on('click',function(){
+        setUpdateAssignment(  );
+        $('#assignmentModal').modal('show');
+    });
+
+
 
     showTasks();
     iniClassDue();
@@ -166,8 +193,6 @@ const iniClassDue = () => {
         }else{
             table.append('<tr><td colspan="4" class="text-center"> No records to show </td></tr>' );
         }
-        
-    
     }
     
     this.showAssignees= (searchClass = '') => {
@@ -200,17 +225,14 @@ const iniClassDue = () => {
                 dropdown.append(el);
         } );
     }
- 
-    
 
     $('.section .search input').on('input',function(){
         showClassSubmissions( $(this).val() );
     }); 
-
-
     
     if( isOntaskindividualpages && viewType == 'assignment'  ){
         $('.dropdown-w-search .search input').on('input',function(){
+            console.log('WTF');
             showAssignees( $(this).val() );
         }); 
         showAssignees();
@@ -264,7 +286,7 @@ const markasReviewed = (el,tid,val) => {
     }
 
     if( val == 1){
-        jConfirm( 'orange', 'Please confirm,  marking the task as reviewed will also set it automatically as closed.', ajaxFunc );
+        jConfirm( 'red', 'Please confirm,  marking the task as reviewed will also set it automatically as closed.', ajaxFunc );
     }else{
         ajaxFunc();
     }
@@ -272,3 +294,74 @@ const markasReviewed = (el,tid,val) => {
 
     
 }
+
+const lockunlockQuiz = (val,action) => {
+    
+    let ajxFunc = () => {
+        $.ajax({
+                url: SITE_URL + 'teacher/task', 
+                type: 'post',
+                dataType : 'json',
+                data : { tid : tid,val : val,action : action },
+                success: function(Response) {
+                    console.log(Response);
+                    if( Response.Error == null ){ 
+                        notify('success', Response.msg, ()=>{
+                            window.location.reload();
+                        });
+                    }else{
+                        notify('error',Response.Error);
+                    }
+                },error:function(e){
+                    console.log(e.responseText);
+                }
+        });
+    }
+    jConfirm( 'red', 'Are you sure ?' , ajxFunc );
+}
+
+
+const setUpdateAssignment = () => {
+    let modal = $('#assignmentModal');
+    modal.find('[name="title"]').val(TI.tsk_title);
+    modal.find('[name="instruction"]').val(TI.tsk_instruction);
+    modal.find('[name="title"]').val(TI.tsk_title);
+
+    let duedate = moment( TI.tsk_duedate );
+
+    modal.find('input.datepicker').datepicker('setDate', duedate.toDate());
+    modal.find('[name="time_h"]').val( duedate.format('h'));
+    modal.find('[name="time_m"]').val( duedate.format('m'));
+    modal.find('[name="time_a"]').val( duedate.format('a'));
+
+    if( TI.tsk_lock_on_due == 1 ){
+        modal.find('[name="islockondue"]').parent().addClass('checked');
+        modal.find('[name="islockondue"]').parent().find('input').prop('checked',true);
+
+    }else{
+        modal.find('[name="islockondue"]').parent().removeClass('checked');
+        modal.find('[name="islockondue"]').parent().find('input').prop('checked',false);
+    }
+
+    let options = JSON.parse( TI.tsk_options );
+    if( TI.tsk_lock_on_due == 1 ){
+        modal.find('[name="islockondue"]').parent().addClass('checked');
+        modal.find('[name="islockondue"]').prop('checked',true);
+
+    }else{
+        modal.find('[name="islockondue"]').parent().removeClass('checked');
+        modal.find('[name="islockondue"]').prop('checked',false);
+    }
+
+    if( options.isaddtogradebook == 'true' ){
+        modal.find('[name="isaddtogradebook"]').parent().addClass('checked');
+        modal.find('[name="isaddtogradebook"]').prop('checked',true);
+
+    }else{
+        modal.find('[name="isaddtogradebook"]').parent().removeClass('checked');
+        modal.find('[name="isaddtogradebook"]').prop('checked',false);
+    }
+
+}
+
+ 

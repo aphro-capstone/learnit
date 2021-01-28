@@ -1,11 +1,6 @@
 
 
-<?php 
-
-    $QS = json_decode($taskinfo['tsk_options'],true);
-    
-    var_dump($QS);
-?>
+<?php  $QS = json_decode($taskinfo['tsk_options'],true); ?>
 <script>
     const viewType = 'quiz';
     const submissions = <?= json_encode($submissions);?>;
@@ -22,7 +17,13 @@
             <div class="toppart-details d-flex">
                 <span class="icon"> <i class="fa fa-tasks"></i> </span>
                 <div class="left">
-                    <span class="task-title"> <a href="#"> <strong><?= ucfirst($taskinfo['tsk_title']); ?></strong> </a>   </span>
+                    <div class="d-flex mb-3">
+                        <span class="task-title mb-0"> <a href="#"> <strong><?= ucfirst($taskinfo['tsk_title']); ?></strong> </a>      </span>
+                        <div class="m-auto status-span status-<?= $taskinfo['tsk_status'] == 0 ? 'closed' : 'open'; ?>" style="    margin-left: 2em!important;"> 
+                            <span class=""> <?= $taskinfo['tsk_status'] == 0 ? 'Closed' : 'Open'; ?> </span> 
+                        </div>
+                    </div>
+                    
                     <span class="d-block"> <i class="fa fa-clock-o"></i> Due on  <?= date_format( new Datetime( $taskinfo['tsk_duedate'] ), 'F j, Y @ h:i A' )?> </span>
                     <span class="d-block"> <i class="fa fa-clock-o"></i> Duration :   <?= $taskinfo['quiz_duration'] ?> minutes </span>
                     <span class="d-block"> <i class="fa fa-check"></i> Lock on due :   <?= $taskinfo['tsk_lock_on_due'] == 1 ? 'Yes' : 'No' ?> </span>
@@ -44,19 +45,20 @@
                             <span class="class"> <i class="color" style="background: <?= $class['sc_color']?>;"></i> <?= $class['class_name']?></span>,  
                         <?php endforeach;?>  
                     </p>
+                   
                 </div>
                 <div class="right mr-0 m-auto mt-0 text-right d-flex">
                     <div class="dropdown mr-3">
                         <span class="clickable-content icon-display" data-toggle="dropdown"> <i class="fa fa-ellipsis-h"></i>  </span>
                         <ul class="dropdown-menu start-from-right" >
                             <?php if( $taskinfo['tsk_status'] == 1 ): ?>
-                                <li> <a href="<?=site_url();?>teacher/classes/quiz/createquiz"> <i class="fa fa-edit text-info"></I> Edit Quiz </a></li>
+                                <li> <a href="<?=site_url();?>teacher/classes/quiz/edit:<?= $taskinfo['quiz_id'];?>"> <i class="fa fa-edit text-info"></I> Edit Quiz </a></li>
                             <?php endif; ?>
-                            <li> <a href="<?=site_url();?>teacher/classes/quiz/createquiz"> <i class="fa fa-eye text-info"></i> View Quiz </a></li>
+                            <li> <a href="<?=site_url();?>teacher/classes/quiz/view:<?= $taskinfo['quiz_id'];?>"> <i class="fa fa-eye text-info"></i> View Quiz </a></li>
                         </ul>
                     </div>
                     <div class="dropdown">
-                        <span class="clickable-content icon-display" data-toggle="dropdown"> <i class="fa fa-lock" data-toggle="tooltip" data-placement=" "></i> </span>
+                        <span class="clickable-content icon-display" data-toggle="dropdown"> <i class="fa fa-<?= $taskinfo['tsk_status'] == 0 ? 'unlock' : 'lock';?>" data-toggle="tooltip" data-placement=" "></i> </span>
                         <ul class="dropdown-menu start-from-right" >
                            
                             <?php if( $taskinfo['tsk_status'] == 0  ): ?>
@@ -67,15 +69,27 @@
                                     </a>
                                 </li>
                             <?php else: ?>
+                                
+                                <?php if( $taskinfo['tsk_lock_on_due'] == 1): ?>
+                                    <li> 
+                                        <a href="#" class="d-flex remove-lock-quiz-due"> 
+                                            <i class="fa fa-lock text-primary"></I> 
+                                            <p class="mb-0"><strong class="mb-2 d-block">Remove Lock after due date</strong>  <span class="d-block"> Task will still be open even after due date. </span></p> 
+                                            
+                                        </a>
+                                    </li>
+                                <?php else: ?>
+                                    <li> 
+                                        <a href="#" class="d-flex lock-quiz-due"> 
+                                            <i class="fa fa-lock text-primary"></I> 
+                                            <p class="mb-0"><strong class="mb-2 d-block">Lock after due date</strong>  <span class="d-block"> Students will be unable to take the quiz after the due date </span></p> 
+                                            
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                                
                                 <li> 
-                                    <a href="#" class="d-flex"> 
-                                        <i class="fa fa-lock text-primary"></I> 
-                                        <p class="mb-0"><strong class="mb-2 d-block">Lock after due date</strong>  <span class="d-block"> Students will be unable to take the quiz after the due date </span></p> 
-                                        
-                                    </a>
-                                </li>
-                                <li> 
-                                    <a href="#" class="text-danger d-flex"> 
+                                    <a href="#" class="text-danger d-flex lock-quiz"> 
                                         <i class="fa fa-lock"></I>  
                                         <p class="mb-0"> <strong class="mb-2 d-block">Lock Quiz</strong>  <span class="d-block te"> Students won't be able to take the quiz </span> </p>
                                         

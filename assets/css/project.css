@@ -1548,7 +1548,7 @@ textarea.question-textarea{
 
 
 .custom_field.selected{
-    background: #fafafa;
+    background: #7997e138;
 }
 
 .matching-item{
@@ -2586,8 +2586,8 @@ ul.overview-items{
     font-size: 2rem;
 }
 
-#student-quiz-view.viewing .question-item .matching .answers-div{display: none;}
-#student-quiz-view.viewing .question-item .matching .matching-div{    width: 100%;
+#student-quiz-view.viewing:not(.teacher-viewing-empty) .question-item .matching .answers-div{display: none;}
+#student-quiz-view.viewing:not(.teacher-viewing-empty) .question-item .matching .matching-div{    width: 100%;
     max-width: 100%;
     flex: unset;}
 
@@ -2620,6 +2620,7 @@ ul.overview-items{
     cursor: pointer;
     margin-bottom: 15px;
     position: relative; 
+    background: #7997e11c;
 }
 
 

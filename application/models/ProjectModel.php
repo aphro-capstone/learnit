@@ -114,6 +114,11 @@ class ProjectModel extends CI_Model {
     }
 
 
+    public function customQuery($query){
+       return  $this->db->query($query);
+    }
+
+
     
 
     public function printLastquery(){

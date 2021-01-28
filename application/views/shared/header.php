@@ -67,12 +67,12 @@
 				</div>
 				<div class="col-sm-12 col-md-4 col-lg-4 col right-content m-auto">
 					<ul class="navbar-nav">
-				      <li class="nav-link">
+				      <!-- <li class="nav-link">
 				      	<div class="search">
 				      		<input type="text" name="search" placeholder="Search..">
 				      		<i class="fa fa-search"></i>
 				      	</div>
-				      </li>
+				      </li> -->
 				      <li class="nav-link dropdown">
 				        <a class="notification-link" data-toggle="dropdown" href="#"> <i class="fa fa-bell"></i></a>
 				        <div class="notification-bar dropdown-menu">

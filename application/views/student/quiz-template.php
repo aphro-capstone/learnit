@@ -4,12 +4,8 @@
  
 	$col1 = 'col-md-3 col-lg-3';
 	$col2 = 'col-md-9 col-lg-9';
-	$isviewQuiz = true;
-	 
-	 if( isset($isView)){
-		$isviewQuiz = $isView;
-	 }
-
+	$isviewQuiz =  isset($isView) ? $isView : true;
+	$VQWS = isset( $VQWS_ ) ? $VQWS_ : true;  // view quiz with student
 
 
 	if(!$isviewQuiz){
@@ -19,18 +15,25 @@
 		$col1 = 'col-md-4 cold-lg-3';
 		$col2 = 'col-md-8 cold-lg-9';
 	} 
+
+
+	if( !$VQWS ){
+		// $col1 = 'd-none';
+		// $col2 = 'col-md-12 col-sm-12 col-lg-12';
+	}
  ?> 
 
  <script>
 	const __q__ = <?= json_encode( json_decode($QSD['quiz_questions'],true) );?>;
 	const isQuizview = true;
 	const studQuizView =  <?= $isviewQuiz ? 'true' : 'false';?>;
+	const VQWS = <?= $VQWS ? 'true' : 'false' ; ?>;
 	const quiz_duration = <?= $QSD['quiz_duration'] ?>;
 	const quiz = <?= isset($quizid) ? $quizid : $QSD['quiz_id'];?>;
 	const task = <?= isset($QSD['tsk_id']) ? $QSD['tsk_id'] : $QSD['task_id'];?>;
 	
 
-	<?php if ($isviewQuiz || isset( $teacherView )):?>
+	<?php if (($isviewQuiz || isset( $teacherView )) && $VQWS ):?>
 		const quiz_answers = JSON.parse(<?= json_encode( json_decode($QSD['quiz_answers'],true))?>);
 	<?php endif;?>
 
@@ -38,16 +41,23 @@
 	const QSD = <?php echo json_encode($QSD);?>; 
 	
  </script>
-<div class="container <?= $isviewQuiz ? 'viewing' : 'taking';?>" id="student-quiz-view">
+<div class="container <?= $isviewQuiz ? 'viewing' : 'taking';?>   <?= !$VQWS ? 'teacher-viewing-empty' :''?>" id="student-quiz-view">
+
+	<?php if( getRole() == 'teacher' ): ?>
+		<h5 class="title return"> <a href="<?=getSiteLink('classes/quiz/quiz:' . $QSD['tsk_id']);?>"> <i class="fa fa-arrow-left"></i> </span>  Back   </a> </h5>
+	<?php endif; ?>
+	
+	
 	<div class="row">
 
 		
+		<?php if($VQWS): ?>
 			<div class="col-sm-12 <?=$col1;?>">
 				<?php if($isviewQuiz) : ?>
 					<div class="panel mt-3" >
 						<div class="panel-content">
 							<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-tasks text-primary"></i>	<?= $QSD['tsk_title'] ?> </h2>
-							<?php if( getRole() == 'teacher' ): ?>
+							<?php if( getRole() == 'teacher' && $VQWS): ?>
 								<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-user text-info"></i>	<?= $QSD['studname'] ?> </h2>
 							<?php endif; ?>
 							<hr>
@@ -86,6 +96,25 @@
 					
 				<?php endif;?>
 			</div>
+		<?php else :  ?>
+			<div class="col-sm-12 <?=$col1;?>">
+				<div class="panel mt-3" >
+					<div class="panel-content">
+						<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-tasks text-primary"></i>	<?= $QSD['tsk_title'] ?> </h2>
+						<hr>
+						
+						<div class="d-block mb-2">
+							<span> Total Point  : <?php echo $QSD['quiz_total']; ?></span>
+						</div>
+						<div class="block">
+							<span class="block"> Instruction : </span>
+							<p class="ml-2"> <?php echo $QSD['tsk_instruction']; ?> </p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
 		
 		
 		
@@ -117,7 +146,7 @@
 					
 					
 					
-					<div class="pull-right" <?php echo !$isviewQuiz || getRole() == 'teacher' ? 'style="display:none;"' : '';  ?>>
+					<div class="pull-right" <?php echo (!$isviewQuiz || getRole() == 'teacher') && $VQWS ? 'style="display:none;"' : '';  ?>>
 						<button class="btn btn-primary control-btn prev-btn disabled" > <i class="fa fa-chevron-left"></i> Prev </button>
 						<button class="btn nxt-btn  btn-primary control-btn">  Next <i class="fa fa-chevron-right"></i> </button>
 					</div> 

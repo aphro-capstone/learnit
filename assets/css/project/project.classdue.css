@@ -222,14 +222,18 @@ tr:hover .hover-btn{opacity:1;}
 }
  
 
-.due-item .status-td span{
+.due-item .status-td span,
+.status-span span
+{
     background: #1bff0087;
     padding: 7px 20px;
     position: relative;
 }
 
 .due-item .status-td span:before,
-.due-item .status-td span:after{
+.due-item .status-td span:after,
+.status-span span:before,
+.status-span span:after{
     content : ' ';
     position: absolute;
     top: 0;
@@ -238,26 +242,36 @@ tr:hover .hover-btn{opacity:1;}
     border-bottom-color: transparent;
 }
 
-.due-item .status-closed span{
+.due-item .status-closed span,
+.status-span.status-closed span
+{
     background: #ff4b4b;
 }  
 
-.due-item .status-td span:before{
+.due-item .status-td span:before,
+.status-span span:before
+{
     border-left-color: transparent;
     right: 100%;
 }
-.due-item .status-td span:after{
+.due-item .status-td span:after,
+.status-span span:after
+{
     border-right-color: transparent;
     left: 100%;
 }
 
 .due-item .status-td .status-open span:before,
-.due-item .status-td .status-open span:after{
+.due-item .status-td .status-open span:after,
+.status-span.status-open span:before,
+.status-span.status-open span:after{
     color: #97ff8f;
 }
 
 .due-item .status-td .status-closed span:before,
-.due-item .status-td .status-closed span:after{
+.due-item .status-td .status-closed span:after,
+.status-span.status-closed span:before,
+.status-span.status-closed span:after{
     color: #ff4b4b;
 }
  

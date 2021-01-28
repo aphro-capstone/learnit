@@ -305,12 +305,26 @@
             </div>
           </div>
           <hr>
-          <div class="form-group">
+          <div class="form-group"> 
             <label for="exampleInputEmail1">Assign to : </label>
             <select class="form-control selectpicker btn-primary" title="Please Select" multiple name="assignIds">
               <optgroup label="Classes">
-                <?php foreach( $classesInfo as $class) : ?>
-                  <option value="<?=$class['class_id'];?>" <?= $classinfo['class_id'] == $class['class_id'] ? 'selected' : ''; ?>  ><?=$class['class_name'];?></option> 
+                
+                <?php foreach( $classesInfo as $class) :  ?>
+                  <?php if(isset($TE)): 
+                    $isSelected = false;  
+                    foreach( $assignees as $assignee ):
+                      if( $assignee['class_id'] == $class['class_id'] ){
+                        $isSelected = true;
+                        break;
+                      } 
+                    endforeach;
+                  ?>
+                    <option value="<?=$class['class_id'];?>" <?= $isSelected ? 'selected' :'';?>><?=$class['class_name'];?></option> 
+                  <?php else: ?>
+                    <option value="<?=$class['class_id'];?>" <?= $classinfo['class_id'] == $class['class_id'] ? 'selected' : ''; ?>  ><?=$class['class_name'];?></option> 
+                  <?php endif; ?>
+                 
                 <?php endforeach;?>
               </optgroup>  
             </select>
@@ -359,7 +373,7 @@
         <div class="modal-footer" style="border-top: none;">
           
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary createAssignment" style="background: <?=$classinfo['color']; ?>">Create Assignment</button>
+          <button type="button" class="btn btn-primary createAssignment" style="background: <?= !isset($TE) && !$TE ? $classinfo['color'] : ''; ?>"><?= isset($TE) && $TE ? 'Update Assignment' : 'Create Assignment'; ?> </button>
         </div>
       </div>
     </div>
@@ -432,13 +446,23 @@
           <label for="exampleInputEmail1">Assign to : </label>
           <select class="form-control selectpicker btn-primary" title="Please Select" multiple name="assignIds">
             <optgroup label="Classes">
-              <?php foreach( $classList as $class) : ?>
-                <option value="<?=$class['class_id'];?>"><?=$class['class_name'];?></option> 
+              <?php foreach( $classList as $class) :
+                    $isSelected = false;
+                    if(  isset( $TE)  ):
+                      foreach( $assignees as $aa ){
+                        if( $aa['class_id'] == $class['class_id'] ){
+                          $isSelected = true;
+                          break;
+                        } 
+                      }
+                    endif;  
+              ?>
+                <option value="<?=$class['class_id'];?>" <?= $isSelected ? 'selected' : ''; ?>><?=$class['class_name'];?></option> 
               <?php endforeach;?>
             </optgroup>  
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group duedate-fg" >
             <label>Due </label>
             <div class="d-flex">
               <div class="input-group-icon left-icon mr-3">

@@ -6,17 +6,25 @@
 	$currentDate =  new DateTime();
 
 	$taskRemark = $dueDate < $currentDate ? 'late' : 'aa';
+
+	$teacherView = isset( $teacherView ) ? $teacherView : 'false';
+ 
 ?>
 
 <script>
 	const assID = <?=$AD['ass_id'];?>;
 	const tskID = <?=$AD['task_id'];?>;
+	const teacherview = <?= $teacherView;?>;
 </script>
 
  
 <div class="container" id="assignment-template" >
-	<div class="d-table">
-		<h3 class="page-title"> Assignment Details</h3>
+	<div class="d-table"> 
+		<h3 class="page-title">   
+			<?php if( $teacherView == 'true' ): ?>
+				<a href="<?= getSiteLink('classes/assignment/assignment:' . $AD['task_id	']);?>"> <i class="fa fa-arrow-left"></i> </a> 
+			<?php endif; ?>
+			Assignment Details</h3>
 
 		<div class="pull-right">
 			<?php $this->load->view('shared/breadcrumbs', isset($bcrumbs) ? array( 'bcrumbs' => $bcrumbs ) : array() );  ?>
@@ -50,7 +58,7 @@
 								<img src="<?=base_url() . 'assets/images/avatars/user.png'; ?>">
 							</div>
 							<div class="">
-								<span class="d-block"> <?=$AD['teachername'];?> </span>
+								<span class="d-block"> <?= $teacherView == 'true' ? $AD['teachername'] : '';?> </span>
 								<span class="d-block"> <a href="<?=getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span>
 							</div>
 						</div>

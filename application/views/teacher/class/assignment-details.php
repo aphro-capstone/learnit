@@ -6,12 +6,14 @@
     const assignees = <?=json_encode( $assignees );?>;
     const viewType = 'assignment';
     const isOntaskindividualpages = true;
-
+    const TI = <?php echo json_encode( $taskinfo );?>;
+    const tid = <?php echo $taskinfo['tsk_id'];?>;
+    const aid = <?php echo $taskinfo['ass_id'];?>;
 </script>
 
 
 
-<div class="container">
+<div class="container" id="assignment-details">
     <h3 class="title return"> <span class="backbtn clickable-content"> <i class="fa fa-arrow-left"></i> </span>   Grading Overview </h3>
     <div class="panel panel2"> 
         <div class="panel-content pr-3 pb-0 pt-4  panel-top-content">
@@ -20,60 +22,61 @@
                 <div class="left">
                     <span class="task-title"><a href="#"> <strong><?= ucfirst($taskinfo['tsk_title']);?></strong> </a>   </span>
                     <span class="d-block"> <i class="fa fa-clock-o"></i> Due on <?= date_format( new Datetime( $taskinfo['tsk_duedate'] ) ,"F d, Y @ h:i A");?> </span>
-                    <div class="d-flex ">
-                        <span class=""> Viewing : </span>
+                    
+                    <?php if( count($assignees) == 1 ): ?>
+                        <p class="classlist"><span class="block"> <span> Assigned Class : </span> <span class="class"> <i class="color" style="background: #fecb00;"></i> <?php echo $assignees[0]['class_name']; ?></span>    </p>
+                    <?php else: ?>
+                        <div class="d-flex ">
+                            <span class=""> Viewing : </span>
 
-                        <div class="dropdown ml-2">
-                            <div class="clickable-content data-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="text viewing-class" >  All Classes   </span> <i class="fa fa-chevron-down"></i>
-                            </div>
-                            <div class="dropdown-menu dropdown-w-search pt-0" style="">
-                                <div class="search">
-                                    <input type="text">
-                                    <i class="fa fa-search icon"></i>
+                            <div class="dropdown ml-2">
+                                <div class="clickable-content data-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="text viewing-class" >  All Classes   </span> <i class="fa fa-chevron-down"></i>
                                 </div>
-                                <div class="search-results classes-dropdown">
-                                    <div class="item class-item default"> 
-                                        <a href="#" class="">  <span class="left-bg changeable-color" style="background-color:#3583e5"></span>  All Classess
-                                        </a> 
+                                <div class="dropdown-menu dropdown-w-search pt-0" style="">
+                                    <div class="search">
+                                        <input type="text">
+                                        <i class="fa fa-search icon"></i>
                                     </div>
-                                    <div class="item class-item"> 
-                                        <a href="#"> 
-                                            <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
-                                            Class 1
-                                        </a> 
-                                    </div>
-                                    <div class="item class-item"> 
-                                        <a href="#"> 
-                                            <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
-                                            Class 2
-                                        </a> 
+                                    <div class="search-results classes-dropdown">
+                                        <div class="item class-item default"> 
+                                            <a href="#" class="">  <span class="left-bg changeable-color" style="background-color:#3583e5"></span>  All Classess
+                                            </a> 
+                                        </div>
+                                        <div class="item class-item"> 
+                                            <a href="#"> 
+                                                <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
+                                                Class 1
+                                            </a> 
+                                        </div>
+                                        <div class="item class-item"> 
+                                            <a href="#"> 
+                                                <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
+                                                Class 2
+                                            </a> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
+                    
+                    
                 </div>
                 <div class="right mr-0 m-auto mt-0 text-right">
                     <div class="dropdown">
                         <span class="clickable-content" data-toggle="dropdown"> <i class="fa fa-ellipsis-h"></i>  </span>
                         <ul class="dropdown-menu start-from-right" >
-                            <li> <a href="#"> <i class="fa fa-edit text-primary"></I> Edit Assignment </a></li>
-                            <li> <a href="#"> <i class="fa fa-eye text-info"></i> View Assignment </a></li>
-                            <li>
-                                <div class="custom-checkbox p-2">
-                                    <input type="checkbox" name="">
-                                    <span class="checkbox fa fa-check"></span>
-                                    <span class="label"> Lock assignment submission after due  </span>
+                            <li> <a href="#" class="edit-assignment"> <i class="fa fa-edit text-primary"></I> Edit Assignment </a></li>
+                            <li> <a href="<?=getSiteLink('classes/assignment/view:' . $taskinfo['ass_id'])?>" class="view-assignment"> <i class="fa fa-eye text-info"></i> View Assignment </a></li>
+                            <li> 
+                                <?php $lockdue = $taskinfo['tsk_lock_on_due'] == 1; ?>
+                                <div class="custom-checkbox p-2 <?= $lockdue ? 'checked':''; ?>"  >
+                                    <input type="checkbox" name="lock-on-due">
+                                    <span class="checkbox fa fa-check lockassondue"></span>
+                                    <span class="label">  Lock  submission after due date  </span>
                                 </div>
-                            </li>
-                            <li>
-                                <div class="custom-checkbox p-2">
-                                    <input type="checkbox" name="">
-                                    <span class="checkbox fa fa-check"></span>
-                                    <span class="label"> Viewable in gradebook  </span>
-                                </div>
-                            </li>
+                            </li> 
                         </ul>
                     </div>
                     <span class="d-block mt-3 mb-3"> <strong>Average Grade Score : 64% </strong>  </span>
