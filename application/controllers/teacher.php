@@ -930,7 +930,10 @@ class Teacher extends MY_Controller {
 
 
 	public function profile(){
-		$this->load->template("shared/profile");
+		$vars = array();
+		$vars['projectScripts']	=  array( 'project.profile');
+		
+		$this->load->template("shared/profile", $vars);
 	}
 
 	public function postAction(){

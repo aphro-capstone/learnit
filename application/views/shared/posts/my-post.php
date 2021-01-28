@@ -12,7 +12,7 @@
  ?>
 
 
-<div class="panel file-input-container-wrapper" id="yourPosts">
+<div class="panel file-input-container-wrapper <?= isset( $isprofilepage ) ? 'expanded focused-content no-popup' : '' ;  ?>" id="yourPosts">
 	<div class="panel-header">
 		<div class=" column-panel-multi-row d-flex">
 			<div class="image-left">

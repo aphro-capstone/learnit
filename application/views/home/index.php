@@ -13,11 +13,35 @@
 	</head>
 	<body class="login-page">
 
-		<div class="overlay"></div>
-
-		<div class="cont1 d-flex">
+			<header class="container-fluid ">
+				<div class="container">
+					<nav class="navbar navbar-expand-lg p-0 pull-right"> 
+							  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+							    <span class="navbar-toggler-icon"></span>
+							  </button>
+							 <div class="collapse navbar-collapse" id="navbarNav">
+							    <ul class="navbar-nav ">					      
+							        <li class="nav-item  ">
+							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#login">
+							            <i class="fa fa-home"></i>  Log In </a>
+									</li>
+									<li class="nav-item  ">
+							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#features">
+							            <i class="fa fa-reorder"></i>  Features </a>
+									</li>
+									<li class="nav-item  ">
+							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#activities">
+							            <i class="fa fa-gamepad"></i>  Activities </a>
+									</li>
+		         				 </ul>
+		  					</div>
+					</nav>
+				</div>	
+			</header>
+			
+		<div class="cont1 d-flex" id="login"> 
 			<div class="logo img-container">
-				<img src="<?= base_url(); ?>/assets/images/logo white.png">
+				<img src="<?= base_url(); ?>/assets/images/logo-light.png">
 			</div>
 			<div class="loginContainers" id="loginContainer">
 				<div class="overlay"></div>
@@ -217,6 +241,46 @@
 		</div>
 
 
+		<div class="container-fuid bg-white w-img-left block-container pl-3 pr-3" id="features">
+			<div class="row">
+				<div class="col-sm-12 col-md-5 col-lg-5 pl-0 pr-0">
+					<div class="ffeat img-container">
+						<img src="<?= base_url(); ?>/assets/images/lfeatures.png">
+					</div>
+				</div>
+			<div class="col-sm-12 col-md-7 col-lg-7 d-flex">
+				<div class="m-auto">
+					<h6 class="block-title">  <span>Features</span>  </h6>
+					<p class="block-text"> 
+						User accounts for teachers and students with email verification, QrCode for unique class code, Simulations, Assessments and Games, Download and Upload files, Import/Export Gradebook, Accessibility on personal computer and smartphones, and Message notification.
+					</p>
+				</div>
+			</div>			
+			</div>
+		</div>
+
+		<div class="container-fuid bg-white w-img-right block-container pl-3 pr-3" id="activities">
+			<div class="row">
+				<div class="col-sm-12 col-md-7 col-lg-7 d-flex">
+					<div class="m-auto">
+						<h6 class="block-title">  <span>Activities</span>  </h6>
+						<p class="block-text"> 
+							Activities such as Typing games, 
+						</p>
+					</div>
+				</div>	
+				<div class="col-sm-12 col-md-5 col-lg-5 pl-0 pr-0">
+					<div class="ffeat img-container">
+						<img src="<?= base_url(); ?>/assets/images/featt.png">
+					</div>
+				</div>
+					
+			</div>
+		</div>
+
+			
+		
+
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-3.5.0.min.js"></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/bootstrap-notify-master/bootstrap-notify.min.js"></script>
@@ -227,6 +291,15 @@
  		<script type="text/javascript">
 		    
 		</script>
+
+
+
+
+				
+		
+
+
+
 
 	</body>
 </html>

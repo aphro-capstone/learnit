@@ -286,8 +286,9 @@ var windowClickedCheckings = (e) => {
 			}
 		}
 		if( a == 'expanded' ){
+
 			if(  !($(e.target).hasClass('expanded') ||  $('.expanded').has( $(e.target) ).length > 0 ) ){
-				$('.expanded').removeClass('expanded'); 
+				$('.expanded:not(.no-popup)').removeClass('expanded'); 
 			}
 		}
 

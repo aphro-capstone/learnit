@@ -120,7 +120,10 @@ body {
 ul.no-style{
     list-style: none;
     padding: 0;
+/*    padding-left: 0!important;
+    margin-top: 0!important;*/
 }
+
 .full-width { width : 100%;  }
 .full-height { height : 100%;  }
 .modal-md{
@@ -340,17 +343,14 @@ header .dropdown-menu li a i{
 /*  GLOBAL CSS END */
 
 
-
-
  /*     LOGIN PAGE */
 
 body.login-page,
 body.error-page
 {
-	background-image: url('../images/bg12.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #f8f8f8;
 }
+
 
 
 
@@ -363,11 +363,13 @@ body.login-page .logo{
     z-index: 5;
 }
 
+
 body.login-page .cont1{
-        width: 100%;
+    width: 100%;
     margin: auto;
-    position: absolute;
     height: 100%;
+    /*margin-top: */
+    padding: 100px 0px;
 }  
 #loginContainer{
     position: relative;
@@ -392,6 +394,9 @@ body.login-page .cont1{
 #loginContainer .semi-title{
 	margin-bottom: 30px;
 }
+
+
+
 
 div.selection div.option{
     margin-bottom: 15px;
@@ -1575,12 +1580,6 @@ textarea.question-textarea{
 }
 
 
-
-
-
-
-
-
 #questions-list{
     /*width: 85%;*/
     margin: auto;       
@@ -2545,10 +2544,11 @@ ul.overview-items{
 }
 
 
+
 #user-profile-page .profile-avatar-main{
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
+    width: 215px;
+    height: 215px;
+    border-radius: 10%;
     overflow: hidden;
     cursor: pointer;
     border: 2px solid #b4c1e5;
@@ -2566,11 +2566,10 @@ ul.overview-items{
     top: 0;
     left: 0;
     background: #01010140;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
     display: none;
     transition: ease all 0.3s;
+    width: 100%;
+    height: 100%;
 
 }
 
@@ -2597,13 +2596,23 @@ ul.overview-items{
 .profile-banner .profile-info-section{
     margin-left: 75px;
 }
-
 .profile-info-section{
-    margin-left: 70px;
+    margin: center;
 }
 
-.profile-info-section2{
-    margin-left: 80px;
+.stu {
+    font-size: unset;
+    margin-top: 10
+}
+
+.aboutpart{
+    top: 100px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
 }
 
 .successful-hidden{
@@ -2717,3 +2726,101 @@ ul.overview-items{
     left: 10px;
 }  */
 
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*Sa kilid About*/
+.column2 {
+    float: left;
+    font-size: 20px;
+}
+
+.row2 {
+    display: table;
+    clear: both;
+}
+
+#user-profile-page .left{
+    width: 300px;
+    padding: 20px;
+    float: left;  
+    margin-right: 15px;  
+}
+
+
+h4.display-full-name.pt-1{
+    font-size: 30px;
+    padding-top: 1.25rem!important;
+}
+
+li.p-0.list-group-item{
+    border: none;
+    
+}
+
+ul.navigation-list.qa-test-list-group.navigation-list-container-horizontal-on-mobile.list-group{
+        margin: 10px;
+    margin-top: 80px;
+}
+
+li.p-0.list-group-item{
+        margin-top: 12px;
+}
+
+.navigation-list-container.navigation-list-container-gray{
+    font-size: 20px;
+}
+
+#user-profile-page > .right{
+    width: calc(100% - 315px);
+    right: 0;
+    left: auto;
+    float: right;
+}
+
+
+#about input[readonly="false"], #about input:not([readonly]){
+    border: 1px solid #000;
+    box-shadow: 0px 2px 4px #00000073;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 15px;
+}
+#about input[readonly="true"],#about input[readonly]{
+    border: 1px solid transparent;
+    outline: none;
+    padding: 5px 15px;
+}
+
+
+#about .panel-content.editing .editprofileBtn,
+#about .panel-content:not(.editing) .saveProfileBtn
+{ display: none; }
+
+.ffeat {
+
+}
+
+.block-container.w-img-left > .row > div:nth-child(2),
+.block-container.w-img-right > .row > div:nth-child(1){
+        padding: 50px;
+}
+
+.block-container .block-title{
+        font-size: 2em;
+    font-weight: 700;
+    text-align: center;
+        margin-bottom: 20px;
+}
+
+.block-container .block-title span{
+    border-bottom: 3px solid #7996e0;
+}
+
+.block-container .block-text{
+    text-indent: 2em;
+    text-align: justify;
+}
