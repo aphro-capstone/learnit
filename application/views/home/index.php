@@ -10,37 +10,63 @@
 		<link rel="stylesheet" type="text/css" href="<?= base_url();?>/assets/plugins/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/project.css">
 		<link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen.css">
-
-
+<link rel="stylesheet" media="screen and (max-width: 600px)" href="smallscreen.css">
 	</head>
+
+
 	<body class="login-page">
 
-			<header class="container-fluid ">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light pull-right">
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#" data-toggle="scrollto" data-target="#login">
+		        	<i class="fa fa-home"></i> Log In</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#" data-toggle="scrollto" data-target="#features">
+		        	<i class="fa fa-reorder"></i> Features </a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#" data-toggle="scrollto" data-target="#activities">
+		        	<i class="fa fa-gamepad"></i> Activities </a>
+		      </li>
+		      
+		    </ul>
+		   
+		  </div>
+		</nav>
+
+			<!-- <header class="container-fluid ">
 				<div class="container">
-					<nav class="navbar navbar-expand-lg p-0 pull-right"> 
-							  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-							    <span class="navbar-toggler-icon"></span>
-							  </button>
-							 <div class="collapse navbar-collapse" id="navbarNav">
-							    <ul class="navbar-nav ">					      
-							        <li class="nav-item  ">
-							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#login">
+
+					<nav class="   navbar navbar-expand-lg p-0 pull-right">
+
+						  <div class="collapse navbar-collapse" id="navbarNav">
+						    <ul class="navbar-nav mr-auto">
+						      <li class="nav-item">
+						        <a class="nav-link" href="#" data-toggle="scrollto" data-target="#login">
 							            <i class="fa fa-home"></i>  Log In </a>
-									</li>
-									<li class="nav-item  ">
-							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#features">
+						      </li>
+						      <li class="nav-item">
+						       <a class="nav-link" href="#" data-toggle="scrollto" data-target="#features">
 							            <i class="fa fa-reorder"></i>  Features </a>
-									</li>
-									<li class="nav-item  ">
-							          <a class="nav-link" href="#" data-toggle="scrollto" data-target="#activities">
+						      </li>
+						      <li class="nav-item">
+						       <a class="nav-link" href="#" data-toggle="scrollto" data-target="#activities">
 							            <i class="fa fa-gamepad"></i>  Activities </a>
-									</li>
-		         				 </ul>
-		  					</div>
-					</nav>
-				</div>	
-			</header>
+						      </li>
+						    </ul>
+						 
+						  </div>
+						</nav>
+			</header> -->
 			
+
 		<div class="cont1 d-flex" id="login"> 
 			<div class="logo img-container">
 				<img src="<?= base_url(); ?>/assets/images/logo-light.png">
