@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2021 at 04:15 PM
+-- Generation Time: Jan 28, 2021 at 11:12 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -33,6 +33,14 @@ CREATE TABLE `li_assignments` (
   `task_id` int(11) NOT NULL COMMENT 'FK from task table',
   `ass_attachments` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`ass_attachments`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `li_assignments`
+--
+
+INSERT INTO `li_assignments` (`ass_id`, `task_id`, `ass_attachments`) VALUES
+(25, 67, '[]'),
+(26, 69, '[]');
 
 -- --------------------------------------------------------
 
@@ -151,7 +159,8 @@ CREATE TABLE `li_class_students` (
 --
 
 INSERT INTO `li_class_students` (`cs_id`, `student_id`, `class_id`, `admission_status`, `timestamp_created`) VALUES
-(26, 146, 37, 1, '2021-01-06 03:13:34');
+(26, 146, 37, 1, '2021-01-06 03:13:34'),
+(27, 146, 35, 1, '2021-01-26 09:27:21');
 
 -- --------------------------------------------------------
 
@@ -175,8 +184,7 @@ INSERT INTO `li_normal_posts` (`np_id`, `class_id`, `p_content`) VALUES
 (78, 0, '{\"t\":\"sdasdasdsa\",\"a\":[]}'),
 (79, 0, '{\"t\":\"aaaa\",\"a\":[]}'),
 (80, 0, '{\"t\":\"aaaa\",\"a\":[]}'),
-(81, 0, '{\"t\":\"aaaaddddd\",\"a\":[]}'),
-(82, 37, '{\"t\":\"tset post class\",\"a\":[]}');
+(81, 0, '{\"t\":\"aaaaddddd\",\"a\":[]}');
 
 -- --------------------------------------------------------
 
@@ -206,7 +214,13 @@ INSERT INTO `li_posts` (`p_id`, `user_id`, `post_info_ref_id`, `post_ref_type`, 
 (180, 109, 79, 0, 0, '2021-01-19 18:10:44', '2021-01-19 18:10:44'),
 (181, 109, 80, 0, 0, '2021-01-19 18:24:13', '2021-01-19 18:24:13'),
 (182, 109, 81, 0, 0, '2021-01-19 18:24:16', '2021-01-19 18:24:16'),
-(183, 109, 82, 0, 0, '2021-01-19 18:28:45', '2021-01-19 18:28:45');
+(184, 109, 67, 1, 0, '2021-01-22 08:30:58', '2021-01-22 08:30:58'),
+(185, 109, 68, 1, 0, '2021-01-27 16:54:51', '2021-01-27 16:54:51'),
+(186, 109, 69, 1, 0, '2021-01-27 17:14:38', '2021-01-27 17:14:38'),
+(187, 109, 70, 1, 0, '2021-01-27 19:09:51', '2021-01-27 19:09:51'),
+(188, 109, 81, 1, 0, '2021-01-27 21:21:14', '2021-01-27 21:21:14'),
+(189, 109, 82, 1, 0, '2021-01-27 21:30:13', '2021-01-27 21:30:13'),
+(190, 109, 83, 1, 0, '2021-01-28 04:00:16', '2021-01-28 04:00:16');
 
 --
 -- Triggers `li_posts`
@@ -269,7 +283,9 @@ CREATE TABLE `li_quizzes` (
 --
 
 INSERT INTO `li_quizzes` (`quiz_id`, `task_id`, `quiz_questions`, `quiz_count`, `total_points`, `quiz_duration`) VALUES
-(34, 61, '[{\"type\":\"0\",\"Question\":\"adada\",\"questionPoints\":\"1\",\"responses\":\"true\",\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"1\",\"Question\":\"adada\",\"questionPoints\":\"1\",\"responses\":[{\"text\":\"adada\",\"ischecked\":\"true\"},{\"text\":\"ada\",\"ischecked\":\"false\"},{\"text\":\"dadada\",\"ischecked\":\"false\"}],\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"2\",\"Question\":\"adadadaaadad\",\"questionPoints\":\"1\",\"responses\":\"\",\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"3\",\"Question\":\"adaada _ adasd _aad\",\"questionPoints\":\"1\",\"responses\":[\"1\",\"2\"],\"points\":\"1\",\"total_points\":\"2\"},{\"type\":\"4\",\"Question\":\"adadada\",\"questionPoints\":\"1\",\"responses\":{\"matches\":[[\"aa\",\"aa\"],[\"bb\",\"bb\"],[\"cc\",\"cc\"]],\"fakes\":[\"adaa\"]},\"points\":\"1\",\"total_points\":\"3\"},{\"type\":\"5\",\"Question\":\"adadad\",\"questionPoints\":\"1\",\"responses\":[{\"text\":\"aa\",\"ischecked\":\"true\"},{\"text\":\"bb\",\"ischecked\":\"true\"},{\"text\":\"cc\",\"ischecked\":\"false\"}],\"points\":\"1\",\"total_points\":\"2\"}]', 6, 10, 60);
+(34, 61, '[{\"type\":\"0\",\"Question\":\"adada\",\"questionPoints\":\"1\",\"responses\":\"true\",\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"1\",\"Question\":\"adada\",\"questionPoints\":\"1\",\"responses\":[{\"text\":\"adada\",\"ischecked\":\"true\"},{\"text\":\"ada\",\"ischecked\":\"false\"},{\"text\":\"dadada\",\"ischecked\":\"false\"}],\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"2\",\"Question\":\"adadadaaadad\",\"questionPoints\":\"1\",\"responses\":\"\",\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"3\",\"Question\":\"adaada _ adasd _aad\",\"questionPoints\":\"1\",\"responses\":[\"1\",\"2\"],\"points\":\"1\",\"total_points\":\"2\"},{\"type\":\"4\",\"Question\":\"adadada\",\"questionPoints\":\"1\",\"responses\":{\"matches\":[[\"aa\",\"aa\"],[\"bb\",\"bb\"],[\"cc\",\"cc\"]],\"fakes\":[\"adaa\"]},\"points\":\"1\",\"total_points\":\"3\"},{\"type\":\"5\",\"Question\":\"adadad\",\"questionPoints\":\"1\",\"responses\":[{\"text\":\"aa\",\"ischecked\":\"true\"},{\"text\":\"bb\",\"ischecked\":\"true\"},{\"text\":\"cc\",\"ischecked\":\"false\"}],\"points\":\"1\",\"total_points\":\"2\"}]', 6, 10, 60),
+(37, 68, '[{\"type\":\"0\",\"Question\":\"dfsdfsdfsf\",\"questionPoints\":\"1\",\"responses\":\"true\",\"points\":\"1\",\"total_points\":\"1\"}]', 1, 1, 60),
+(39, 81, '[{\"type\":\"0\",\"Question\":\"adsadasda\",\"questionPoints\":\"2\",\"responses\":\"true\",\"points\":\"2\",\"total_points\":\"2\"},{\"type\":\"1\",\"Question\":\"aaaaaa\",\"questionPoints\":\"1\",\"responses\":[{\"text\":\"aa\",\"ischecked\":\"false\"},{\"text\":\"bb\",\"ischecked\":\"false\"},{\"text\":\"cc\",\"ischecked\":\"false\"},{\"text\":\"dd\",\"ischecked\":\"true\"}],\"points\":\"1\",\"total_points\":\"1\"},{\"type\":\"3\",\"Question\":\"ako c _,  gamay ug _,  kini ang gunitanan, kini ang _\",\"questionPoints\":\"3\",\"responses\":[\"takuri\",\"dako\",\"cover\"],\"points\":\"3\",\"total_points\":\"9\"}]', 3, 12, 56);
 
 -- --------------------------------------------------------
 
@@ -424,9 +440,10 @@ CREATE TABLE `li_tasks` (
   `tsk_title` varchar(200) NOT NULL COMMENT 'Task Title',
   `tsk_instruction` text NOT NULL COMMENT 'Task Desccription',
   `tsk_duedate` datetime NOT NULL COMMENT 'Contains the due date of the task',
-  `tsk_status` int(11) NOT NULL DEFAULT 1 COMMENT 'Task status\r\n\r\n1 = Open\r\n0 = Closed',
+  `tsk_status` int(11) NOT NULL DEFAULT 1 COMMENT '	Task status 1 = Open 0 = Closed	',
   `tsk_lock_on_due` tinyint(4) NOT NULL COMMENT '1 = true, 0 = false',
   `tsk_options` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Hold other task options in JSON format',
+  `is_reviewed` int(1) DEFAULT 0,
   `timestamp_created` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Created/Assigned date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -434,8 +451,13 @@ CREATE TABLE `li_tasks` (
 -- Dumping data for table `li_tasks`
 --
 
-INSERT INTO `li_tasks` (`tsk_id`, `tsk_type`, `tsk_title`, `tsk_instruction`, `tsk_duedate`, `tsk_status`, `tsk_lock_on_due`, `tsk_options`, `timestamp_created`) VALUES
-(61, 0, 'adadada', 'dadadada', '2021-01-21 23:59:00', 1, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"true\",\"ishowresult\":\"true\"}', '2021-01-13 02:22:44');
+INSERT INTO `li_tasks` (`tsk_id`, `tsk_type`, `tsk_title`, `tsk_instruction`, `tsk_duedate`, `tsk_status`, `tsk_lock_on_due`, `tsk_options`, `is_reviewed`, `timestamp_created`) VALUES
+(61, 0, 'adadada', 'dadadada', '2021-01-28 23:59:00', 1, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"true\",\"ishowresult\":\"true\"}', 0, '2021-01-13 02:22:44'),
+(67, 1, 'test assignment', 'adadada', '2021-01-25 08:41:14', 1, 0, '{\"isaddtogradebook\":\"true\"}', 1, '2021-01-22 08:30:58'),
+(68, 0, 'aaaaaaaaaaaa', 'ddddd', '2021-01-27 23:59:00', 0, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"true\",\"ishowresult\":\"true\"}', 0, '2021-01-27 16:54:51'),
+(69, 1, 'Test assignment 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. ', '2021-01-30 23:59:00', 1, 0, '{\"isaddtogradebook\":\"true\"}', 0, '2021-01-27 17:14:38'),
+(81, 0, 'Test Quiz Aphro', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. Duis pharetra luctus lacus ut \nvestibulum. Maecenas ipsum lacus, lacinia quis posuere ut, pulvinar vitae dolor.\nInteger eu nibh at nisi ullamcorper sagittis id vel leo. Integer feugiat \nfaucibus libero, at maximus nisl suscipit posuere. Morbi nec enim nunc. \nPhasellus bibendum turpis ut ipsum egestas, sed sollicitudin elit convallis. \nCras pharetra mi tristique sapien vestibulum lobortis. Nam eget bibendum metus, \nnon dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.', '2021-01-29 23:59:00', 1, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"false\",\"ishowresult\":\"false\"}', 0, '2021-01-27 21:21:14'),
+(83, 1, 'Test assignment 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. ', '2021-01-30 23:59:00', 1, 0, '{\"isaddtogradebook\":\"true\"}', 0, '2021-01-28 04:00:16');
 
 -- --------------------------------------------------------
 
@@ -467,7 +489,16 @@ CREATE TABLE `li_task_class_assignees` (
 --
 
 INSERT INTO `li_task_class_assignees` (`ta_id`, `task_id`, `class_id`) VALUES
-(66, 61, 37);
+(66, 61, 37),
+(71, 67, 35),
+(72, 67, 36),
+(73, 67, 37),
+(74, 68, 35),
+(75, 68, 36),
+(76, 68, 37),
+(77, 69, 36),
+(82, 81, 36),
+(85, 69, 35);
 
 -- --------------------------------------------------------
 
@@ -489,7 +520,8 @@ CREATE TABLE `li_task_submissions` (
 --
 
 INSERT INTO `li_task_submissions` (`ts_id`, `task_id`, `student_id`, `status`, `teacher_remarks`, `datetime_submitted`) VALUES
-(150, 61, 146, 0, '', '2021-01-14 06:13:56');
+(152, 61, 146, 0, '', '2021-01-27 14:09:06'),
+(153, 69, 146, 0, '', '2021-01-27 22:42:17');
 
 -- --------------------------------------------------------
 
@@ -504,6 +536,13 @@ CREATE TABLE `li_task_submission_ass` (
   `tsa_status` int(11) NOT NULL DEFAULT 1 COMMENT 'Contains the status for the assignment.\r\n\r\n1 = Turned In\r\n2 = Not Turned In\r\n3 = Graded',
   `ass_grade` int(11) NOT NULL DEFAULT 0 COMMENT 'Contains the grade of the assignment'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `li_task_submission_ass`
+--
+
+INSERT INTO `li_task_submission_ass` (`tsa_id`, `ts_id`, `submission_content`, `tsa_status`, `ass_grade`) VALUES
+(9, 153, '{\"text\":\"Testing assignment Text\"}', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -524,7 +563,7 @@ CREATE TABLE `li_task_submission_quiz` (
 --
 
 INSERT INTO `li_task_submission_quiz` (`tsq_id`, `ts_id`, `quiz_answers`, `duration_consumed`, `quiz_score`) VALUES
-(121, 150, '\"[[\\\"true\\\"],[\\\"0\\\"],[\\\"adasas\\\"],[\\\"adadada\\\",\\\"\\\"],[{\\\"left\\\":\\\"aa\\\",\\\"right\\\":\\\"aa\\\"},{\\\"left\\\":\\\"bb\\\",\\\"right\\\":\\\"cc\\\"},{\\\"left\\\":\\\"cc\\\",\\\"right\\\":\\\"bb\\\"}],[\\\"0\\\",\\\"1\\\"]]\"', '00:51', 5);
+(123, 152, '\"[[\\\"true\\\"],[\\\"1\\\"],[\\\"aaa\\\"],[\\\"ada\\\",\\\"2\\\"],[{\\\"left\\\":\\\"aa\\\",\\\"right\\\":\\\"aa\\\"},{\\\"left\\\":\\\"bb\\\",\\\"right\\\":\\\"bb\\\"},{\\\"left\\\":\\\"cc\\\",\\\"right\\\":\\\"adaa\\\"}],[\\\"1\\\",\\\"2\\\"]]\"', '00:15', 5);
 
 -- --------------------------------------------------------
 
@@ -848,7 +887,7 @@ ALTER TABLE `li_verification_codes`
 -- AUTO_INCREMENT for table `li_assignments`
 --
 ALTER TABLE `li_assignments`
-  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `li_chat_group`
@@ -890,7 +929,7 @@ ALTER TABLE `li_class_grading_student_grades`
 -- AUTO_INCREMENT for table `li_class_students`
 --
 ALTER TABLE `li_class_students`
-  MODIFY `cs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `cs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `li_normal_posts`
@@ -902,7 +941,7 @@ ALTER TABLE `li_normal_posts`
 -- AUTO_INCREMENT for table `li_posts`
 --
 ALTER TABLE `li_posts`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key', AUTO_INCREMENT=184;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key', AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `li_post_comments`
@@ -914,7 +953,7 @@ ALTER TABLE `li_post_comments`
 -- AUTO_INCREMENT for table `li_quizzes`
 --
 ALTER TABLE `li_quizzes`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `li_settings_colors`
@@ -944,31 +983,31 @@ ALTER TABLE `li_settings_yr_lvl`
 -- AUTO_INCREMENT for table `li_tasks`
 --
 ALTER TABLE `li_tasks`
-  MODIFY `tsk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `tsk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `li_task_class_assignees`
 --
 ALTER TABLE `li_task_class_assignees`
-  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `li_task_submissions`
 --
 ALTER TABLE `li_task_submissions`
-  MODIFY `ts_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `ts_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT for table `li_task_submission_ass`
 --
 ALTER TABLE `li_task_submission_ass`
-  MODIFY `tsa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `tsa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `li_task_submission_quiz`
 --
 ALTER TABLE `li_task_submission_quiz`
-  MODIFY `tsq_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `tsq_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `li_userinfo`
@@ -1113,6 +1152,8 @@ DELIMITER $$
 -- Events
 --
 CREATE DEFINER=`root`@`localhost` EVENT `delete_verification_codes_daily` ON SCHEDULE EVERY 1 DAY STARTS '2020-06-08 01:00:00' ON COMPLETION NOT PRESERVE ENABLE DO delete FROM li_verification_codes where datediff(now(), timestamp) = 1$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `Auto close tasks on due date` ON SCHEDULE EVERY 1 MINUTE STARTS '2021-01-24 20:46:26' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE li_tasks as t SET tsk_status = 0 where tsk_lock_on_due = 1 and now() > `tsk_duedate`$$
 
 DELIMITER ;
 COMMIT;
