@@ -26,6 +26,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/project.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/icons.css">
 	
+	
 
 
 	<?php if( isset($projectCss)  ): ?>

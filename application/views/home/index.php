@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/plugins/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="<?= base_url();?>/assets/plugins/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/project.css">
+		<link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen.css">
+
 
 	</head>
 	<body class="login-page">
@@ -265,13 +267,13 @@
 					<div class="m-auto">
 						<h6 class="block-title">  <span>Activities</span>  </h6>
 						<p class="block-text"> 
-							Activities such as Typing games, 
+							Challenge your minds with any Activities and Games 
 						</p>
 					</div>
 				</div>	
 				<div class="col-sm-12 col-md-5 col-lg-5 pl-0 pr-0">
 					<div class="ffeat img-container">
-						<img src="<?= base_url(); ?>/assets/images/featt.png">
+						<img src="<?= base_url(); ?>/assets/images/lactivities.png">
 					</div>
 				</div>
 					

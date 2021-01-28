@@ -14,6 +14,7 @@
 
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-ui.js"></script>
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	
 
 	
 	<!-- PLUGINS -->

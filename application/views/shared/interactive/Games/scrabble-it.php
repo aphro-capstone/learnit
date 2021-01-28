@@ -1,4 +1,4 @@
-
+<div class="overlay"></div>
 
 <div id="scrabble-div">
     <h1>Guess The Number</h1> 

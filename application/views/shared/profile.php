@@ -51,7 +51,7 @@
 								    <label class="col-sm-4 col-form-label">
 								    	<i class="fa fa-calendar mr-1"></i> Date of Birth</label>
 								    <div class="col-sm-10">
-								      <input type="date" readonly="true" class="form-control-plaintext">
+								      <input type="date" readonly="true" class="form-control">
 								    </div>
 
 								    <label class="col-sm-4 col-form-label mt-3">
@@ -68,19 +68,19 @@
 									<label class="col-sm-4 col-form-label mt-4">
 								    	<i class="fa fa-phone mr-1"></i> Contact #</label>
 								    <div class="col-sm-10 mt-2">
-								      <input type="number" readonly="true" class="form-control-plaintext" placeholder="Contact Number">
+								      <input type="tel" readonly="true" class="form-control" placeholder="Contact Number">
 								    </div>
 
 								    <label class="col-sm-4 col-form-label mt-3">
 								    	<i class="fa fa-envelope mr-1"></i> Email Address</label>
 								    <div class="col-sm-10 mt-2">
-								      <input type="text" readonly="true" class="form-control-plaintext" placeholder="@gmail.com">
+								      <input type="text" readonly="true" class="form-control" placeholder="@gmail.com">
 								    </div>
 
 								    <label class="col-sm-4 col-form-label mt-3">
 								    	<i class="fa fa-home mr-1"></i> Address</label>
 								    <div class="col-sm-10 mt-2">
-								      <input type="text" readonly="true" class="form-control-plaintext" placeholder="Current Address">
+								      <input type="text" readonly="true" class="form-control" placeholder="Current Address">
 								    </div>
 
 								</div>
