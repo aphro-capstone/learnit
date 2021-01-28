@@ -1,20 +1,35 @@
-
-
-<div id="scrabble-div">
-    <h1>Guess The Number</h1> 
-    <p>We have selected a random number between 1 - 10.  
-    See if you can guess it.</p> 
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <title>Number Guessing Game</title> 
+  
+    <style> 
+        html { 
+    font-family: sans-serif; 
+    } 
       
-    <div class="form"> 
-        <label for="guessField">Enter a guess: </label> 
-        <input type = "text" id = "guessField" class = "guessField"> 
-        <input type = "submit" value = "Submit guess" 
-               class = "guessSubmit" id = "submitguess"> 
-    </div>
-
-</div>
-
-
+        body { 
+    width: 50%; 
+    max-width: 800px; 
+    min-width: 480px; 
+    margin: 0 auto; 
+    } 
+    </style> 
+</head> 
+  
+<body> 
+<h1>Guess The Number</h1> 
+  
+<p>We have selected a random number between 1 - 10.  
+See if you can guess it.</p> 
+  
+<div class="form"> 
+    <label for="guessField">Enter a guess: </label> 
+    <input type = "text" id = "guessField" class = "guessField"> 
+    <input type = "submit" value = "Submit guess" 
+           class = "guessSubmit" id = "submitguess"> 
+</div> 
   
 <script type = "text/javascript"> 
   
@@ -48,3 +63,5 @@
    } 
 } 
 </script> 
+</body> 
+</html>  
