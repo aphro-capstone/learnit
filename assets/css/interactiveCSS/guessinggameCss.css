@@ -101,7 +101,7 @@ p {
     }
   }
 }
-
+/*
 .wrongLetters {
   font-size: 20px;
   p {
@@ -118,7 +118,35 @@ p {
     margin-right: 10px;
     animation: letteranim .3s ease;
   }
+}*/
+
+
+.wrongLetters {
+  li {
+    display: inline-block;
+    font-size: 40px;
+    color: white;
+
+  }
+
+.correctLetters {
+  font-size: 20px;
+  p {
+    margin-bottom: 10px;
+  }
+  li {
+    display: inline-block;
+    font-size: 40px;
+    background:lighten(red,15%);
+    text-shadow: 1px 2px 0 red;
+    padding: 10px;
+    color: white;
+    text-transform: uppercase;
+    margin-right: 10px;
+    animation: letteranim .3s ease;
+  }
 }
+
 
 .message {
   display: none;
@@ -155,12 +183,13 @@ p {
       font-size: 40px;
     }
   }
+
   .muted {
     margin: 20px auto;
     color: lighten($blue, 10%);
   }
 }
-
+/*
 .button {
     display: none;
     margin: 10px 0;
@@ -176,5 +205,5 @@ p {
     &:hover {
       background: lighten($green, 20%);
       
-    }
+    }*/
 }
