@@ -101,7 +101,7 @@ p {
     }
   }
 }
-/*
+
 .wrongLetters {
   font-size: 20px;
   p {
@@ -118,7 +118,7 @@ p {
     margin-right: 10px;
     animation: letteranim .3s ease;
   }
-}*/
+}
 
 
 .wrongLetters {
