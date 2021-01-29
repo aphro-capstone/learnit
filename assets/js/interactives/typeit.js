@@ -110,3 +110,8 @@ jQuery(function($){
         typeit.start( $('select[name="difficulty"]').val() );
     });
 });
+
+
+
+function openModal() {
+  document.getElementById("modal-games").style.display = "block";

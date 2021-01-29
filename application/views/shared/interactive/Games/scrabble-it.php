@@ -1,5 +1,6 @@
 <div class="overlay"></div>
 
+<div class="wrapper">
 <div id="scrabble-div">
     <h1>Guess The Number</h1> 
     <p>We have selected a random number between 1 - 10.  
@@ -13,7 +14,7 @@
     </div>
 
 </div>
-
+</div>
 
   
 <script type = "text/javascript"> 
