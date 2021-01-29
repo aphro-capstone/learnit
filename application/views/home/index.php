@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="<?= base_url();?>/assets/plugins/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/project.css">
 		<link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen.css">
-<link rel="stylesheet" media="screen and (max-width: 600px)" href="smallscreen.css">
 	</head>
 
 
@@ -309,7 +308,7 @@
 			
 		
 
-		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-3.5.0.min.js"></script>
+		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-3.5.1.min.js"></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/bootstrap-notify-master/bootstrap-notify.min.js"></script>
 		<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/qrcode/instascan.min.js"></script>

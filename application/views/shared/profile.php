@@ -48,43 +48,48 @@
 							
 							<form class="form">
 								<div class="form-group row">
-								    <label class="col-sm-4 col-form-label">
+								    <label class="col-sm-3 col-form-label">
 								    	<i class="fa fa-calendar mr-1"></i> Date of Birth</label>
-								    <div class="col-sm-10">
+								    <div class="col-sm-9">
 								      <input type="date" readonly="true" class="form-control">
 								    </div>
-
-								    <label class="col-sm-4 col-form-label mt-3">
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">
 									 	<i class="fa fa-transgender mr-1"></i> Gender</label>
-									 <div class="col-sm-10 mt-3">
-									 	<div class="form-check form-check-inline">
-										<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
-										<label class="form-check-label" for="inlineRadio1">Male</label>
-										<input class="form-check-input ml-4" type="radio" name="gender" id="inlineRadio2" value="Female">
-										<label class="form-check-label" for="inlineRadio2">Female</label>
-										</div>	
+									 <div class="col-sm-9 d-flex">
+									 	<div class="form-check form-check-inline m-auto ml-0">
+											<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
+											<label class="form-check-label" for="inlineRadio1">Male</label>
+											<input class="form-check-input ml-4" type="radio" name="gender" id="inlineRadio2" value="Female">
+											<label class="form-check-label" for="inlineRadio2">Female</label>
+										</div>
 									</div>
-
-									<label class="col-sm-4 col-form-label mt-4">
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">
 								    	<i class="fa fa-phone mr-1"></i> Contact #</label>
-								    <div class="col-sm-10 mt-2">
+								    <div class="col-sm-9">
 								      <input type="tel" readonly="true" class="form-control" placeholder="Contact Number">
 								    </div>
-
-								    <label class="col-sm-4 col-form-label mt-3">
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">
 								    	<i class="fa fa-envelope mr-1"></i> Email Address</label>
-								    <div class="col-sm-10 mt-2">
+								    <div class="col-sm-9">
 								      <input type="text" readonly="true" class="form-control" placeholder="@gmail.com">
 								    </div>
-
-								    <label class="col-sm-4 col-form-label mt-3">
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">
 								    	<i class="fa fa-home mr-1"></i> Address</label>
-								    <div class="col-sm-10 mt-2">
+								    <div class="col-sm-9">
 								      <input type="text" readonly="true" class="form-control" placeholder="Current Address">
 								    </div>
-
-								</div>
-							</form>
+								</div> 
+						
+							
+						</form>
 
 
 							<div class="d-table">
@@ -94,6 +99,7 @@
 								<button class="btn btn-outline-secondary hoverable-btn pull-right saveProfileBtn">
 									<i class="fa fa-save mr-1"></i>  Save
 								</button>
+							</div>
 							</div>
 						</div>
 					</div>
