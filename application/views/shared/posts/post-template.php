@@ -81,7 +81,7 @@
 				<p><?= $p_content['t']; ?></p>
 			</div>
 			<div class="files mb-3">
-				<?php $this->load->view('shared/attachment-template',array('attachments' =>   $p_content['a']  ) ); ?>
+				<?php $this->load->view('shared/attachment-template',array('attachments' =>   $p_content['a'], 'postID' => $p_id  ) ); ?>
 			</div>
 			
 			<!-- <div class="image row mb-3">

@@ -21,7 +21,7 @@
             $img = file_get_contents(getcwd(). '/assets/uploads/' . $a['path']  );
             $imgbase64 = 'data:image/' . $a['type'] . ';base64,' . base64_encode($img); 
     ?>
-            <div class="image img-container"> <a href="<?= $imgbase64;?>" data-lightbox="example-1"> <img class="enlargeable-image" src="<?=$imgbase64;?>" alt=""> </a> </div>
+            <div class="image img-container"> <a href="<?= $imgbase64;?>" data-lightbox="example-<?php isset($postID) ? $postID : '';?>"> <img class="enlargeable-image" src="<?=$imgbase64;?>" alt=""> </a> </div>
         <?php endforeach;
     ?>
 </div>

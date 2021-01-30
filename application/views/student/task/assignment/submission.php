@@ -10,7 +10,7 @@
     </div>
     <span> Attachments : </span>
     <div class="files">
-        <?php $this->load->view('shared/attachment-template',array('attachments' =>   json_decode( $subContent['attchments'],true ),'type' => 'assignment'  ) ); ?>
+        <?php $this->load->view('shared/attachment-template',array('attachments' =>   json_decode( $subContent['attchments'],true ),'type' => 'ass_submit', 'dataID' => $submission['tsa_id']  ) ); ?>
     </div>
     </div>
 </div>

@@ -2351,12 +2351,9 @@ div.act-as-textarea{
 }
  
 .image-attachments.image-count-2 > div, 
-.image-attachments.image-count-3 > div{
+.image-attachments.image-count-3 > div,
+.image-attachments.image-count-4 > div{
     width: 50%;
-}
-
-.image-attachments.image-count-3 > div:nth-child(3){
-    width: 100%;
 }
 
 
@@ -2922,4 +2919,10 @@ li.p-0.list-group-item{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     text-decoration: none;
+}
+
+.post-panel .image-attachments{
+    max-height: 461px;
+    overflow: hidden;
+    display: block;
 }

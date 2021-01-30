@@ -85,7 +85,7 @@
 				<h4 class="panel-header border-bottom"> <strong> Title : <?= $AD['tsk_title'];?>	</strong></h4>
 				<div class="panel-content">
 						
-					<?php if( $AD['submissions']  ||  (isset($allowRevision) && $allowRevision)):  ?>
+					<?php if( (isset($AD['submissions'])) && count( $AD['submissions']  ) != 0  ||  (isset($allowRevision) && $allowRevision)):  ?>
 						<ul class="tabs nav nav-tabs ">
 							<?php  for( $x = 0; $x < count($AD['submissions']); $x++ ):
 								$submission = $AD['submissions'][$x];

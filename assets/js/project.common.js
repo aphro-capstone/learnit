@@ -226,7 +226,6 @@ var doDownload = (this_) => {
 		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + '?filename=' +  encodeURIComponent(filename);
 	
 	} 
-	console.log(link);
 	window.open(link ,'Download'); 
 }
 

@@ -653,6 +653,42 @@ class Teacher extends MY_Controller {
 		}else if( strpos($seg, 'submission') !== false ){
 			$id = explode(':', $seg);
 			$id = $id[1];
+			$var['projectCss'] = array( 'project.library',
+											'../../plugins/dropzone-5.7.0/dist/min/dropzone.min',
+										);
+			$var['projectScripts'] = array(
+											'../plugins/dropzone-5.7.0/dist/min/dropzone.min',
+											'project.dragdrop',
+											'project.library',
+											'project.assignment');
+			$var['pageTitle']	= 'Assignment';
+			$assD =  array(
+					'select'	=> 'a.task_id,
+									ass_attachments,
+									ass_id,
+									tsk_duedate,
+									tsk_instruction,
+									tsk_title,
+									concat(ui_firstname," ", ui_lastname) as teachername,
+									class_name,c.class_id',
+					'from'		=> 'tasks as tsk',
+					'join'		=> array(  
+											array( 'table' => 'assignments as a', 'cond' => 'a.task_id = tsk.tsk_id'),
+											array( 'table' => 'task_class_assignees as tca', 'cond' => 'tca.task_id = tsk.tsk_id'),
+											array( 'table' => 'classes c', 'cond' => 'c.class_id = tca.class_id'),
+											array( 'table' => 'userinfo ui', 'cond' => 'ui.cred_id = c.teacher_id'),
+											array( 'table' => 'task_submissions ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
+										),
+					'where'		=> array( array( 'field' => 'ts.ts_id', 'value' => $id ) )
+			);
+
+		$assD = $this->prepare_query( $assD )->result_array();
+		var_dump( $assD );
+		$var['AD'] = $assD[0];
+		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() );
+		
+		$this->load->template('student/assignment-template',$var);
+			
 		}else{
 			show_404();	
 		}
@@ -871,44 +907,15 @@ class Teacher extends MY_Controller {
 								'guardian_name'	=> $stud_data['ui_guardian_name']
 							);
 
-				// $this->sendEmail($data, $content );
+				$this->sendEmail($data, $content );
 			endforeach; 
 			
 		endforeach; 
        
     }
 
-	public function downloadfile($id,$type__,$type2){
-		// $id = $this->input->post('id');
-		// $type__ = $this->input->post('type__');
-		// $type2 = $this->input->post('type2');
-		$filename = $_GET['filename'] ;
-		
-		 
-		if($type__ == 'post'){
-			$fileargs =  array(
-						'from'		=> 'posts as p', 
-						'where'		=> array( array( 'field' => 'p.p_id', 'value' => $id ) )
-			);
-
-			if( $type2 == 0){
-				$fileargs['select']	= 'p_content';
-				$fileargs['join'] =  array(  array( 'table' => 'normal_posts as np', 'cond' => 'np.np_id = p.post_info_ref_id') );
-			}
-
-			$file = $this->prepare_query( $fileargs )->result_array();
-			$file = json_decode($file[0]['p_content'],true); 
-			$file = $file['a'];
-			$selectedfile  = array();
-			foreach( $file as $f ){
-				if($f['name'] == $filename){ $selectedfile = $f; }
-			}
-			
-			$this->doDownload($selectedfile);
-		} 
-
-
-	
+	public function downloadfile($id,$type__ = null,$type2 = null){
+		$this->getDownloadFile( $id,$type__,$type2 );
 	}
 
 	
@@ -993,6 +1000,6 @@ class Teacher extends MY_Controller {
 		$content = $this->input->post('content');
 		$this->sendEmail($data, $content );
 	}
-
+	 
  
 }

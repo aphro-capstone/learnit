@@ -145,6 +145,7 @@ const iniClassDue = () => {
     if( !isOntaskindividualpages ) return;
 
     this.showClassSubmissions = (searchstudname = '') =>{
+        
         const table = $('.details-table tbody');
             table.html('');
     
@@ -154,17 +155,15 @@ const iniClassDue = () => {
                                 <div class="student-image img-container ">\
                                 <img src="'+ SITE_URL +'/assets/images/avatars/user2.png">\
                                 </div>\
-                                <div class="student-name"> Aphroditea Gajo</div>\
+                                <div class="student-name"> </div>\
                             </div>\
                         </td>\
                         <td class="text-center v-mid date-submitted"> June 10, 2020 @ 11:00 PM </td>\
-                        <td class="text-center v-mid grades"> <span class="score"></span> out of <span class="over"></span> </td>\
+                        <td class="text-center v-mid grades"> <span class="score"></span>    of <span class="over"></span> </td>\
                         <td class="action v-mid text-center"> </td>\
                     </tr>');
 
-        let buttonsAssignment = '<div><a href="#" class="btn btn-primary btn-xs mr-1" data-toggle="tooltip" data-placement="top" title="View">  <i class="fa fa-eye"></i> </a>\
-                                <a href="#" class="btn btn-info btn-xs mr-1" data-toggle="tooltip" data-placement="top" title="Grade">  <i class="fa fa-star"></i> </a>\
-                                <a href="#" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Delete">  <i class="fa fa-trash"></i></a></div>';
+        let buttonsAssignment = ' <a href="#" class="btn btn-primary btn-xs mr-1" data-toggle="tooltip" data-placement="top" title="View">  <i class="fa fa-eye"></i> View Submission</a>';
 
         
         let buttonsQuiz = '<a href="#" class="btn btn-primary btn-xs mr-1" >  <i class="fa fa-eye"></i> View Quiz </a>';
@@ -185,9 +184,17 @@ const iniClassDue = () => {
                 let el = element.clone();
                     el.find('.student-name').text(b.studname);
                     el.find('.date-submitted').text( moment( b.datetime_submitted ).format('MMMM DD, YYYY @ hh:mm A') );
-                    el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
+                    
                     el.find('.score').text(b.quiz_score);
-                    el.find('.over').text(b.total_points);
+                    el.find('.over').text(b.total_points); 
+                
+                    if( viewType == 'assignment' ){
+                        el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/assignment/submission:' + b.ts_id )
+                    }else{
+                        el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
+                    }
+
+
                     table.append(el);
             } );
         }else{

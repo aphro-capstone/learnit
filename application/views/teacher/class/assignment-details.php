@@ -110,7 +110,7 @@
                 <th> Student Name </th>
                 <th class="text-center"> Datetime of Submission </th>
                 <th class="text-center" style="width:130px"> Grade/Score </th>
-                <th class="text-center" style="width: 140px;"> </th>
+                <th class="text-center" style="width: 200px;"> </th>
             </thead>
             <tbody></tbody>
         </table>

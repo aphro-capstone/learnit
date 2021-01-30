@@ -471,53 +471,7 @@ class Student extends MY_Controller {
 	}
 
 	public function downloadfile($id,$type__ = null,$type2 = null){
-		// $id = $this->input->post('id');
-		// $type__ = $this->input->post('type__');
-		// $type2 = $this->input->post('type2');
-		$filename = $_GET['filename'] ;
-		
-		 
-		if($type__ == 'post'){
-			$fileargs =  array(
-						'from'		=> 'posts as p', 
-						'where'		=> array( array( 'field' => 'p.p_id', 'value' => $id ) )
-			);
-
-			if( $type2 == 0){
-				$fileargs['select']	= 'p_content';
-				$fileargs['join'] =  array(  array( 'table' => 'normal_posts as np', 'cond' => 'np.np_id = p.post_info_ref_id') );
-			}
-
-			$file = $this->prepare_query( $fileargs )->result_array();
-			$file = json_decode($file[0]['p_content'],true); 
-			$file = $file['a'];
-			$selectedfile  = array();
-			foreach( $file as $f ){
-				if($f['name'] == $filename){ $selectedfile = $f; }
-			}
-			
-			$this->doDownload($selectedfile);
-		}else if( $type__ == 'ass_attach'){
-			$args = array(
-				'from'	=> 'assignments',
-				'where'	=> array( array( 'field' => 'ass_id', 'value' =>  $id ) )
-			);
-
-			$file = $this->prepare_query( $args )->result_array();
-			$file = json_decode($file[0]['ass_attachments'],true); 
-			
-			$file = $file['a'];
-			
-			$selectedfile  = array();
-			foreach( $file as $f ){
-				if($f['name'] == $filename){ $selectedfile = $f; }
-			}
-
-			$this->doDownload($selectedfile);
-		}
-
-
-	
+		$this->getDownloadFile( $id,$type__,$type2 );
 	}
 
 	public function activities( $game = null){

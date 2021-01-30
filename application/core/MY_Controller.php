@@ -231,8 +231,8 @@ class MY_Controller extends CI_Controller
         // $API_CODE = 'TR-JOEMA376172_W2AQI';
         // $API_PWD = '7@{(m5%hme';
 
-         $API_CODE = 'TR-JOEMA030922_5L3J3';
-         $API_PWD = '2g#nh2gq1s';
+         $API_CODE = 'TR-CAPST489354_BLECI';
+         $API_PWD = '2ia%@8i[]@';
 
 
 
@@ -687,7 +687,67 @@ class MY_Controller extends CI_Controller
         return $this->prepare_query( $Args )->result_array();
     }
 
-    protected function doDownload($file){
+
+    protected function getDownloadFile($id,$type__ = null,$type2 = null){
+        $filename = $_GET['filename'] ;
+		if($type__ == 'post'){
+			$fileargs =  array(
+						'from'		=> 'posts as p', 
+						'where'		=> array( array( 'field' => 'p.p_id', 'value' => $id ) )
+			);
+
+			if( $type2 == 0){
+				$fileargs['select']	= 'p_content';
+				$fileargs['join'] =  array(  array( 'table' => 'normal_posts as np', 'cond' => 'np.np_id = p.post_info_ref_id') );
+			}
+
+			$file = $this->prepare_query( $fileargs )->result_array();
+			$file = json_decode($file[0]['p_content'],true); 
+			$file = $file['a'];
+			$selectedfile  = array();
+			foreach( $file as $f ){
+				if($f['name'] == $filename){ $selectedfile = $f; }
+			}
+			
+			$this->doDownload($selectedfile);
+		}else if( $type__ == 'ass_attach'){
+			$args = array(
+				'from'	=> 'assignments',
+				'where'	=> array( array( 'field' => 'ass_id', 'value' =>  $id ) )
+			);
+
+			$file = $this->prepare_query( $args )->result_array();
+			$file = json_decode($file[0]['ass_attachments'],true); 
+			
+			$selectedfile  = array();
+			foreach( $file as $f ){
+				if($f['name'] == $filename){ $selectedfile = $f; }
+			}
+
+			$this->doDownload($selectedfile);
+		}else if( $type__ == 'ass_submit' ){
+			$args = array(
+				'from'	=> 'task_submission_ass',
+				'where'	=> array( array( 'field' => 'tsa_id', 'value' =>  $id ) )
+			);
+
+			
+			$file = $this->prepare_query( $args )->result_array();
+			$file = json_decode($file[0]['submission_content'],true);
+			$file = json_decode( $file['attchments'],true );
+
+			$selectedfile  = array();
+			foreach( $file as $f ){
+				if($f['name'] == $filename){ $selectedfile = $f; }
+			}
+
+			$this->doDownload($selectedfile); 
+		}
+
+
+    }
+
+    private function doDownload($file){
         $this->load->helper('download');
         $file_ = file_get_contents(getcwd() .  __SYSTEM_UPLOAD_PATH__ . $file['path']);
         $name =  __PROJECT_NAME__  . '_' . date('Y-m-d').'_' .$file['name'] ;
