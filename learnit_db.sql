@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2021 at 11:12 AM
+-- Generation Time: Jan 30, 2021 at 04:43 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -40,7 +40,12 @@ CREATE TABLE `li_assignments` (
 
 INSERT INTO `li_assignments` (`ass_id`, `task_id`, `ass_attachments`) VALUES
 (25, 67, '[]'),
-(26, 69, '[]');
+(26, 69, '[]'),
+(37, 97, '[]'),
+(38, 98, '[]'),
+(39, 99, '[]'),
+(40, 100, '[]'),
+(42, 102, '[{\"type\":\"docx\",\"path\":\"2021\\\\01\\\\0_Example test doc.docx\",\"name\":\"Example test doc.docx\",\"size\":11358},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\0_126398257_3699384516751881_721092242049154942_n.jpg\",\"name\":\"126398257_3699384516751881_721092242049154942_n.jpg\",\"size\":179746},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\0_126293642_178294397259031_3759268838569577738_n.jpg\",\"name\":\"126293642_178294397259031_3759268838569577738_n.jpg\",\"size\":138356},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\0_128850907_418339552536117_5385329975011866688_n.jpg\",\"name\":\"128850907_418339552536117_5385329975011866688_n.jpg\",\"size\":158535}]');
 
 -- --------------------------------------------------------
 
@@ -184,7 +189,19 @@ INSERT INTO `li_normal_posts` (`np_id`, `class_id`, `p_content`) VALUES
 (78, 0, '{\"t\":\"sdasdasdsa\",\"a\":[]}'),
 (79, 0, '{\"t\":\"aaaa\",\"a\":[]}'),
 (80, 0, '{\"t\":\"aaaa\",\"a\":[]}'),
-(81, 0, '{\"t\":\"aaaaddddd\",\"a\":[]}');
+(81, 0, '{\"t\":\"aaaaddddd\",\"a\":[]}'),
+(83, 0, '{\"t\":\"test\",\"a\":[]}'),
+(84, 0, '{\"t\":\"test\",\"a\":[]}'),
+(85, 0, '{\"t\":\"test\",\"a\":[]}'),
+(86, 0, '{\"t\":\"adada\",\"a\":[]}'),
+(87, 0, '{\"t\":\"adada\",\"a\":[]}'),
+(88, 0, '{\"t\":\"adada\",\"a\":[]}'),
+(89, 35, '{\"t\":\"asdadas\",\"a\":[]}'),
+(90, 35, '{\"t\":\"asdadsa\",\"a\":[]}'),
+(91, 35, '{\"t\":\"asdadsa\",\"a\":[]}'),
+(92, 35, '{\"t\":\"asdsadasdsa\",\"a\":[]}'),
+(93, 0, '{\"t\":\"adsdad\",\"a\":[]}'),
+(94, 0, '{\"t\":\"adadadada\",\"a\":[{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\np_219_127787639_436329031091308_84070528797970516_n.jpg\",\"name\":\"127787639_436329031091308_84070528797970516_n.jpg\",\"size\":46698},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\np_219_126398257_3699384516751881_721092242049154942_n.jpg\",\"name\":\"126398257_3699384516751881_721092242049154942_n.jpg\",\"size\":179746},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\np_219_126293642_178294397259031_3759268838569577738_n.jpg\",\"name\":\"126293642_178294397259031_3759268838569577738_n.jpg\",\"size\":138356},{\"type\":\"jpg\",\"path\":\"2021\\\\01\\\\np_219_128850907_418339552536117_5385329975011866688_n.jpg\",\"name\":\"128850907_418339552536117_5385329975011866688_n.jpg\",\"size\":158535},{\"type\":\"pdf\",\"path\":\"2021\\\\01\\\\np_219_Arana_Certificate_Independent_Contractor.pdf\",\"name\":\"Arana_Certificate_Independent_Contractor.pdf\",\"size\":303192}]}');
 
 -- --------------------------------------------------------
 
@@ -220,7 +237,38 @@ INSERT INTO `li_posts` (`p_id`, `user_id`, `post_info_ref_id`, `post_ref_type`, 
 (187, 109, 70, 1, 0, '2021-01-27 19:09:51', '2021-01-27 19:09:51'),
 (188, 109, 81, 1, 0, '2021-01-27 21:21:14', '2021-01-27 21:21:14'),
 (189, 109, 82, 1, 0, '2021-01-27 21:30:13', '2021-01-27 21:30:13'),
-(190, 109, 83, 1, 0, '2021-01-28 04:00:16', '2021-01-28 04:00:16');
+(190, 109, 83, 1, 0, '2021-01-28 04:00:16', '2021-01-28 04:00:16'),
+(191, 109, 83, 0, 0, '2021-01-28 13:36:10', '2021-01-28 13:36:10'),
+(192, 109, 84, 0, 0, '2021-01-28 13:37:06', '2021-01-28 13:37:06'),
+(193, 109, 85, 0, 0, '2021-01-28 13:37:18', '2021-01-28 13:37:18'),
+(194, 109, 86, 0, 0, '2021-01-28 13:38:13', '2021-01-28 13:38:13'),
+(195, 109, 87, 0, 0, '2021-01-28 13:38:31', '2021-01-28 13:38:31'),
+(196, 109, 88, 0, 0, '2021-01-28 13:40:00', '2021-01-28 13:40:00'),
+(197, 109, 84, 1, 0, '2021-01-28 13:46:27', '2021-01-28 13:46:27'),
+(198, 109, 85, 1, 0, '2021-01-28 13:51:20', '2021-01-28 13:51:20'),
+(199, 109, 86, 1, 0, '2021-01-28 13:57:19', '2021-01-28 13:57:19'),
+(200, 109, 87, 1, 0, '2021-01-28 13:57:51', '2021-01-28 13:57:51'),
+(201, 109, 88, 1, 0, '2021-01-28 14:39:09', '2021-01-28 14:39:09'),
+(202, 109, 89, 1, 0, '2021-01-28 14:39:35', '2021-01-28 14:39:35'),
+(203, 109, 90, 1, 0, '2021-01-28 14:40:03', '2021-01-28 14:40:03'),
+(204, 109, 91, 1, 0, '2021-01-28 14:40:23', '2021-01-28 14:40:23'),
+(205, 109, 92, 1, 0, '2021-01-28 14:41:19', '2021-01-28 14:41:19'),
+(206, 109, 93, 1, 0, '2021-01-28 14:42:20', '2021-01-28 14:42:20'),
+(207, 109, 94, 1, 0, '2021-01-28 14:42:32', '2021-01-28 14:42:32'),
+(208, 109, 95, 1, 0, '2021-01-28 14:44:18', '2021-01-28 14:44:18'),
+(209, 109, 96, 1, 0, '2021-01-28 14:44:37', '2021-01-28 14:44:37'),
+(210, 109, 97, 1, 0, '2021-01-28 14:46:34', '2021-01-28 14:46:34'),
+(211, 109, 98, 1, 0, '2021-01-28 14:49:24', '2021-01-28 14:49:24'),
+(212, 109, 99, 1, 0, '2021-01-28 14:52:42', '2021-01-28 14:52:42'),
+(213, 109, 100, 1, 0, '2021-01-28 14:55:07', '2021-01-28 14:55:07'),
+(214, 109, 89, 0, 0, '2021-01-28 14:59:14', '2021-01-28 14:59:14'),
+(215, 109, 90, 0, 0, '2021-01-28 15:07:18', '2021-01-28 15:07:18'),
+(216, 109, 91, 0, 0, '2021-01-28 15:08:46', '2021-01-28 15:08:46'),
+(217, 109, 92, 0, 0, '2021-01-28 15:11:43', '2021-01-28 15:11:43'),
+(218, 109, 93, 0, 0, '2021-01-28 15:43:51', '2021-01-28 15:43:51'),
+(219, 109, 94, 0, 0, '2021-01-28 15:45:28', '2021-01-28 15:45:28'),
+(220, 109, 101, 1, 0, '2021-01-28 15:52:06', '2021-01-28 15:52:06'),
+(221, 109, 102, 1, 0, '2021-01-29 22:41:20', '2021-01-29 22:41:20');
 
 --
 -- Triggers `li_posts`
@@ -457,7 +505,12 @@ INSERT INTO `li_tasks` (`tsk_id`, `tsk_type`, `tsk_title`, `tsk_instruction`, `t
 (68, 0, 'aaaaaaaaaaaa', 'ddddd', '2021-01-27 23:59:00', 0, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"true\",\"ishowresult\":\"true\"}', 0, '2021-01-27 16:54:51'),
 (69, 1, 'Test assignment 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. ', '2021-01-30 23:59:00', 1, 0, '{\"isaddtogradebook\":\"true\"}', 0, '2021-01-27 17:14:38'),
 (81, 0, 'Test Quiz Aphro', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. Duis pharetra luctus lacus ut \nvestibulum. Maecenas ipsum lacus, lacinia quis posuere ut, pulvinar vitae dolor.\nInteger eu nibh at nisi ullamcorper sagittis id vel leo. Integer feugiat \nfaucibus libero, at maximus nisl suscipit posuere. Morbi nec enim nunc. \nPhasellus bibendum turpis ut ipsum egestas, sed sollicitudin elit convallis. \nCras pharetra mi tristique sapien vestibulum lobortis. Nam eget bibendum metus, \nnon dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.', '2021-01-29 23:59:00', 1, 1, '{\"israndomize\":\"true\",\"isaddtogradebook\":\"false\",\"ishowresult\":\"false\"}', 0, '2021-01-27 21:21:14'),
-(83, 1, 'Test assignment 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. ', '2021-01-30 23:59:00', 1, 0, '{\"isaddtogradebook\":\"true\"}', 0, '2021-01-28 04:00:16');
+(83, 1, 'Test assignment 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, \npulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. \nDonec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, \nin pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent\nper conubia nostra, per inceptos himenaeos. ', '2021-01-30 23:59:00', 1, 0, '{\"isaddtogradebook\":\"true\"}', 0, '2021-01-28 04:00:16'),
+(97, 1, 'asdad', 'asdsadas', '2021-01-28 23:59:00', 1, 1, '{\"isaddtogradebook\":true}', 0, '2021-01-28 14:46:34'),
+(98, 1, 'asdad', 'aaa', '2021-01-28 23:59:00', 1, 1, '{\"isaddtogradebook\":true}', 0, '2021-01-28 14:49:24'),
+(99, 1, 'saass', 'asadsad', '2021-01-28 23:59:00', 1, 1, '{\"isaddtogradebook\":true}', 0, '2021-01-28 14:52:42'),
+(100, 1, 'asdad', 'asdsdsa', '2021-01-28 23:59:00', 1, 1, '{\"isaddtogradebook\":true}', 0, '2021-01-28 14:55:07'),
+(102, 1, 'test assignment 1111', 'Lorem Ipsum Dolor', '2021-01-30 23:59:00', 1, 1, '{\"isaddtogradebook\":true}', 0, '2021-01-29 22:41:20');
 
 -- --------------------------------------------------------
 
@@ -498,7 +551,15 @@ INSERT INTO `li_task_class_assignees` (`ta_id`, `task_id`, `class_id`) VALUES
 (76, 68, 37),
 (77, 69, 36),
 (82, 81, 36),
-(85, 69, 35);
+(85, 69, 35),
+(111, 97, 35),
+(112, 98, 35),
+(113, 99, 35),
+(114, 100, 35),
+(115, 100, 37),
+(117, 102, 35),
+(118, 102, 36),
+(119, 102, 37);
 
 -- --------------------------------------------------------
 
@@ -521,7 +582,8 @@ CREATE TABLE `li_task_submissions` (
 
 INSERT INTO `li_task_submissions` (`ts_id`, `task_id`, `student_id`, `status`, `teacher_remarks`, `datetime_submitted`) VALUES
 (152, 61, 146, 0, '', '2021-01-27 14:09:06'),
-(153, 69, 146, 0, '', '2021-01-27 22:42:17');
+(153, 69, 146, 0, '', '2021-01-27 22:42:17'),
+(170, 102, 146, 0, '', '2021-01-29 22:51:56');
 
 -- --------------------------------------------------------
 
@@ -533,7 +595,7 @@ CREATE TABLE `li_task_submission_ass` (
   `tsa_id` int(11) NOT NULL,
   `ts_id` int(11) NOT NULL COMMENT 'Foreign key from task_submissions table',
   `submission_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Contains the attachments/texts in the submission.\r\n\r\nIn JSON format' CHECK (json_valid(`submission_content`)),
-  `tsa_status` int(11) NOT NULL DEFAULT 1 COMMENT 'Contains the status for the assignment.\r\n\r\n1 = Turned In\r\n2 = Not Turned In\r\n3 = Graded',
+  `tsa_status` int(11) NOT NULL DEFAULT 1 COMMENT 'Contains the status for the assignment.\r\n\r\n1 = Turned In\r\n2 = Not Turned In\r\n3 = Graded\r\n4 = Not graded\r\n5 = for revision',
   `ass_grade` int(11) NOT NULL DEFAULT 0 COMMENT 'Contains the grade of the assignment'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -542,7 +604,21 @@ CREATE TABLE `li_task_submission_ass` (
 --
 
 INSERT INTO `li_task_submission_ass` (`tsa_id`, `ts_id`, `submission_content`, `tsa_status`, `ass_grade`) VALUES
-(9, 153, '{\"text\":\"Testing assignment Text\"}', 1, 0);
+(9, 153, '{\"text\":\"Testing assignment Text\"}', 1, 0),
+(26, 170, '{\"text\":\"test assignment submission text\",\"attchments\":\"[{\\\"type\\\":\\\"docx\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_Example test doc.docx\\\",\\\"name\\\":\\\"Example test doc.docx\\\",\\\"size\\\":11358},{\\\"type\\\":\\\"jpg\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_126398257_3699384516751881_721092242049154942_n.jpg\\\",\\\"name\\\":\\\"126398257_3699384516751881_721092242049154942_n.jpg\\\",\\\"size\\\":179746},{\\\"type\\\":\\\"jpg\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_126293642_178294397259031_3759268838569577738_n.jpg\\\",\\\"name\\\":\\\"126293642_178294397259031_3759268838569577738_n.jpg\\\",\\\"size\\\":138356},{\\\"type\\\":\\\"jpg\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_128850907_418339552536117_5385329975011866688_n.jpg\\\",\\\"name\\\":\\\"128850907_418339552536117_5385329975011866688_n.jpg\\\",\\\"size\\\":158535},{\\\"type\\\":\\\"jpg\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_128189936_729548830984070_3991978883479027145_n.jpg\\\",\\\"name\\\":\\\"128189936_729548830984070_3991978883479027145_n.jpg\\\",\\\"size\\\":61961},{\\\"type\\\":\\\"pdf\\\",\\\"path\\\":\\\"2021\\\\\\\\01\\\\\\\\0_Arana_Certificate_Independent_Contractor.pdf\\\",\\\"name\\\":\\\"Arana_Certificate_Independent_Contractor.pdf\\\",\\\"size\\\":303192}]\"}', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `li_task_submission_ass_remarks`
+--
+
+CREATE TABLE `li_task_submission_ass_remarks` (
+  `tsar_id` int(11) NOT NULL,
+  `tsa_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -847,6 +923,12 @@ ALTER TABLE `li_task_submission_ass`
   ADD KEY `ts_id` (`ts_id`);
 
 --
+-- Indexes for table `li_task_submission_ass_remarks`
+--
+ALTER TABLE `li_task_submission_ass_remarks`
+  ADD PRIMARY KEY (`tsar_id`);
+
+--
 -- Indexes for table `li_task_submission_quiz`
 --
 ALTER TABLE `li_task_submission_quiz`
@@ -887,7 +969,7 @@ ALTER TABLE `li_verification_codes`
 -- AUTO_INCREMENT for table `li_assignments`
 --
 ALTER TABLE `li_assignments`
-  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `li_chat_group`
@@ -935,13 +1017,13 @@ ALTER TABLE `li_class_students`
 -- AUTO_INCREMENT for table `li_normal_posts`
 --
 ALTER TABLE `li_normal_posts`
-  MODIFY `np_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `np_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `li_posts`
 --
 ALTER TABLE `li_posts`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key', AUTO_INCREMENT=191;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key', AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT for table `li_post_comments`
@@ -983,25 +1065,31 @@ ALTER TABLE `li_settings_yr_lvl`
 -- AUTO_INCREMENT for table `li_tasks`
 --
 ALTER TABLE `li_tasks`
-  MODIFY `tsk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `tsk_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `li_task_class_assignees`
 --
 ALTER TABLE `li_task_class_assignees`
-  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `ta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT for table `li_task_submissions`
 --
 ALTER TABLE `li_task_submissions`
-  MODIFY `ts_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `ts_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT for table `li_task_submission_ass`
 --
 ALTER TABLE `li_task_submission_ass`
-  MODIFY `tsa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `tsa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `li_task_submission_ass_remarks`
+--
+ALTER TABLE `li_task_submission_ass_remarks`
+  MODIFY `tsar_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `li_task_submission_quiz`
