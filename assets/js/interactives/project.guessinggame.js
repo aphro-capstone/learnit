@@ -12,6 +12,7 @@
         this.correct = 0,
         this.guess = $(".guess"),
         this.wrong = $(".wrong"),
+        this.right = $(".right"),
         this.wrongGuesses = [],
         this.rightGuesses = [],
         this.guessForm = $(".guessForm"),
@@ -22,6 +23,8 @@
         this.loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3"),
         this.setup();
       },
+    
+
   
   
       setup: function(){
@@ -29,8 +32,8 @@
         this.sounds();
         this.showGuess(this.wrongGuesses);
         this.showWrong();
-  
-      },
+
+      }, 
   
       
       sounds: function(){  
@@ -69,7 +72,7 @@
       },
   
   
-      theGuess: function(e){
+     theGuess: function(e){
         e.preventDefault();
         var guess = this.guessLetterInput.val();
         if(guess.match(/[a-zA-Z]/) && guess.length == 1){
@@ -81,6 +84,7 @@
             var foundLetters = this.checkGuess(guess);
             if(foundLetters.length > 0){
               this.setLetters(foundLetters);
+              this.showRight(this.rightGuesses);
               this.playSound("goodSound");
               this.guessLetterInput.val("").focus();
             } else {
@@ -97,7 +101,8 @@
         } else {
           this.guessLetterInput.val("").focus();
         }
-      },
+      }, 
+      
   
       randomWord: function(){
         return this._wordData(this.words[ Math.floor(Math.random() * this.words.length)] );
@@ -114,12 +119,12 @@
       },
   
   
-      showWrong: function(wrongGuesses){
+     showWrong: function(wrongGuesses){
         if(wrongGuesses){
           var frag = "<ul class='wrongLetters'>";
-          frag += "<p>Wrong Letters: </p>";
+          frag += "<p><h2>Wrong Letters: </h></p>";
           $.each(wrongGuesses, function(key, val){
-            frag += "<li>" + val + "</li>";
+           frag += "<li>" + val + "</li>";
           });
           frag += "</ul>";
         }
@@ -128,8 +133,25 @@
         }
   
         this.wrong.html(frag);
+      }, 
+
+     showRight: function(rightGuesses){
+        if(rightGuesses){
+          var frag = "<ul class='rightLetters'>";
+          frag += "<p><h2>Right Letters: </h></p>";
+          $.each(rightGuesses, function(key, val){
+           frag += "<li>" + val + "</li>";
+          });
+          frag += "</ul>";
+        }
+        else {
+          frag = "";
+        }
+  
+        this.right.html(frag);
       },
   
+
   
       checkGuess: function(guessedLetter){
         var _ = this;
@@ -225,14 +247,13 @@
   
       win: function(){
         var rating = this.rating();
-        this.msgTitle.html("Awesome, You Won!");
+        this.msgTitle.html("Awesome, You Won! You find the word CHROME");
         // this is messy
-        this.msgText.html("You solved the word in <span class='highlight'>" + rating.guesses + "</span> Guesses!<br>Score: <span class='highlight'>" + rating.rating + "%</span>");
+        this.msgText.html("You solved the word in <span class='highlight'>" + rating.guesses + "</span> Guesses!<br>Score: <span class='highlight'>" + rating.rating + "</span>");
         this.showMsg();
         this.playSound("winSound");
   
       },
-  
   
       lose: function(){
         this.msgTitle.html("You Lost.. The word was <span class='highlight'>"+ this.wrd.word +"</span>");
@@ -240,6 +261,22 @@
         this.showMsg();
         this.playSound("loseSound");
       }
+/*
+       win: function(){
+        var rating = this.rating();
+        this.msgTitle.html("Awesome, You Won! You find the word CHROME");
+        // this is messy
+        this.msgText.html("<h4>You solved the word in" +" "+ rating.guesses +" "+" Guesses!<br>Score: " + rating.rating + "% </h>");
+        this.showMsg();
+        this.playSound("winSound");
+  
+      },
+
+       lose: function(){
+        this.msgTitle.html("You Lost.. The word was 6 letters only ! <br> Don't worry, you'll get it next time!");
+        this.showMsg();
+        this.playSound("loseSound");
+      }*/
     
     };
   
