@@ -79,7 +79,11 @@
                             </li> 
                         </ul>
                     </div>
-                    <span class="d-block mt-3 mb-3"> <strong>Average Grade Score : 64% </strong>  </span>
+                    <?php
+                        $averageScorePercentage = 0; 
+                    
+                    ?>
+                    <span class="d-block mt-3 mb-3"> <strong>Average Grade Score : <?= $averageScorePercentage ?>%</strong>  </span>
                 </div>
             </div>
             <div class="mt-4">

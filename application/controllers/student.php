@@ -285,8 +285,9 @@ class Student extends MY_Controller {
 
 	public function assignment($assID = null){ 
 		if($assID){
-			$var['projectCss'] = array( 
-											'project.library' );
+			$var['projectCss'] = array( 'project.library',
+											'../../plugins/dropzone-5.7.0/dist/min/dropzone.min',
+										);
 			$var['projectScripts'] = array(
 											'../plugins/dropzone-5.7.0/dist/min/dropzone.min',
 											'project.dragdrop',
@@ -469,7 +470,7 @@ class Student extends MY_Controller {
 		$this->_addComment();
 	}
 
-	public function downloadfile($id,$type__,$type2){
+	public function downloadfile($id,$type__ = null,$type2 = null){
 		// $id = $this->input->post('id');
 		// $type__ = $this->input->post('type__');
 		// $type2 = $this->input->post('type2');
@@ -496,7 +497,24 @@ class Student extends MY_Controller {
 			}
 			
 			$this->doDownload($selectedfile);
-		} 
+		}else if( $type__ == 'ass_attach'){
+			$args = array(
+				'from'	=> 'assignments',
+				'where'	=> array( array( 'field' => 'ass_id', 'value' =>  $id ) )
+			);
+
+			$file = $this->prepare_query( $args )->result_array();
+			$file = json_decode($file[0]['ass_attachments'],true); 
+			
+			$file = $file['a'];
+			
+			$selectedfile  = array();
+			foreach( $file as $f ){
+				if($f['name'] == $filename){ $selectedfile = $f; }
+			}
+
+			$this->doDownload($selectedfile);
+		}
 
 
 	
@@ -588,23 +606,25 @@ class Student extends MY_Controller {
 	}
 
 	public function submitAssignment(){
-		$id =  $this->input->post('assid');
-		$tskid =  $this->input->post('tskid');
-		$txt = $this->input->post('text');
-		$attchments = $this->input->post( 'attachments' );
+		$data = $this->input->post('data');
+		$data = json_decode($data,true);
+		$id =  $data['assid'];  
+		$tskid = $data['tskid']; 
+		$txt = $data['text'];
+		$attchments = $data['attachments'];
 		// TasksubmissionTable 
 		$A = array(
 			'task_id' 			=> $tskid,								
 			'student_id' 		=> getUserID(),								
-		);
-
+		); 
+		
 		$tsID = $this->ProjectModel->insert_CI_Query( $A, 'task_submissions',true );
 
 
 		$SC = array();
 		
 		if( $txt ) $SC['text'] = $txt;
-		if( $attchments ) $SC['attchments'] = $attchments;
+		$SC['attchments'] = $this->getAttachmentsJSON();
 		
 		$A = array(
 			'ts_id' 				=> $tsID,								
@@ -612,11 +632,11 @@ class Student extends MY_Controller {
 		);
 
 		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_ass',true ) ){
-			echo 1;
+			echo json_encode(array( 'Error' => null, 'msg' => 'Successfuly submitted assignment' ));
 			die();
 		}
 
-		echo 0;
+		echo json_encode(array( 'Error' => 'Failed to submit assignment', 'msg' => null ));
 		die();
 	}
 

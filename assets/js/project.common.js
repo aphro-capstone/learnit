@@ -70,6 +70,7 @@ jQuery( ($) => {
 
 
 	$('[checkplaceholder]').placeholdercontent();
+	
 	$('.attachfilebutton').on('click',(e) => { 
 		fileinputcontainer = $(e.currentTarget).closest('.file-input-container-wrapper').find('.file-input-container');
 		$('#attachFile').trigger('click');
@@ -200,26 +201,7 @@ jQuery( ($) => {
     $('[data-toggle="side-popup"]').on('click',function(){
     	$(this).closest('.side-popup-container').toggleClass('show')
     });
-	
-
-	$('.enlargeable-image').on('click',function(){
-		let image = $(this).attr('src');
-		let thisWidth = $(this).width();
-		let thisHeight = $(this).height();
-
-
-
-
-		let screenwidth = $(window).width();
-		let screenheight = $(window).height();
-		console.log(screenwidth,screenheight);
-
-		$('#imageenlargeModal img').attr('src',image);
-		$('#imageenlargeModal').modal('show');
-	});
-
-
-
+	 
 	$('.downloadable').on('click',function(e){
 		doDownload( $(this) );
 	});
@@ -231,42 +213,21 @@ jQuery( ($) => {
 
 
 var doDownload = (this_) => {
-	let type1__ = 'post';
-
-	let id = this_.closest('.post-panel').attr('data-post-id');
-	let type2 = this_.closest('.post-panel').attr('data-id-2');
+	let type1__ = this_.attr('data-type'); 
 	let filename =  this_.attr('data-name') ;
-
-	// const a = document.createElement('a');
-	let link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + type2+ '?filename=' + filename;
-		// link = encodeURI(link);
-
-	window.open(link ,'Download');
-
-	// $.ajax({
-	// 	url: SITE_URL + USER_ROLE + '/downloadfile', 
-	// 		type: 'post',
-	// 		data: { id : id,type__ : type1__, filename : filename,type2 : type2 },
-	// 		success: function(Response) {
-	// 			console.log(Response.blob());
-
-	// 			const url = window.URL.createObjectURL(blob);
-	// 			const a = document.createElement('a');
-	// 			a.style.display = 'none';
-	// 			a.href = url;
-	// 			// the filename you want
-	// 			a.download = 'todo-1.json';
-	// 			document.body.appendChild(a);
-	// 			a.click();
-	// 			window.URL.revokeObjectURL(url);
-	// 			alert('your file has downloaded!');
-				
-	// 		},error:function(e){
-	// 			console.log(e.responseText);
-	// 			alert('error found.  see console');
-	// 		}
-	// 	});
-		
+	var link;
+	if( type1__ == 'post' ){
+		var id = this_.closest('.post-panel').attr('data-post-id');
+		var type2 = this_.closest('.post-panel').attr('data-id-2');
+		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + type2+ '?filename=' +  encodeURIComponent(filename);
+	}else{
+		var id = this_.attr('data-id');
+		var type2 = this_.attr('data-id-2');
+		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + '?filename=' +  encodeURIComponent(filename);
+	
+	} 
+	console.log(link);
+	window.open(link ,'Download'); 
 }
 
 
@@ -590,10 +551,25 @@ var scanQRCODE = () => {
 
 
 
-var checkFile = (input,style = 0) => {
+var checkFile = (input,style = 0,isdragdrop = false) => {
 	tempAttachments = input.files; 
 	let skippedFiles = [];
-	let maxSize = 25;
+	let maxSize = 25; 
+
+	const removeAttachment = (identifier) =>{
+		attachmentlist.splice( attachmentlist.findIndex( a => {
+					return a.key == identifier;
+				}),1);
+
+		if(isdragdrop){
+			if( attachmentlist.length > 0 ){
+				$('#drop-item-box .dz-message.placeholder').hide();
+			}else{
+				$('#drop-item-box .dz-message.placeholder').show();
+			}
+		}
+	};
+ 
 	$.each( input.files, (a,b) => { 
 
 		var filesize = ((b.size/1024)/1024).toFixed(2); // MB
@@ -601,29 +577,51 @@ var checkFile = (input,style = 0) => {
 			skippedFiles.push({name: b.name, size : filesize});
 			return true;
 		}
-
-		attachmentlist.push(b);
+		let i = attachmentlist.length; 
 		let filetype = b.name.split('.');	
 			filetype = filetype[ filetype.length  -  1 ];  
 
 		let filename =  b.name.split('.');
 			filename.pop();
 			filename = filename.join(); 
+		
+		let identifier = create_UUID();
+		
+		attachmentlist.push({key : identifier, f : b});
 
 		if( b.type.indexOf('image') > -1 ){
 			convertImagetoBase64(b, (image) => {
-				let aa = $('<div class="attachment-image-big"><image src="'+ image +'"></div>');
-				let r = $('<div class="remove">x</div>');
+				if( isdragdrop ){
+					let aa = $('<div class="drag-drop-item dragdrop-img">\
+								<div class="img-container"><image src="'+ image +'"></div>\
+								<p class="dragdrop-file-name">'+ b.name +'</p>\
+								</div>');
+
+
+					let r = $('<div class="remove"><span class="m-auto">x</span></div>');
 					r.on('click',function(){
 						setTimeout(function(){
 							aa.remove();
+							removeAttachment( identifier );
 						},100);
 					});
 					aa.append(r);
-				fileinputcontainer.find('.images').append(aa);
+					$('#drop-item-box').append(aa);	
+				}else{
+					let aa = $('<div class="attachment-image-big"><div class="img-container"><image src="'+ image +'"></div></div>');
+					let r = $('<div class="remove"><span class="m-auto">x</span></div>');
+						r.on('click',function(){
+							setTimeout(function(){
+								aa.remove();
+								removeAttachment( identifier );
+							},100);
+						});
+						aa.append(r);
+					fileinputcontainer.find('.images').append(aa);
+				}
+				
 			});
 		}else if (b.type.indexOf('video') > -1){
-
 			let aa = $('<div class="attachment-video">\
 							<video width="400" controls>\
 								<source src="mov_bbb.mp4" id="video_here">\
@@ -635,6 +633,7 @@ var checkFile = (input,style = 0) => {
 				r.on('click',function(){
 					setTimeout(function(){
 						aa.remove();
+						removeAttachment( identifier );
 					},100);
 				});
 				aa.append(r);
@@ -645,8 +644,30 @@ var checkFile = (input,style = 0) => {
 
 			
 		}else{
-			let aa  = new Attachment(filename, '', filetype, '');
-			fileinputcontainer.find('.files').append( aa.createAttachmentFrontend() );
+			if( isdragdrop ){
+				let aa = $('<div class="drag-drop-item drag-drop-file">\
+								<div class="icon-file"> <i class="fa fa-file"></i></div>\
+								<p class="dragdrop-file-name">'+ b.name +'</p>\
+							</div>');
+				let r = $('<div class="remove"><span class="m-auto">x</span></div>');
+				r.on('click',function(){
+					setTimeout(function(){
+						aa.remove();
+						removeAttachment( identifier );
+					},100);
+				});
+
+				aa.append(r);
+
+				$('#drop-item-box').append(aa);	
+
+			}else{
+				let aa  = new Attachment(filename, filesize+' mb', filetype, '', () => {
+					removeAttachment( identifier );
+				});
+				fileinputcontainer.find('.files').append( aa.createAttachmentFrontend() );
+			}
+			
 		}
 	});
 
@@ -656,6 +677,7 @@ var checkFile = (input,style = 0) => {
 		});
 	}
 };
+
 
 
 var convertImagetoBase64 = (file,callback) => {
@@ -705,8 +727,15 @@ var getTaskDataObject = function(form){
 	return dataSend;
 }
 
+ 
 
-function removePost(){
 
-}
-
+function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+} 

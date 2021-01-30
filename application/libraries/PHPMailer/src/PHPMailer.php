@@ -823,8 +823,7 @@ class PHPMailer
         if (null !== $exceptions) {
             $this->exceptions = (bool) $exceptions;
         }
-
-        var_dump('mjoemarie');
+ 
         //Pick an appropriate debug output format automatically
         $this->Debugoutput = (strpos(PHP_SAPI, 'cli') !== false ? 'echo' : 'html');
     }

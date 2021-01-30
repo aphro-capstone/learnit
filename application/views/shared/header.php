@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/plugins/jquery-confirm/jquery-confirm.min.css">
 	<!-- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url();?>/assets/plugins/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="<?= base_url();?>/assets/plugins/lightbox/css/lightbox.css">
 
 
 	<!--  Condition if allow calendar -->

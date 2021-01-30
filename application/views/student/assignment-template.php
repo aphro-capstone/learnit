@@ -8,7 +8,6 @@
 	$taskRemark = $dueDate < $currentDate ? 'late' : 'aa';
 
 	$teacherView = isset( $teacherView ) ? $teacherView : 'false';
- 
 ?>
 
 <script>
@@ -22,10 +21,10 @@
 	<div class="d-table"> 
 		<h3 class="page-title">   
 			<?php if( $teacherView == 'true' ): ?>
-				<a href="<?= getSiteLink('classes/assignment/assignment:' . $AD['task_id	']);?>"> <i class="fa fa-arrow-left"></i> </a> 
+				<a href="<?= getSiteLink('classes/assignment/assignment:' . $AD['task_id']);?>"> <i class="fa fa-arrow-left"></i> </a> 
 			<?php endif; ?>
 			Assignment Details</h3>
-
+				
 		<div class="pull-right">
 			<?php $this->load->view('shared/breadcrumbs', isset($bcrumbs) ? array( 'bcrumbs' => $bcrumbs ) : array() );  ?>
 		</div>	
@@ -58,7 +57,9 @@
 								<img src="<?=base_url() . 'assets/images/avatars/user.png'; ?>">
 							</div>
 							<div class="">
-								<span class="d-block"> <?= $teacherView == 'true' ? $AD['teachername'] : '';?> </span>
+								<?php if( $teacherView == 'true' ): ?>
+									<span class="d-block"> <?= $AD['teachername'];?> </span>
+								<?php endif; ?>
 								<span class="d-block"> <a href="<?=getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span>
 							</div>
 						</div>
@@ -67,6 +68,12 @@
 						<p class="instruction-content mt-2">
 							<?= $AD['tsk_instruction'];?>
 						</p>
+						<hr> 
+						<span class="d-block font-bold">  Attachment : </span>
+						<div class="files">
+							
+							<?php $this->load->view('shared/attachment-template',array('attachments' =>   json_decode( $AD['ass_attachments'],true ),'type' => 'ass_attach', 'dataID' => $AD['ass_id']  ) ); ?>
+						</div>
 					</div>
 				</div>	
 			</div>
@@ -75,21 +82,42 @@
 
 		<div class="col-sm-12 col-md-8 col-lg-8">
 			<div class="panel">
-				<div class="panel-header border-bottom"> <strong> <?= $AD['tsk_title'];?>	</strong></div>
+				<h4 class="panel-header border-bottom"> <strong> Title : <?= $AD['tsk_title'];?>	</strong></h4>
 				<div class="panel-content">
-					<textarea class="add-text"> Add Text </textarea>
-					<div class='drop-item-box' id="drop-item-box">
-						<div class="dz-message placeholder" data-dz-message>
-							<span class="jumbo-text font-bold faded"> No submitted item. </span>
-							<span class="d-block"> Drop your files/attachments in here or  </span>
+						
+					<?php if( $AD['submissions']  ||  (isset($allowRevision) && $allowRevision)):  ?>
+						<ul class="tabs nav nav-tabs ">
+							<?php  for( $x = 0; $x < count($AD['submissions']); $x++ ):
+								$submission = $AD['submissions'][$x];
+								$date = date_format(new Datetime( $submission['datetime_submitted'] ), 'F d, Y');
+							?>
+								<li> <a href="#submission_<?=$x;?>" data-toggle="tab" class=""> <?php echo $date ?> </a>  </li>
+							<?php endfor; ?>		
+						</ul>
+						<div class="tab-content">
+							<?php  for( $x = 0; $x < count($AD['submissions']); $x++ ):
+								$this->load->view('student/task/assignment/submission', array('submission' => $AD['submissions'][$x] , 'index' => $x,'lastInd' => count($AD['submissions']) - 1 ));
+							?>
+							 
+							<?php endfor; ?>
 						</div>
+							
+						
+					<?php else: ?>
+						<textarea class="add-text"> Add Text </textarea>
+						<div class='drop-item-box custom_drag-drop' id="drop-item-box">
+							<div class="dz-message placeholder" data-dz-message>
+								<span class="jumbo-text font-bold faded"> No submitted item. </span>
+								<span class="d-block"> Drop your files/attachments in here or  </span>
+							</div>
 
-					</div>
-					<div class="d-table full-with mt-4">
-						<button class="btn btn-outline-secondary hoverable-btn mr-2 add-text-btn"> <i class="fa fa-file-text-o"></i> <span>Add text</span> </button>
-						<button class="btn btn-outline-secondary hoverable-btn" data-toggle="modal" data-target="#addLibrary"> <i class="fa fa-book"></i> <span>Add file from backpack</span> </button>
-						<button class="btn btn-primary pull-right submitAssignment"> <i class="fa fa-sent"></i> Submit Assignment </button>
-					</div>
+						</div>
+						<div class="d-table full-with mt-4">
+							<button class="btn btn-outline-secondary hoverable-btn mr-2 add-text-btn"> <i class="fa fa-file-text-o"></i> <span>Add text</span> </button>
+							<button class="btn btn-outline-secondary hoverable-btn" data-toggle="modal" data-target="#addLibrary"> <i class="fa fa-book"></i> <span>Add file from backpack</span> </button>
+							<button class="btn btn-primary pull-right submitAssignment"> <i class="fa fa-sent"></i> Submit Assignment </button>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

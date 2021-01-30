@@ -87,7 +87,7 @@
 							<div class="dropdown pull-right">
 								<button class="btn btn-primary changeable-color" data-toggle="dropdown" > <i class="fa fa-plus"></i> </button>
 								<ul class="dropdown-menu start-from-right">
-									<li > <a href="#assignmentModal" data-toggle="modal"> Create Assignment </a>  </li>
+									<li > <a class="attachment-select-frst-trigger" href="#assignmentModal" data-toggle="modal"> Create Assignment </a>  </li>
 									<li > <a href="#loadAssignment" data-toggle="modal"> Load Existing Assignment </a>   </li>
 									<li > <a href="<?=site_url();?>teacher/classes/quiz/createquiz"> Create Quiz </a>   </li>
 									<li > <a href="#"> Load Existing Quiz </a>  </li>

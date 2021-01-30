@@ -21,14 +21,14 @@
             $img = file_get_contents(getcwd(). '/assets/uploads/' . $a['path']  );
             $imgbase64 = 'data:image/' . $a['type'] . ';base64,' . base64_encode($img); 
     ?>
-            <div class="image img-container"> <img class="enlargeable-image" src="<?=$imgbase64;?>" alt=""> </div>
+            <div class="image img-container"> <a href="<?= $imgbase64;?>" data-lightbox="example-1"> <img class="enlargeable-image" src="<?=$imgbase64;?>" alt=""> </a> </div>
         <?php endforeach;
     ?>
 </div>
 
 <div class="file-attachments">
     <?php foreach( $files as $a ):  ?>
-            <div class="attachment-item downloadable" data-name="<?=$a['name'];?>">
+            <div class="attachment-item downloadable" data-name="<?=$a['name'];?>" data-type="<?php echo isset($type) ? $type : 'post'; ?>"  data-id="<?php echo isset($dataID) ? $dataID : '';?>">
                 <div class="file-type-image pull-left mr-2">
                     <div class="attachment-image image-<?= $a['type'];?>"></div>
                 </div>

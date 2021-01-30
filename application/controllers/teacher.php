@@ -692,13 +692,19 @@ class Teacher extends MY_Controller {
  
 
 	public function creatTask( $type ){
-		$title = $this->input->post('tasktitle');
-		$instruction = $this->input->post('instruction');
-		$otheroptions = $this->input->post('otheroptions');
-		$assignIDs = $this->input->post('assignIDs');
-		$due = $this->input->post('due');
-		$tid = $this->input->post('tid');
-		
+
+		$data = $this->input->post('data');
+		$data = json_decode( $data,true );
+ 
+		$title = $data['tasktitle'];
+		$instruction = $data['instruction'];
+		$otheroptions = $data['otheroptions'];
+		$assignIDs = $data['assignIDs'];
+		$due = $data['due'];
+		$tid = $this->input->post('tid'); 
+
+
+
 		$taskAdd = array(
 					'tsk_type'			=>  $type,   // 0 = quiz, 1 = assignment
 					'tsk_title'			=>	$title,
@@ -709,6 +715,7 @@ class Teacher extends MY_Controller {
 					'tsk_options'		=>  json_encode($otheroptions)
 		); 
 
+		
 		if( isset( $tid ) && !is_null( $tid ) ){
 			$whereArray = array( 'tsk_id' => $tid); 
 			$this->ProjectModel->update($whereArray,'tasks',$taskAdd);
@@ -765,18 +772,18 @@ class Teacher extends MY_Controller {
 		
 
 		if( $type == 0 ){
-			$this->createQuiz($taskID,$postID);
+			$this->createQuiz($taskID,$postID,$data);
 		}else{
-			$this->createAssignment($taskID,$postID);
+			$this->createAssignment($taskID,$postID,$data);
 		}
 
 
 	}
-	private function createQuiz($taskID,$postID){
+	private function createQuiz($taskID,$postID,$data){
 		 
-		$duration = $this->input->post('duration');
-		$questions = $this->input->post('questions'); 
-		$total_points = $this->input->post( 'totalpoints' );
+		$duration = $data['duration'];
+		$questions = $data['questions'];
+		$total_points = $data['totalpoints'];
 		$qid = $this->input->post('qid');
 
 
@@ -799,11 +806,11 @@ class Teacher extends MY_Controller {
 		}
 	}
 
-	private function createAssignment($taskID,$postID){
+	private function createAssignment($taskID,$postID,$data){
 		$aid = $this->input->post('aid');
 		$assAdd = array(
 			'task_id'			=> $taskID,
-			'ass_attachments'	=> json_encode( array() )
+			'ass_attachments'	=> $this->getAttachmentsJSON()
 		);
 
 		if(  isset($aid) && !is_null($aid) ){
@@ -830,6 +837,7 @@ class Teacher extends MY_Controller {
 		);
 		$classList = $this->prepare_query( $classListArgs )->result_array();
 
+	
 		foreach($classList as $class):
 			
 			$studentsEmailsLists = array();
@@ -863,15 +871,10 @@ class Teacher extends MY_Controller {
 								'guardian_name'	=> $stud_data['ui_guardian_name']
 							);
 
-				$this->sendEmail($data, $content );
-			endforeach;
-	 
+				// $this->sendEmail($data, $content );
+			endforeach; 
 			
-			
-		endforeach;
-
-
-
+		endforeach; 
        
     }
 
@@ -983,4 +986,13 @@ class Teacher extends MY_Controller {
 		}
 	} 
 
+
+
+	public function asyncSendEmail(){
+		$data = $this->input->post('data');
+		$content = $this->input->post('content');
+		$this->sendEmail($data, $content );
+	}
+
+ 
 }

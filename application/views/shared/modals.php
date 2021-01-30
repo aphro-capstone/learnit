@@ -289,7 +289,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body file-input-container-wrapper">
           <div class="form-group">
           <input type="text" class="form-control" name="title" placeholder="Assignment Title">
           </div>
@@ -304,6 +304,12 @@
               <span class="clickable-content" data-toggle="tooltip" data-placement="bottom" data-original-title="Add from library" > <i class="fa fa-book"></i> </span>
             </div>
           </div>
+          <div class="file-input-container small-img-attachments">
+            <div class="images"></div>
+            <div class="files"></div>
+           
+          </div>
+         
           <hr>
           <div class="form-group"> 
             <label for="exampleInputEmail1">Assign to : </label>
@@ -373,7 +379,7 @@
         <div class="modal-footer" style="border-top: none;">
           
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary createAssignment" style="background: <?= !isset($TE) && !$TE ? $classinfo['color'] : ''; ?>"><?= isset($TE) && $TE ? 'Update Assignment' : 'Create Assignment'; ?> </button>
+          <button type="button" class="btn btn-primary createAssignment" style="background: <?= !isset($TE) ? $classinfo['color'] : ''; ?>"><?= isset($TE) ? 'Update Assignment' : 'Create Assignment'; ?> </button>
         </div>
       </div>
     </div>

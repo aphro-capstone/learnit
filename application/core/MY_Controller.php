@@ -539,9 +539,7 @@ class MY_Controller extends CI_Controller
 
 
 
-            $post = array_merge( $post ,$postinfo  );
-            var_dump( $post );
-
+            $post = array_merge( $post ,$postinfo  ); 
 
             return $post;
 
@@ -607,17 +605,21 @@ class MY_Controller extends CI_Controller
 
     protected function getAttachmentsJSON($returnArray = false,$postID = 0,$prefix = ''){
         $attachments_arr = array();
-        $filePath = '/assets/uploads/' . date('Y') . '/' . date('m') ;
-        $dbPath = date('Y') . '/' . date('m') . '/';
+        
+        
+        $filePath = 'assets\uploads\\' . date('Y') . '\\' . date('m') ;
+        $dbPath = date('Y') . '\\' . date('m') . '\\';
 
         clearstatcache();   
+
         //  ERROR HERE DEC 1,2020
         if (!file_exists($filePath)) {
 			mkdir($filePath, 0777, true);
 		}
-        
+         
+ 
         if( $_FILES['attachFile']['name'] == '' ){  return array(); }
-
+ 
         if( count( $_FILES['attachFile']['name'] ) == 0 ){ return array();  }
         $count = count($_FILES['attachFile']['name']);
 
@@ -626,7 +628,7 @@ class MY_Controller extends CI_Controller
 		for ($i = 0; $i < $count; $i++) { 
 			$fileName = $prefix .$postID .'_' . $_FILES['attachFile']['name'][$i]; 
             $tempFile = $_FILES['attachFile']['tmp_name'][$i];
-            $targetFile = getcwd() . $filePath .'/'. $fileName;
+            $targetFile = getcwd() .'\\'. $filePath .'\\'. $fileName;
 
             if( move_uploaded_file($tempFile, $targetFile) ){
                 $ext = explode('.',$fileName);
@@ -838,7 +840,6 @@ class MY_Controller extends CI_Controller
         } 
 
         if( isset($classID) ){
-            var_dump( $classID );
             $args['where'][] = array( 'field' => '(select count(ta_id) from li_task_class_assignees tca where tca.task_id = tsk.tsk_id and class_id = '. $classID .') > ', 'value'  => 0  );
         } 
 
@@ -946,5 +947,6 @@ class MY_Controller extends CI_Controller
    protected function createNotification(){
 
    }
+ 
 
 }

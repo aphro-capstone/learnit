@@ -1,8 +1,3 @@
-
-
-console.log(1);
-
-
 jQuery( function($){
 
 

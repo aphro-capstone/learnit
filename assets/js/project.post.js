@@ -113,11 +113,10 @@ var postItem = () => {
 
         if(typeof classID !== 'undefined')  fd.append('classid', classID);
        
-
 		for (var x = 0; x < attachmentlist.length; x++) {
-			fd.append("attachFile[]", attachmentlist[x]);
-		}
- 
+			fd.append("attachFile[]", attachmentlist[x].f);
+        }
+        
         $.ajax({
                 url: SITE_URL + USER_ROLE + '/addPost', 
                 type: 'post',

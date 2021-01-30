@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="<?= base_url();?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="<?= base_url();?>assets/plugins/moment.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/qrcode/instascan.min.js"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/lightbox/js/lightbox.js"></script>
 	<!-- PLUGINS END -->
 
 	<script type="text/javascript" src="<?= base_url()?>assets/js/project.modals.js"></script>
