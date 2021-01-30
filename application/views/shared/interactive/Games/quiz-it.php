@@ -1,3 +1,5 @@
+<div class="overlay"></div>
+
 <div class="hangman">
   <div class="guess"></div>
   <form class="guessForm">

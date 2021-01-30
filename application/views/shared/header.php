@@ -27,6 +27,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/project.css">
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/icons.css">
 	
+	
 
 
 	<?php if( isset($projectCss)  ): ?>
@@ -41,7 +42,7 @@
 		const BASE_URL = '<?=base_url();?>';
 		const USER_ROLE = '<?=getSessionData('sess_userRole');?>';
 	</script>
-		<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.0.min.js"></script>
+		<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.1.min.js"></script>
 </head>
 <body id="<?=$body_class;?>" class="<?= isset($body_classes) ? $body_classes : ''; ?>" >
 	<div class='overlay-loading loading'>
