@@ -70,6 +70,7 @@
 						<a href="<?=site_url();?>admin">  <i class="fa fa-home"></i>  Dashboard </a>
 					</li>
 					<li class="<?php echo $nav_active == 'datatable' ? 'active' : ''; ?>" > <a href="<?=site_url();?>admin/datatables">  <i class="fa fa-table"></i>  Datatables </a> </li>
+					<li class="<?php echo $nav_active == 'multimedia' ? 'active' : ''; ?>" > <a href="<?=site_url();?>admin/multimedia">  <i class="fa fa-gamepad"></i>  Multimedia </a> </li>
 					<li class="<?php echo $nav_active == 'settings-nav' ? 'active' : ''; ?>"> <a href="<?=site_url();?>admin/settings">  <i class="fa fa-cogs"></i>  Settings </a> </li>
 				</ul>				
 			</div>
