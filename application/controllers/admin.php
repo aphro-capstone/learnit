@@ -28,6 +28,16 @@ class Admin extends MY_Controller {
 		$this->load->template('admin/pages/datatables', $data_pass,false,'admin');
 	} 
 
+	public function multimedia(){
+		$data_pass = array(
+							'pagetitle' => 'Admin Multimedia',
+							'pagesub'	=> 'List of data\'s in table format',
+							'nav_active' => 'multimedia'
+						);
+
+		$this->load->template('admin/pages/multimedia', $data_pass, false,'admin');
+	}
+
 	public function settings(){
 
 		$args_for_grades 	=	array( 'from' => 'settings_yr_lvl' );
