@@ -12,9 +12,16 @@
 	$remark = 'active';
 
  
-	if( isset( $AD['submissions'] ) && count( $AD['submissions'] ) > 0 ){
-		$taskRemark = 'active';
+	if( isset( $AD['submissions'] ) ){
+		$taskRemark = 'submitted';
+
+		if( $AD['submissions']['ass_over'] != 0 ){
+			$taskRemark = 'graded';
+		}
 	}
+
+
+
 ?>
 
 <script>
@@ -23,11 +30,18 @@
 	const teacherview = <?= $teacherView;?>;
 </script>
 
+<?php if( isset($AD['submissions']) ): ?>
+	<script>
+		const TSAID = <?= $AD['submissions']['tsa_id'] ;?>;
+	</script>
+<?php endif; ?>
+
+
  
 <div class="container" id="assignment-template" >
 	<div class="d-table"> 
 		<h3 class="page-title">   
-			<?php if( $teacherView == 'true' ): ?> 
+			<?php if( $teacherView == 'true' || isset($submissionCheck) ): ?> 
 				<a href="<?= getSiteLink('classes/assignment/assignment:' . $AD['task_id']);?>"> <i class="fa fa-arrow-left"></i> </a> 
 			<?php endif; ?>
 			Assignment Details</h3>
@@ -47,6 +61,18 @@
 						<div class="ribbon top-right-ribbon ribbon1 ribbon-danger">
 							<div class="content">
 								<span> Late </span>
+							</div>
+						</div>
+					<?php elseif ( $taskRemark == 'submitted' ): ?>
+						<div class="ribbon top-right-ribbon ribbon1 ribbon-primary">
+							<div class="content">
+								<span> Submitted </span>
+							</div>
+						</div>
+					<?php elseif ( $taskRemark == 'graded' ): ?>
+						<div class="ribbon top-right-ribbon ribbon1 ribbon-primary ribbon-submitted">
+							<div class="content">
+								<span> Graded </span>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -92,24 +118,8 @@
 				<h4 class="panel-header border-bottom"> <strong> Title : <?= $AD['tsk_title'];?>	</strong></h4>
 				<div class="panel-content">
 						
-					<?php if( (isset($AD['submissions'])) && count( $AD['submissions']  ) != 0  ||  (isset($allowRevision) && $allowRevision)):  ?>
-						<ul class="tabs nav nav-tabs ">
-							<?php  for( $x = 0; $x < count($AD['submissions']); $x++ ):
-								$submission = $AD['submissions'][$x];
-								$date = date_format(new Datetime( $submission['datetime_submitted'] ), 'F d, Y');
-							?>
-								<li> <a href="#submission_<?=$x;?>" data-toggle="tab" class=""> <?php echo $date ?> </a>  </li>
-							<?php endfor; ?>		
-						</ul>
-						<div class="tab-content">
-							<?php  for( $x = 0; $x < count($AD['submissions']); $x++ ):
-								$this->load->view('student/task/assignment/submission', array('submission' => $AD['submissions'][$x] , 'index' => $x,'lastInd' => count($AD['submissions']) - 1 ));
-							?>
-							 
-							<?php endfor; ?>
-						</div>
-							
-						
+					<?php if( ( isset($AD['submissions']) )  ):  ?>
+						<?php  $this->load->view('student/task/assignment/submission', array('submission' => $AD['submissions'])); ?>
 					<?php else: ?>
 						<textarea class="add-text"> Add Text </textarea>
 						<div class='drop-item-box custom_drag-drop' id="drop-item-box">
@@ -132,10 +142,10 @@
 					<?php endif; ?>
 
 
-					<?php if( getRole() == 'teacher' ): ?>
+					<?php if( getRole() == 'teacher' && $taskRemark != 'graded'): ?>
 						<div class="panel-footer">
 							<div class="d-table full-width">
-								<a href="#gradeClass" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"> Grade Assignment </i></a>
+								<a href="#setGrade" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"> Grade Assignment </i></a>
 							</div>
 						</div>
 					<?php endif; ?>

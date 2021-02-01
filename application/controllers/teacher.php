@@ -575,7 +575,7 @@ class Teacher extends MY_Controller {
 				$task = $task[0];
 
 				$submissionArgs =  array(
-							'select'	=> 'ts.ts_id,status, datetime_submitted, tsa_id,tsa_status, ass_grade, concat( ui_firstname," ", ui_lastname ) as studname',
+							'select'	=> 'ts.ts_id,status,cred_id as userid, ass_over,datetime_submitted, tsa_id,tsa_status, ass_grade, concat( ui_firstname," ", ui_lastname ) as studname',
 							'from'		=> 'task_submissions as ts',
 							'join'		=> array( 
 												array( 'table' => 'task_submission_ass as tsa', 'cond' => 'tsa.ts_id = ts.ts_id'),
@@ -600,10 +600,24 @@ class Teacher extends MY_Controller {
 								array( 'field' => 'lc.class_status', 'value'  =>  1) )
 				);
 
+
+				
+
+
 				$submissions = $this->prepare_query( $submissionArgs )->result_array();	
 				$assignees = $this->prepare_query( $assigneeArgs )->result_array();	
 
-				 $var['taskinfo'] = $task; 
+				$submissions = array_map(function($a){
+					$args = array(
+								'select'	=> 'class_id',
+								'from'		=> 'class_students as cs', 
+								'where'		=> array( array( 'field' => 'student_id', 'value' => $a['userid'] ) )
+					);
+					$a['studclasses'] = $this->prepare_query( $args )->result_array();
+					return $a;
+				}, $submissions);
+
+				$var['taskinfo'] = $task; 
 				 $var['submissions'] = $submissions;
 				 $var['assignees'] = $assignees;
 				 $var['classesInfo'] = $this->prepare_query( $classesListArgs )->result_array();
@@ -687,6 +701,7 @@ class Teacher extends MY_Controller {
 		$var['AD'] = $assD[0];
 		$var['submissionCheck'] = true;
 		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'] );
+		$var['AD']['submissions']	= $var['AD'][ 'submissions' ][0];
 		
 		$this->load->template('student/assignment-template',$var);
 			
@@ -1024,12 +1039,17 @@ class Teacher extends MY_Controller {
 	 
 	public function addGrade($type){
 		if( $type == 'assignment' ){
-			$taID = $this->input->post('taid');
+			$tsaid = $this->input->post('tsaid');
 			$score = $this->input->post('score');
 			$over = $this->input->post('over');
-
-
+			$whereArray = array( 'tsa_id' => $tsaid);
+			$dataUpdate	= array( 'ass_grade'	=> $score, 'ass_over' => $over );
 			
+			if( $this->ProjectModel->update( $whereArray, 'task_submission_ass', $dataUpdate) ){
+				echo json_encode( array( 'Error' => null, 'msg' => 'Successfully graded assignment'  ) );
+			}else{
+				echo json_encode( array( 'Error' => 'Failed to grade assignment', 'msg' => ''  ) );
+			}
 		}
 	}
  

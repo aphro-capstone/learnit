@@ -57,6 +57,41 @@ var iniAssignment = function(){
 			submitAss();
 		});
 
+			
+		$('#setGradebtn').on('click',function(){	
+			let score = $('#setGrade [name="score"]').val();
+			let over = $('#setGrade [name="over"]').val();
+
+			if( over == ''  || score == '' ){
+				notify('error','A field is empty, please check.',undefined,false);
+				return;
+			}else if ( score > over ){
+				notify('error','Score cannot be greater than the over!',undefined,false);
+				return;
+			}
+
+			let grade = { score : score, over :  over,tsaid : TSAID  };	
+
+			$.ajax({
+				url: SITE_URL + USER_ROLE + '/addGrade/assignment', 
+				type: 'post',
+				dataType : 'json',
+				data: grade,
+				success: function(Response) {
+					if( Response.Error == null ){
+						notify( 'success', Response.msg,() => {
+							window.history.back();
+						});
+					}else{
+						notify('error',Response.Error,undefined,false,3000);
+					} 
+				},error:function(e){
+					console.error(e.responseText);
+				}
+
+			});
+		});
+
 
 
 		

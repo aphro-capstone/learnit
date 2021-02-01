@@ -2,6 +2,8 @@ let tasktypeshow = 0;
 let taskclassshow;
 let taskreviewshow = 'unreviewed';
 
+let classActive = '';
+let tabActive = 'all-stud';
 
 jQuery( ($) => {
     $('.backbtn').on('click',function(){
@@ -148,7 +150,8 @@ const iniClassDue = () => {
         
         const table = $('.details-table tbody');
             table.html('');
-    
+        
+ 
         let element = $('<tr class="task-grade-item">\
                         <td>\
                             <div class="student-info">\
@@ -171,38 +174,67 @@ const iniClassDue = () => {
         element.find( 'td.action' ).append( viewType == 'assignment' ? buttonsAssignment : buttonsQuiz  );
 
     
-        let arr = submissions;
-    
-        if( searchstudname != '' ){
-            arr = $.grep(arr, function( n, i ) {
-                return  n.studname.toLowerCase().startsWith( searchstudname.toLowerCase() )  ;
-            });
-        }
-    
+        let arr = submissions; 
+        arr = $.grep(arr, function( n, i ) {
+            let allow = true;
+            if( searchstudname != '' ){
+                allow = n.studname.toLowerCase().indexOf( searchstudname.toLowerCase() ) > -1;
+            }
+            if( tabActive == 'graded'){
+                allow = n.ass_over != undefined
+            }else if ( tabActive == 'not-graded'){
+                allow = n.ass_over == undefined;
+            }
+
+            if( classActive != undefined && classActive != '' ){ 
+                let found = false;
+                n.studclasses.forEach(el => {
+                    if(el.class_id ==  classActive ){
+                        found = true; 
+                    }
+                });
+                allow = found;
+            }
+            return  allow  ;
+        });
+
+
+        
+        let total = { score : 0, over : 0 };
+
+
         if( arr.length > 0 ){
             $.each( arr,function(a,b){
                 let el = element.clone();
                     el.find('.student-name').text(b.studname);
                     el.find('.date-submitted').text( moment( b.datetime_submitted ).format('MMMM DD, YYYY @ hh:mm A') );
-                    
-                    el.find('.score').text(b.quiz_score);
-                    el.find('.over').text(b.total_points); 
-                
                     if( viewType == 'assignment' ){
+                        total['score'] = total.score + b.ass_grade;
+                        total['over'] = total.over + b.ass_over;
+                        el.find('.score').text(b.ass_grade);
+                        el.find('.over').text(b.ass_over); 
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/assignment/submission:' + b.ts_id )
                     }else{
+                        total['score'] = total.score + b.quiz_score;
+                        total['over'] = total.over + b.total_points;
+                        el.find('.score').text(b.quiz_score);
+                        el.find('.over').text(b.total_points); 
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
                     }
 
 
                     table.append(el);
             } );
+
+            $('.average-percentage').html( ((total.score/ total.over) * 100) + '%' );
+
         }else{
             table.append('<tr><td colspan="4" class="text-center"> No records to show </td></tr>' );
         }
     }
     
     this.showAssignees= (searchClass = '') => {
+
         const dropdown = $('.classes-dropdown');
         const element = $('<div class="item class-item"> <a href="#">  <span class="left-bg" style="background-color:#3583e5"></span> <span class="class-name">Class 1</span> </a> </div>')
         dropdown.find(' > div:not(.default)').remove();
@@ -219,7 +251,7 @@ const iniClassDue = () => {
     
         $.each( arr,function(a,b){
             let el = element.clone();
-                el.find('.class-name').text(b.studname);
+                el.find('.class-name').text(b.class_name);
                 el.find('.left-bg').css({ 'background-color' : b.sc_color  });
     
                 el.attr('data-item-id',b.class_id);
@@ -239,9 +271,26 @@ const iniClassDue = () => {
     
     if( isOntaskindividualpages && viewType == 'assignment'  ){
         $('.dropdown-w-search .search input').on('input',function(){
-            console.log('WTF');
+            
             showAssignees( $(this).val() );
         }); 
+
+        $(document).on('click','.classes-dropdown .class-item a',function(){
+            classActive = $(this).parent().attr('data-item-id');
+            showClassSubmissions();
+        });
+
+        $('.panel-top-content .nav-tabs li a').on('click',function(){
+            $('.panel-top-content .nav-tabs li a.active').removeClass('active');
+            $(this).addClass('active');
+
+            tabActive = $(this).attr('data-sort');
+            showClassSubmissions();
+        });
+    
+
+        
+
         showAssignees();
     }else{
 
@@ -259,8 +308,7 @@ const markasReviewed = (el,tid,val) => {
                 type: 'post',
                 dataType : 'json',
                 data : { tid : tid, action : 'review',val : val },
-                success: function(Response) {
-                    console.log(Response);
+                success: function(Response) { 
                     if( Response.Error == null ){ 
                         notify('success', Response.msg);
                         if( val == 1 ){

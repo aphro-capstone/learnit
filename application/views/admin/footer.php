@@ -147,7 +147,7 @@
 
 
 
-	<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.0.min.js"></script>
+	<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- PLUGINS -->
 

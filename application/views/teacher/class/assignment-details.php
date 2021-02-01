@@ -22,7 +22,7 @@
                 <div class="left">
                     <span class="task-title"><a href="#"> <strong><?= ucfirst($taskinfo['tsk_title']);?></strong> </a>   </span>
                     <span class="d-block"> <i class="fa fa-clock-o"></i> Due on <?= date_format( new Datetime( $taskinfo['tsk_duedate'] ) ,"F d, Y @ h:i A");?> </span>
-                    
+                   
                     <?php if( count($assignees) == 1 ): ?>
                         <p class="classlist"><span class="block"> <span> Assigned Class : </span> <span class="class"> <i class="color" style="background: #fecb00;"></i> <?php echo $assignees[0]['class_name']; ?></span>    </p>
                     <?php else: ?>
@@ -43,18 +43,7 @@
                                             <a href="#" class="">  <span class="left-bg changeable-color" style="background-color:#3583e5"></span>  All Classess
                                             </a> 
                                         </div>
-                                        <div class="item class-item"> 
-                                            <a href="#"> 
-                                                <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
-                                                Class 1
-                                            </a> 
-                                        </div>
-                                        <div class="item class-item"> 
-                                            <a href="#"> 
-                                                <span class="left-bg changeable-color" style="background-color:#3583e5"></span>   
-                                                Class 2
-                                            </a> 
-                                        </div>
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -79,19 +68,15 @@
                             </li> 
                         </ul>
                     </div>
-                    <?php
-                        $averageScorePercentage = 0; 
                     
-                    ?>
-                    <span class="d-block mt-3 mb-3"> <strong>Average Grade Score : <?= $averageScorePercentage ?>%</strong>  </span>
+                    <span class="d-block mt-3 mb-3"> <strong>Average Grade Score : <span class="average-percentage">0%</span></strong>  </span>
                 </div>
             </div>
             <div class="mt-4">
                 <ul class="tabs nav nav-tabs">
-                    <li class="mr-0"> <a class="active" href="#"> All Students </a> </li>
-                    <li class="mr-0"> <a class="" href="#"> Not Turned In ( 0 ) </a> </li>
-                    <li class="mr-0"> <a class="" href="#"> Graded ( 0 ) </a> </li>
-                    <li class="mr-0"> <a class="" href="#"> Turned In ( 0 ) </a> </li>
+                    <li class="mr-0"> <a class="active sorttrigger" data-sort="all-stud" href="#"> All Students </a> </li>
+                    <li class="mr-0"> <a class="sorttrigger" data-sort="not-graded" href="#"> Not Graded  </a> </li>
+                    <li class="mr-0"> <a class="sorttrigger" data-sort="graded" href="#"> Graded  </a> </li>
                 </ul>
             </div>
         </div>

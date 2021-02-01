@@ -2937,6 +2937,20 @@ li.p-0.list-group-item{
 body.navbar-open .navmobile-overlay{
     display: block;
 }
+.ribbon.ribbon-submitted.ribbon1:before{
+    border-right-color:#02ff5b;
+}
+
+.ribbon.ribbon-submitted.ribbon1:after{
+    border-bottom-color: #06a03c;
+}
+
+
+
+.ribbon.ribbon-submitted > .content{
+    background: #02ff5b;
+    color: #000;
+}
 
 @media only screen and ( max-width: 990px ){
     body.login-page .navbar{
