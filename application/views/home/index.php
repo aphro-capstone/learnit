@@ -14,10 +14,10 @@
 
 
 	<body class="login-page">
-
+		<div class="navmobile-overlay"></div>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light pull-right">
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
+		  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <i class="fa fa-bars"></i>
 		  </button>
 
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">

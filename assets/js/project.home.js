@@ -125,6 +125,11 @@ jQuery(function($){
       }, 1000);
     });
 
+
+    $('.navbar-toggler').on('click',function(){
+      $('body').toggleClass('navbar-open');
+    });
+
    
 });
 

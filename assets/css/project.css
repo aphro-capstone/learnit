@@ -2924,3 +2924,65 @@ li.p-0.list-group-item{
     overflow: hidden;
     display: block;
 }
+
+.navmobile-overlay{
+    position: fixe;d
+    width: 100%;
+    height: 100%;
+    background: #000000a1;
+    top: 0;
+    z-index: 7;
+    display: none;
+}
+body.navbar-open .navmobile-overlay{
+    display: block;
+}
+
+@media only screen and ( max-width: 990px ){
+    body.login-page .navbar{
+        float: none;
+        display: flex;
+        position: fixed;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        background-color: transparent!important;
+        z-index: 8;
+    }
+    /*body.login-page.navbar-open .navbar,
+    body.login-page.navbar-open .navbar-open{
+        background-color: #000000d1!important;
+    }*/
+    .navbar .navbar-toggler{
+        font-size: 30px;
+    }
+
+    .navbar .navbar-toggler{
+        margin-right: 5px;
+        margin-left: auto;
+        border: none;
+    }
+
+    .navbar .navbar-toggler:not(.collapsed) i:before{
+        content: "\f00d";
+    }
+
+    body.navbar-open .navbar .navbar-toggler{
+        color: #fff;
+    }
+
+    .navbar .navbar-collapse{
+        width: 100%;
+        padding-right: 20px;
+        padding-left: 20px;
+        margin-top: 20px;
+    }
+
+    nav.navbar  .navbar-nav{text-align: center;}
+    nav.navbar  .navbar-nav li a{
+        color: #fff!important;
+        font-size: 21px;
+    }
+
+
+}

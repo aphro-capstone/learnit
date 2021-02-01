@@ -3,7 +3,7 @@
 		<div class="col-sm-12 col-lg-12 col-md-12 col">
 			<div class="header">
 
-				<h3 class="title pull-left"><?= !$archives_page ? 'My Classes' : getRole() == 'teacher' ? 'Archived Classes' : 'Previous Classes'; ?></h3>
+				<h3 class="title pull-left"><?= !$archives_page ? 'My Classes' : ( getRole() == 'teacher' ? 'Archived Classes' : 'Previous Classes' ); ?></h3>
 
 				<div class="options pull-right dropdown">
 					<a href="#" class="btn btn-primary options data-toggle" data-toggle="dropdown" >  <i class="fa fa-cog"></i> Options</a>

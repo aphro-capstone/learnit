@@ -25,6 +25,7 @@ var iniAssignment = function(){
 			dataSend = JSON.stringify( dataSend);
 
 			fd.append('data', dataSend);
+			console.log(attachmentlist);
 			for (var x = 0; x < attachmentlist.length; x++) {
 				fd.append("attachFile[]", attachmentlist[x].f);
 			}

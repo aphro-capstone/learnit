@@ -618,9 +618,9 @@ class MY_Controller extends CI_Controller
 		}
          
  
-        if( $_FILES['attachFile']['name'] == '' ){  return array(); }
+        if( $_FILES['attachFile']['name'] == '' ){  return json_encode(array()); }
  
-        if( count( $_FILES['attachFile']['name'] ) == 0 ){ return array();  }
+        if( count( $_FILES['attachFile']['name'] ) == 0 ){ return json_encode(array());  }
         $count = count($_FILES['attachFile']['name']);
 
         
@@ -767,7 +767,7 @@ class MY_Controller extends CI_Controller
             'body_classes' => 'activities', 
             'projectCss'	=> array(
                                             'project.activity'
-            ),"projectScripts" => array()
+            ),"projectScripts" => array('project.interactive')
         ); 
 
     $template = 'activities';
