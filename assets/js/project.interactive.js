@@ -6,6 +6,8 @@ jQuery(function($){
 
 		if( $(this).attr('data-type') ) triggerType = $(this).attr('data-type'); 
 
+		console.log(SITE_URL + USER_ROLE  +  '/games/' + triggerType);
+
 		$("#gamesinte").modal({ backdrop : 'static', keyboard : false });
 		$('#game-container').load( SITE_URL + USER_ROLE  +  '/games/' + triggerType);
 
