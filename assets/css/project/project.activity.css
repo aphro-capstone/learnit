@@ -49,15 +49,16 @@ body.activities {
 
 h1 {
   color: white;
-  font-family: 'Courier New';
+  font-family: 'Garamond';
   font-size: 50px;
+  font-weight: 700;
 }
 
 h1 + p {
 	margin-bottom: 5%;
   color: white;
   font-family: 'Courier New';
-  font-size: 20px;
+  font-size: 30px;
 
 }
 
@@ -115,7 +116,7 @@ button:active {
 
 .scoreWrap p, .scoreWrap span, .timeWrap p, .timeWrap span {
     font-size: 30px;
-    color: #FF7373;
+    color: #000;
 }
 
 .wordsWrap {
@@ -174,6 +175,7 @@ button:active {
 
 }
 
+
 .game-box {
     position: relative;
     overflow: hidden;
@@ -194,6 +196,30 @@ button:active {
 }
 
 
+.videobox .backtext{
+  top: auto;
+  width: 100%;
+  display: flex;
+  height: 100%;
+}
+
+.videobox .backtext i{
+
+  color: #fffc;
+}
+
+.videobox .backtext span{
+      position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+
+
+#multimedia-container video{
+  width: 100%;
+}
+
 body.activities .container{
   position: relative;
   z-index: 4;
@@ -205,13 +231,57 @@ body.activities .container{
 
  .panel{
     padding: 15px 30px;
- }
-
-
-#gamesinte button[data-dismiss="modal"]{
-      z-index: 999999;
-    position: relative;
 }
+
+#multimedia button[data-dismiss="modal"],
+#gamesinte button[data-dismiss="modal"]{
+      position: absolute;
+    top: 15px;
+    right: 15px;
+        z-index: 99;
+}
+
+
+#typing-it-wrapper .scoreboard{
+      width: 175px;
+}
+
+
+#typing-it-wrapper{
+      background-image: url(../../images/games/type-it-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#typing-it-wrapper .scoreWrap{
+  position: relative;
+}
+
+#typing-it-wrapper .timeWrap{
+  position: relative;
+}
+
+#typing-it-wrapper .score-div{
+  position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 0;
+    color: #fff;
+}
+
+#typing-it-wrapper .time-div{
+  position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 0;
+    color: #fff;
+}
+
+
+
 @media screen and (max-width : 768px) {
     
     #gamesinte{

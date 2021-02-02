@@ -788,7 +788,7 @@
 <div class="modal fade" id="gamesinte" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xlg" role="document">
     <div class="modal-content">
-      <div class="modal-body">
+      <div class="modal-body p-0">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -797,6 +797,25 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="multimedia" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xlg" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="multimedia-container">
+            <video preload="auto" controls="controls">
+                <source src="../assets/multimedia/A Brief History of Computer Viruses.mp4" type='video/mp4'>
+                <source src="media/why-autologel.webm" type='video/webm'>
+            </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="gradeClass" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
