@@ -795,3 +795,31 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="gradeClass" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom: none;">
+          <h5 class="modal-title">Grade Assignment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex">
+              <div class="form-group input-group-icon left-icon mb-0">
+                <input type="text" class="form-control text-center" placeholder="Enter Grade">  
+              </div>
+              <span class="no-wrap ml-2 mr-2 mt-auto mb-auto"> out of </span>
+              <div class="form-group input-group-icon left-icon mb-0">
+                <input type="text" class="form-control text-center" placeholder="Over">  
+              </div>
+          </div>
+          
+        </div>
+        <div class="modal-footer" style="border-top: none;">
+          <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Cancel</button>
+          <button class="btn btn-primary">Set Grade</button>
+        </div>
+      </div>
+    </div>
+  </div>

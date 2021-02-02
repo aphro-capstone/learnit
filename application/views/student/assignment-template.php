@@ -5,9 +5,16 @@
 	$dueDate = date_create($AD['tsk_duedate']); 
 	$currentDate =  new DateTime();
 
-	$taskRemark = $dueDate < $currentDate ? 'late' : 'aa';
+	$taskRemark = $dueDate < $currentDate ? 'late' : 'active';
 
 	$teacherView = isset( $teacherView ) ? $teacherView : 'false';
+
+	$remark = 'active';
+
+ 
+	if( isset( $AD['submissions'] ) && count( $AD['submissions'] ) > 0 ){
+		$taskRemark = 'active';
+	}
 ?>
 
 <script>
@@ -20,7 +27,7 @@
 <div class="container" id="assignment-template" >
 	<div class="d-table"> 
 		<h3 class="page-title">   
-			<?php if( $teacherView == 'true' ): ?>
+			<?php if( $teacherView == 'true' ): ?> 
 				<a href="<?= getSiteLink('classes/assignment/assignment:' . $AD['task_id']);?>"> <i class="fa fa-arrow-left"></i> </a> 
 			<?php endif; ?>
 			Assignment Details</h3>
@@ -116,6 +123,20 @@
 							<button class="btn btn-outline-secondary hoverable-btn mr-2 add-text-btn"> <i class="fa fa-file-text-o"></i> <span>Add text</span> </button>
 							<button class="btn btn-outline-secondary hoverable-btn" data-toggle="modal" data-target="#addLibrary"> <i class="fa fa-book"></i> <span>Add file from backpack</span> </button>
 							<button class="btn btn-primary pull-right submitAssignment"> <i class="fa fa-sent"></i> Submit Assignment </button>
+						</div>
+
+
+						<div class="remarks">
+
+						</div>
+					<?php endif; ?>
+
+
+					<?php if( getRole() == 'teacher' ): ?>
+						<div class="panel-footer">
+							<div class="d-table full-width">
+								<a href="#gradeClass" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"> Grade Assignment </i></a>
+							</div>
 						</div>
 					<?php endif; ?>
 				</div>
