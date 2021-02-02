@@ -36,9 +36,9 @@ body.activities {
 
 
 .wrapper {
-	max-width: 1000px;
+	max-width: 100%;
 	margin: auto;
-	width: 300%;
+	width: 100%;
 	text-align: center;
 	padding: 5%;
   height: 100%;
@@ -206,3 +206,21 @@ body.activities .container{
  .panel{
     padding: 15px 30px;
  }
+
+
+#gamesinte button[data-dismiss="modal"]{
+      z-index: 999999;
+    position: relative;
+}
+@media screen and (max-width : 768px) {
+    
+    #gamesinte{
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #gamesinte .modal-dialog{
+      max-width: 100%!important;
+      width: 100%!important;
+    }
+}
