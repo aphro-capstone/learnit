@@ -2,11 +2,38 @@
 
 body.activities {
     font-family: 'Raleway', sans-serif;
+
+
+}
+ 
+#picact{
     background-image: url(../../images/games/gamebg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: 
+    min-height: 200px;
+    margin-right: -20px;
+    margin-left: -20px;
+    background-position: center;
+    position: relative;
+
 
 }
+
+#picact .title{
+  padding: 110px;
+  font-size: 3em;
+  font-weight: 900;
+  position: relative;
+  z-index: 3;
+  padding-left: 0;
+  padding-bottom: 150px;
+}
+
+#picact .title span{
+  color: #fff;
+}
+
 
 .wrapper {
 	max-width: 1000px;
@@ -150,6 +177,10 @@ button:active {
 .game-box {
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+        margin-bottom: 15px;
+    border: 1px solid #fff;
+    box-shadow: 2px 5px 8px #000;
 }
 
 .backtext .img-container{
@@ -168,4 +199,10 @@ body.activities .container{
   z-index: 4;
 }
 
- 
+ #picact + .container{
+  margin-top: -80px;
+ }
+
+ .panel{
+    padding: 15px 30px;
+ }

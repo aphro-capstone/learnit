@@ -4,6 +4,8 @@
     $images = array();
     $files = array();
     
+    if( gettype( $attachments) == 'string' ) $attachments = json_decode($attachments,true);
+    
     foreach($attachments as $a): 
         if(in_array( $a['type'] ,array('png','jpg','jpeg','webp','gif') )) : 
             $images[] = $a;
