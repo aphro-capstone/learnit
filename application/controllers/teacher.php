@@ -744,6 +744,7 @@ class Teacher extends MY_Controller {
 	public function creatTask( $type ){
 
 		$data = $this->input->post('data');
+
 		$data = json_decode( $data,true );
  
 		$title = $data['tasktitle'];
@@ -1014,6 +1015,12 @@ class Teacher extends MY_Controller {
 		$content = $this->input->post('content');
 		$this->sendEmail($data, $content );
 	}
+
+	public function games($type){
+		if ($type=="typing-it" ){		
+			$this->load->view("shared/interactive/games/typing-it");
+		}
+	}
 	 
 	public function addGrade($type){
 		if( $type == 'assignment' ){
@@ -1027,3 +1034,4 @@ class Teacher extends MY_Controller {
 	}
  
 }
+

@@ -91,7 +91,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		
 			right_full.append( this.createTypeSelectionSection() );
 			right_full.append( this.createQuestionSection() );
-			right_full.append( this.createAttachmentSection() );
+			// right_full.append( this.createAttachmentSection() );
 			right_full.append( this.createResponsesSection() );
 			right_full.append( this.createGradingSection() );
 			right.append(collapsibletoggle);
@@ -557,15 +557,18 @@ const submitQuiz = () => {
 		dataSend['totalpoints'] = dataSend.totalpoints + a.total_points;
 	});
 
+	let data = { data: JSON.stringify(dataSend)  };
+	
 	if( teacherEdit ){
-		dataSend['tid'] = TI.tsk_id;
-		dataSend['qid'] = TI.quiz_id;
+		data['tid'] = TI.tsk_id;
+		data['qid'] = TI.quiz_id;
 	}
+
 	$.ajax({
 		url: SITE_URL + USER_ROLE + '/creatTask/0',
 		type: 'post',
 		dataType : 'json',
-		data: dataSend,
+		data: data,
 		success: function(Response) {
 			if( Response.Error == null ){
 				$('.modal').modal('hide');

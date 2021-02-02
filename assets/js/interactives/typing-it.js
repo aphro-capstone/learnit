@@ -30,7 +30,7 @@ function Type_it (){
             this.getNewWord();
         }
 
-    }
+    };
     this.start = (difficulty) =>{
         this.allowInput = true;
         this.difficulty = difficulty;
@@ -102,7 +102,7 @@ const typeit = new Type_it();
 
 
 jQuery(function($){
-    $('button.start').on('click', () => {
+    $(document).on('click','button.start', () => {
         if( $('select[name="difficulty"]').val() == '' ){
             notify('error','Please Select a difficulty first',undefined,false);
             return;
@@ -110,8 +110,3 @@ jQuery(function($){
         typeit.start( $('select[name="difficulty"]').val() );
     });
 });
-
-
-
-function openModal() {
-  document.getElementById("modal-games").style.display = "block";
