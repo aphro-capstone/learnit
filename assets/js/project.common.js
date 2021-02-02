@@ -206,6 +206,28 @@ jQuery( ($) => {
 		doDownload( $(this) );
 	});
 
+	$('#setGradebtn').on('click',function(){
+		
+		let grade = { score :  $('.'), over : ''  };	
+		$.ajax({
+			url: SITE_URL + USER_ROLE + '/addGrade/assignment', 
+			type: 'post',
+			dataType : 'json',
+			data: grade,
+			success: function(Response) {
+				
+				if( Response.Error == null ){
+					
+				}else{
+					notify('error',Response.Error,undefined,false,3000);
+				} 
+			},error:function(e){
+				console.error(e.responseText);
+			}
+
+		});
+	});
+
 
 });
 

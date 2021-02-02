@@ -681,11 +681,12 @@ class Teacher extends MY_Controller {
 										),
 					'where'		=> array( array( 'field' => 'ts.ts_id', 'value' => $id ) )
 			);
+			
 
 		$assD = $this->prepare_query( $assD )->result_array();
-		var_dump( $assD );
 		$var['AD'] = $assD[0];
-		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() );
+		$var['submissionCheck'] = true;
+		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'] );
 		
 		$this->load->template('student/assignment-template',$var);
 			
@@ -693,6 +694,19 @@ class Teacher extends MY_Controller {
 			show_404();	
 		}
 	}
+
+	public function getTaskSubmissions($taskID,$submission_suffix = 'ass'){
+
+		$args = array(
+			'select' => '*',
+			'from' => 'task_submissions as ts',
+			'join'	=> array(  array(  'table'	=> 'task_submission_' . $submission_suffix . ' as si',  'cond' 	=> 'si.ts_id = ts.ts_id' ) ),
+			'where'	=> array(  array(  'field' => 'ts.task_id',  'value'  =>  $taskID )),
+		); 
+
+		return $this->prepare_query( $args )->result_array();
+	}
+
 
 
 
@@ -1001,5 +1015,15 @@ class Teacher extends MY_Controller {
 		$this->sendEmail($data, $content );
 	}
 	 
+	public function addGrade($type){
+		if( $type == 'assignment' ){
+			$taID = $this->input->post('taid');
+			$score = $this->input->post('score');
+			$over = $this->input->post('over');
+
+
+			
+		}
+	}
  
 }
