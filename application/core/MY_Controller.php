@@ -1008,13 +1008,16 @@ class MY_Controller extends CI_Controller
    }
 
    protected function games__($type){
-        if ($type=="typing-it" ){       
-            $this->load->view("shared/interactive/games/typing-it");
-        }else if ( $type == 'quiz-it' ){
-            $this->load->view("shared/interactive/games/quiz-it");
-        }else if ( $type == 'scrabble-it' ){
-            $this->load->view('shared/interactive/games/scrabble-it');
-        }
+        $this->load->view("shared/interactive/games/". $type);
+        // if ($type=="typing-it" ){       
+        //     $this->load->view("shared/interactive/games/typing-it");
+        // }else if ( $type == 'quiz-it' ){
+        //     $this->load->view("shared/interactive/games/quiz-it");
+        // }else if ( $type == 'scrabble-it' ){
+        //     $this->load->view('shared/interactive/games/scrabble-it');
+        // }else if ( $type == 'hangman' ){
+        //     $this->
+        // }
    }
 
 

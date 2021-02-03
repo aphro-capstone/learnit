@@ -54,9 +54,9 @@
 
 			<div class="col-sm-12 col-md-6 col-lg-4">
 
-					<div class="game-box modal-games-trgr">
+					<div class="game-box modal-games-trgr" data-type="hangman">
 						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic.jpg" alt="">
+								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/hangman-small.jpg" alt="">
 						</div>
 						<div class="backtext">
 							<span> Hangman </span>
@@ -64,12 +64,12 @@
 					</div>
 				</div>
 				<div class="col-sm-12 col-md-6 col-lg-4">
-					<div class="game-box modal-games-trgr">
+					<div class="game-box modal-games-trgr"  data-type="chess-it">
 						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.png" alt="">
+								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/chess-it-bg.jpg" alt="">
 						</div>
 						<div class="backtext">
-							<span> Guess IT </span>
+							<span> Chess IT </span>
 						</div>
 					</div>
 				</div>
