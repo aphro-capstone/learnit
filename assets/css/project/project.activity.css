@@ -94,11 +94,10 @@ button {
 .start {
   border: none;
   background-color: #fff;
-  box-shadow: 0px 5px 0px 0px #6c757d;
   outline: none;
   border-radius: 5px;
   padding: 10px 15px;
-  font-size: 20px;
+  font-size: 30px;
   text-decoration: none;
   margin: 0px;
   color: black;
@@ -107,6 +106,22 @@ button {
   cursor: pointer;
 
 }
+
+.custom-select {
+    position: relative;
+    font-family: Arial;
+    padding: 21px;
+    background: none;
+    border: none;
+}
+
+.custom-select select {
+    width: 200px;
+    border: none;
+    padding: 5px;
+    margin: auto;
+}
+
 
 button:active {
   transform: translate(0px, 5px);
@@ -282,6 +297,16 @@ body.activities .container{
     color: #fff;
 }
 
+#typing-it-wrapper .outerWrap,
+#typing-it-wrapper.gamestart button.start,
+#typing-it-wrapper.gamestart .custom-select
+{
+  display: none;
+}
+
+#typing-it-wrapper.gamestart .outerWrap{
+  display: block;
+}
 
 
 @media screen and (max-width : 768px) {
