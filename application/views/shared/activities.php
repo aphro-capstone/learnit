@@ -52,21 +52,21 @@
 					</div>
 				</div>
 
-			<!-- 	<div class="col-sm-12 col-md-6 col-lg-4">
+			<div class="col-sm-12 col-md-6 col-lg-4">
 
 					<div class="game-box modal-games-trgr">
 						<div class="img-container">
-								<img class="full-width" src="<?php //echo base_url();  ?>/assets/images/games/pic.jpg" alt="">
+								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic.jpg" alt="">
 						</div>
 						<div class="backtext">
-							<span> Typing IT </span>
+							<span> Hangman </span>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-12 col-md-6 col-lg-4">
 					<div class="game-box modal-games-trgr">
 						<div class="img-container">
-								<img class="full-width" src="<?php //echo base_url();  ?>/assets/images/games/pic3.png" alt="">
+								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.png" alt="">
 						</div>
 						<div class="backtext">
 							<span> Guess IT </span>
@@ -76,13 +76,13 @@
 				<div class="col-sm-12 col-md-6 col-lg-4">
 					<div class="game-box modal-games-trgr">
 						<div class="img-container">
-							<img class="full-width" src="<?php //echo base_url();  ?>/assets/images/games/pic2.jpg" alt="">
+							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic2.jpg" alt="">
 						</div>
 						<div class="backtext">
 							<span> Scrabble IT </span>
 						</div>
 					</div>
-				</div> -->
+				</div>
 			</div>
 		</div>
 	</div>

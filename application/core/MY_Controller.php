@@ -784,6 +784,11 @@ class MY_Controller extends CI_Controller
         $template = 'interactive/games/scrabble-it';
         $dataPass['projectScripts'][] = 'interactives/project.guessinggame';
         $dataPass['projectCss'][] = '../interactiveCSS/scrabbleCss';
+
+    }else if ( $game == 'hangman' ){
+        $template = 'interactive/games/hangman';
+        $dataPass['projectScripts'][] = 'interactives/project.guessinggame';
+        $dataPass['projectCss'][] = '../interactiveCSS/hangman';
     }
 
     $this->load->template( 'shared/' . $template,$dataPass);
