@@ -51,7 +51,7 @@
   }
 
   $navsArr[] =  array( 
-      'label' =>  'Activities',
+      'label' =>  'Multimedia',
       'link'  => getSiteLink('activities'),
       'icon'  => 'fa-gamepad'
   );

@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<title> <?=$pagetitle;?></title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="<?= base_url()?>assets/images/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="<?= base_url()?>assets/images/favicon.ico" type="image/x-icon">
 
@@ -15,7 +17,8 @@
 		<link rel="stylesheet" href="<?= base_url()?>assets/plugins/ChartJS/Chart.min.css" />
 
 		<link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/plugins/DataTables/datatables.min.css">
-		<link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/plugins/bootstrap-select-1.13.14\dist/css/bootstrap-select.min.css">
+		<link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/plugins/select2/css/select2.min.css">
+		<link rel="stylesheet" type="text/css" href="<?= base_url();?>assets/plugins/jquery-confirm/jquery-confirm.min.css">
 		 
 		<!--  Condition if allow calendar END -->
 		<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/admin.project.css">

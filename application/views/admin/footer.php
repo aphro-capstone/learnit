@@ -145,6 +145,63 @@
 	  </div>
 	</div>
 
+	<div id="changeStatus" class="modal fade">
+	  <div class="modal-dialog" role="document">
+	  	<form  action="<?=site_url();?>admin/changestatus">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Change Status</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">×</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+					<div class="form-group">
+					    <select name="roles" class="form-control selectpicker" multiple  title="Select Roles affected">
+					    	<option value="*"> All </option>
+					    	<option value="student"> Student </option>
+					    	<option value="teacher"> Teacher </option>
+					    </select>
+					</div> 
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+		      </div>
+		    </div>
+		</form>
+	  </div>
+	</div>
+
+	<div id="changeStatus" class="modal fade">
+	  <div class="modal-dialog" role="document">
+	  	<form  action="<?=site_url();?>admin/changestatus">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Reassign Class</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">×</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+					<div class="form-group">
+						<label for=""> Select new teacher </label>
+					    <select name="roles" class="form-control selectpicker"    >
+					    	<option value="*"> All </option>
+					    	<option value="student"> Student </option>
+					    	<option value="teacher"> Teacher </option>
+					    </select>
+					</div> 
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+		      </div>
+		    </div>
+		</form>
+	  </div>
+	</div>
+
 
 
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.1.min.js"></script>
@@ -156,7 +213,9 @@
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/bootstrap-notify-master/bootstrap-notify.min.js"></script>
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/ChartJS/Chart.min.js"></script>
 	<script type="text/javascript" src="<?= base_url();?>assets/plugins/DataTables/datatables.min.js"></script>
-	<script type="text/javascript" src="<?= base_url();?>assets/plugins/bootstrap-select-1.13.14\dist\js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="<?= base_url();?>assets/plugins/select2/js/select2.full.min.js"></script>
+	<script type="text/javascript" src="<?= base_url();?>assets/plugins/jquery-confirm/jquery-confirm.min.js"></script>
+	<script type="text/javascript" src="<?= base_url();?>assets/plugins/moment.js"></script>
 	<!-- PLUGINS END -->
 
 	<script type="text/javascript" src="<?= base_url()?>assets/js/project.admin.js"></script>
@@ -170,39 +229,12 @@
     			color:'#153D77'
 
   			});
-
-  			$('.dataTable').dataTable();
+ 
 		});
 
 
 	</script>
 
-	<script>	
-		var ctx = document.getElementById('myChart').getContext('2d');
-		var myChart = new Chart(ctx, {
-					    type: 'bar',
-					    data: {
-					      labels: ["1900", "1950", "1999", "2050"],
-					      datasets: [
-					        {
-					          label: "Successfull",
-					          backgroundColor: "#3e95cd",
-					          data: [133,221,783,2478]
-					        }, {
-					          label: "Failed",
-					          backgroundColor: "#8e5ea2",
-					          data: [408,547,675,734]
-					        }
-					      ]
-					    },
-					    options: {
-					      title: {
-					        display: true,
-					        text: 'Number of successful registrations per month over unsuccesful registrations'
-					      }
-					    }
-					});
-		</script>
 
 </body>
 </html>

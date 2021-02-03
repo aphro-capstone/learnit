@@ -24,8 +24,8 @@
 									<td data-ref="grade"> <?= $row['g_name'] ?> </td>
 									<td> <?= date_format( date_create($row['timestamp_created']), 'Y/m/d @ h:i a') ?> </td>
 									<td class="text-center">
-										<a href="#" class="btn btn-xs btn-info editItem"> <i class="fa fa-edit"></i> Update</a>
-										<a href="#" class="btn btn-xs btn-danger removeItem"> <i class="fa fa-trash"></i> Delete</a>
+										<a href="#" class="btn btn-xs btn-info editItem btn-3d"> <i class="fa fa-edit"></i> Update</a>
+										<a href="#" class="btn btn-xs btn-danger removeItem btn-3d"> <i class="fa fa-trash"></i> Delete</a>
 									</td>
 								</tr>
 							<?php endforeach;?>
@@ -43,7 +43,7 @@
 		<div class="panel">
 			<div class="panel-heading d-table full-width">
 				<h3 class="pull-left">Colors</h3>
-				<a href="#addColor" class="btn btn-primary pull-right" data-toggle="modal"> <i class="fa fa-plus"> Add Color </i> </a>
+				<a href="#addColor" class="btn btn-primary pull-right btn-3d" data-toggle="modal"> <i class="fa fa-plus"> Add Color </i> </a>
 			</div>
 			<div class="panel-content mt-4">
 				<div class="dataTable-container">
@@ -72,8 +72,8 @@
 
 									<td> <?= date_format( date_create($row['timestamp_created']), 'Y/m/d @ h:i a') ?> </td>
 									<td class="text-center">
-										<a href="#" class="btn btn-xs btn-info editItem"> <i class="fa fa-edit"></i> Update</a>
-										<a href="#" class="btn btn-xs btn-danger removeItem"> <i class="fa fa-trash"></i> Delete</a>
+										<a href="#" class="btn btn-xs btn-info editItem btn-3d"> <i class="fa fa-edit"></i> Update</a>
+										<a href="#" class="btn btn-xs btn-danger removeItem btn-3d"> <i class="fa fa-trash"></i> Delete</a>
 									</td>
 								</tr>
 							<?php endforeach;?>
@@ -90,7 +90,7 @@
 		<div class="panel">
 			<div class="panel-heading d-table full-width">
 				<h3 class="pull-left">Subjects</h3>
-				<a href="#addSubject" class="btn btn-primary pull-right" data-toggle="modal"> <i class="fa fa-plus"> Add Subject </i> </a>
+				<a href="#addSubject" class="btn btn-primary pull-right btn-3d" data-toggle="modal"> <i class="fa fa-plus"> Add Subject </i> </a>
 			</div>
 			<div class="panel-content mt-4">
 				<div class="dataTable-container">
@@ -115,15 +115,15 @@
 									<td data-ref="name"> <?= $row['s_name'] ?> </td>
 									<td class="hasBtn" data-ref="parentSubject" data-ref-val="<?= $row['s_parent_sub']; ?>"> 
 										<?php if( $subsubjects->num_rows() > 0 ): ?>
-											<button class="btn btn-xs btn-info toggle-subsubjects full-width"> Show Sub-subjects  </button>
+											<button class="btn btn-xs btn-info btn-3d toggle-subsubjects full-width"> Show Sub-subjects  </button>
 										<?php endif; ?>									
 									</td>
 									<td data-ref="abbre"> <?= $row['s_abbre'] ?> </td>
 									<!-- <td data-ref="desc" class="text-center notdirecttext "> <?php // echo $row['s_desc'] ? '<button  class="btn btn-info btn-xs gettext" data-toggle="tooltip" data-placement="top" data-original-title="'. $row['s_desc']  .'"> <i class="fa fa-question-circle"></i> </button>' : ''; ?>  </td> -->
 									<td> <?= date_format( date_create($row['timestamp_created']), 'Y/m/d @ h:i a') ?> </td>
 									<td class="text-center">
-										<a href="#" class="btn btn-xs btn-info editItem"> <i class="fa fa-edit"></i> Update</a>
-										<a href="#" class="btn btn-xs btn-danger removeItem"> <i class="fa fa-trash"></i> Delete</a>
+										<a href="#" class="btn btn-xs btn-info editItem btn-3d"> <i class="fa fa-edit"></i> Update</a>
+										<a href="#" class="btn btn-xs btn-danger removeItem btn-3d"> <i class="fa fa-trash"></i> Delete</a>
 									</td>
 								</tr>
 								<?php foreach (getSubSubject($row['s_id'])->result_array() as $subsubject): ?>
@@ -135,8 +135,8 @@
 										<!-- <td data-ref="desc" class="text-center notdirecttext "> <?php // echo $row['s_desc'] ? '<button  class="btn btn-info btn-xs gettext" data-toggle="tooltip" data-placement="top" data-original-title="'. $row['s_desc']  .'"> <i class="fa fa-question-circle"></i> </button>' : ''; ?>  </td> -->
 										<td> <?= date_format( date_create($row['timestamp_created']), 'Y/m/d @ h:i a') ?> </td>
 										<td class="text-center">
-											<a href="#" class="btn btn-xs btn-info editItem"> <i class="fa fa-edit"></i> Update</a>
-											<a href="#" class="btn btn-xs btn-danger removeItem"> <i class="fa fa-trash"></i> Delete</a>
+											<a href="#" class="btn btn-xs btn-info editItem btn-3d"> <i class="fa fa-edit"></i> Update</a>
+											<a href="#" class="btn btn-xs btn-danger removeItem btn-3d"> <i class="fa fa-trash"></i> Delete</a>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -182,8 +182,8 @@
 										<td data-ref="desc" class="text-center notdirecttext "> <?php echo $row['spa_desc'] ? '<button  class="btn btn-info btn-xs gettext" data-toggle="tooltip" data-placement="top" data-original-title="'. $row['spa_desc']  .'"> <i class="fa fa-question-circle"></i> </button>' : ''; ?>  </td>
 										<td> <?= date_format( date_create($row['timestamp_created']), 'Y/m/d @ h:i a') ?> </td>
 										<td class="text-center">
-											<a href="#" class="btn btn-xs btn-info editItem"> <i class="fa fa-edit"></i> Update</a>
-											<a href="#" class="btn btn-xs btn-danger removeItem"> <i class="fa fa-trash"></i> Delete</a>
+											<a href="#" class="btn btn-xs btn-info editItem btn-3d"> <i class="fa fa-edit"></i> Update</a>
+											<a href="#" class="btn btn-xs btn-danger removeItem btn-3d"> <i class="fa fa-trash"></i> Delete</a>
 										</td>
 									</tr>
 								<?php endforeach;?>

@@ -179,3 +179,66 @@ tr.has-hidden-rows.open td{
 tr.hidden-row.visible td{
     background: #e8daf4;
 }
+
+
+.all-classes{
+    list-style: none;
+    background: #000000ad;
+    padding: 10px 5px;
+    position: absolute;
+    padding-left: 25px;
+    display: none;
+}
+
+.tooltip-trigger{
+    position: absolute;
+    right: 5px;
+}
+.tooltip-trigger:hover .custom-tooltip{
+    display: block;
+}
+
+.all-classes li{
+    white-space: nowrap;
+    text-align: left;
+    font-size: 14px;
+    color: #fff;
+}
+.all-classes li:before{
+    font-family: 'FontAwesome';
+    content: "\f101";
+    margin:0 5px 0 -15px;
+}
+
+.btn.btn-xs{
+    border-radius: 0;
+}
+.btn.btn-3d{
+    position: relative;
+    transition: all ease 0.2s;
+    top: -4px;
+}
+.btn.btn-3d:active{
+    top: 3px;
+    box-shadow: none;
+}
+
+.btn.btn-3d.btn-info{
+    box-shadow: 0px 7px 0px #148ea2;
+}
+
+.btn.btn-3d.btn-danger{
+    box-shadow: 0px 7px 0px #c0323f;
+}
+
+.btn.btn-3d.btn-warning{
+    box-shadow: 0px 7px 0px #e3ac06;
+}
+
+.btn.btn-3d.btn-primary{
+    box-shadow: 0px 7px 0px #0560cf;
+}
+
+td.activeEdit span.hiddentext{
+    display: none;
+}

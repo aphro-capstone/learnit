@@ -24,8 +24,9 @@ class Home extends MY_Controller {
 	public function login(){
         $this->load->library('encryption');
 
-		$uname = $this->input->post('uname');
-		$pass = md5($this->input->post('pass'));
+		$uname  = $this->input->post('uname');
+        $pass   =  $this->input->post('pass');
+        $pass   =  base64_encode( $pass );
         // $pass = $this->encryption->encrypt($pass);
         // $pass = md5($pass);
         if($uname){
@@ -99,7 +100,8 @@ class Home extends MY_Controller {
 
     private function userRegistration($role){
         $uname = $this->input->post('uname');
-        $pass = md5($this->input->post('password'));
+        $pass =  $this->input->post('password');
+        $pass = base64_encode( uniqid() . $pass);
         $email = $this->input->post('email');
         $classcode = $this->input->post('qrCodetext');
         
@@ -371,6 +373,19 @@ class Home extends MY_Controller {
         
     }
 
+    public function forgotPassword(){
+        $input = $this->input->post('email_num');
+
+        
+    }
+
+
+    public function encrypt__(){
+		$this->load->library('encryption');
+		$t = 'testing1234';
+
+		echo base64_encode(  $t);
+	}
 
 
 }

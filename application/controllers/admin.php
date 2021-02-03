@@ -20,22 +20,84 @@ class Admin extends MY_Controller {
 	}
 
 	public function datatables(){
-		$data_pass = array(
+		$var = array(
 							'pagetitle' => 'Admin Datatables',
 							'pagesub'	=> 'List of data\'s in table format',
 							'nav_active' => 'datatable'
 						);
-		$this->load->template('admin/pages/datatables', $data_pass,false,'admin');
+		$studsArgs = array( 'select' => 'user_id,concat( ui_firstname, " ", ui_lastname ) as name,
+										ui_email,role,
+										application_status,
+										u.timestamp_created',
+							'from' => 'userinfo ui',
+							'join'	=> array( array( 'table'=> 'users u', 'cond' => 'u.user_id = ui.cred_id' ) ),
+							'where'	=> array(  array( 'field'	=> 'role','type' => 'wherein', 'value'=> array( 'teacher','student' )), )
+		);
+
+		$classArgs = array( 'select' => "c.class_id,
+										class_name,
+										class_code,
+										class_status,
+										code_status,
+										concat( class_sy_from, ' - ', class_sy_to ) as s_y,
+										c.timestamp_created as class_created,
+										concat( ui_firstname, ' ', ui_lastname ) as teachername,
+										(select count(cs_id) from li_class_students where class_id= c.class_id and admission_status = 1 ) as studentcount,
+										",
+							'from' => 'classes c',
+							'join'	=> array( array( 'table'=> 'userinfo ui', 'cond' => 'ui.cred_id = c.teacher_id' ) ),
+		);
+
+
+
+		$users = $this->prepare_query( $studsArgs )->result_array();
+		$classlist = $this->prepare_query( $classArgs )->result_array();
+
+		$users = array_map(function($a){
+			if( $a['role'] == 'teacher' ){
+				$args = array( 'select' => 'class_id,class_name',
+										'from' => 'classes',
+										'where'	=> array(  array( 'field'	=> 'teacher_id', 'value'=> $a['user_id']))
+				);
+
+				$a['classes'] = $this->prepare_query( $args )->result_array();
+			}else if( $a['role'] == 'student' ){ 
+				$args = array( 'select' => 'c.class_id,class_name',
+										'from' => 'class_students cs',
+										'join'	=> array( array( 'table' => 'classes c' , 'cond' => 'c.class_id = cs.class_id') ),
+										'where'	=> array(  array( 'field'	=> 'student_id', 'value'=> $a['user_id']))
+				);
+
+				$a['classes'] = $this->prepare_query( $args )->result_array();
+			}
+
+			return $a;
+		},$users);
+
+
+
+
+
+		$var['userlist'] =  $users;
+		$var['classlist'] =  $classlist;
+	
+
+
+		$this->load->template('admin/pages/datatables', $var,false,'admin');
 	} 
 
 	public function multimedia(){
-		$data_pass = array(
+		$var = array(
 							'pagetitle' => 'Admin Multimedia',
 							'pagesub'	=> 'List of data\'s in table format',
 							'nav_active' => 'multimedia'
 						);
+		
+		$args = array( 'from' => 'multimedia' );
+		$var['m'] = $this->prepare_query($args)->result_array();
+		
 
-		$this->load->template('admin/pages/multimedia', $data_pass, false,'admin');
+		$this->load->template('admin/pages/multimedia', $var , false,'admin');
 	}
 
 	public function settings(){
@@ -246,6 +308,40 @@ class Admin extends MY_Controller {
 
 	public function logout(){
         $this->logout_();
-    }
+	}
+	
+
+	public function checkAdmin(){
+		$data = $this->input->post('data');
+
+		$args = array(  'from' => 'users' , 
+						'where' => array( array('field' => 'pass', 'value'=> md5( $data ) ) ) );
+		
+		if( $this->prepare_query( $args )->num_rows()  > 0){
+			echo 1;
+		}else{
+			echo 0;
+		}
+		die();
+	}
+
+	public function getCredentials(){
+		
+		$this->load->library('encryption');
+		$d = $this->input->post('d');
+		
+		$args = array(  'select' => 'uname,pass',
+						'from' => 'users' , 
+						'where' => array( array('field' => 'user_id', 'value'=> $d ) ) );
+		$d = $this->prepare_query( $args )->result_array();
+		$d = $d[0];
+		$d['pass'] = base64_decode( $d['pass'] );
+		// $d['pass'] = substr($d['pass'], 13  );
+		
+		echo json_encode( $d );
+
+		die();
+	}
+
 
 }

@@ -54,3 +54,37 @@
 		</div>
 	</div>
 </div>
+
+
+
+
+
+
+<script>	
+		window.onload = function(){
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ["1900", "1950", "1999", "2050"],
+						datasets: [
+						{
+							label: "Successfull",
+							backgroundColor: "#3e95cd",
+							data: [133,221,783,2478]
+						}, {
+							label: "Failed",
+							backgroundColor: "#8e5ea2",
+							data: [408,547,675,734]
+						}
+						]
+					},
+					options: {
+						title: {
+						display: true,
+						text: 'Number of successful registrations per month over unsuccesful registrations'
+						}
+					}
+				});
+		}
+</script>
