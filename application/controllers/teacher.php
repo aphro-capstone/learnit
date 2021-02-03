@@ -1032,9 +1032,7 @@ class Teacher extends MY_Controller {
 	}
 
 	public function games($type){
-		if ($type=="typing-it" ){		
-			$this->load->view("shared/interactive/games/typing-it");
-		}
+		$this->games__( $type );
 	}
 	 
 	public function addGrade($type){

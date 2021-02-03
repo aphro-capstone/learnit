@@ -788,19 +788,34 @@
 <div class="modal fade" id="gamesinte" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xlg" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="border-bottom: none;">
-        <h5 class="modal-title"></h5>
+      <div class="modal-body p-0">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">  </div>
-      <div class="modal-footer" style="border-top: none;">
-        <div class="additionalButtons d-table full-width"></div>
+        <div id="game-container"></div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="multimedia" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xlg" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="multimedia-container">
+            <video preload="auto" controls="controls">
+                <source src="../assets/multimedia/A Brief History of Computer Viruses.mp4" type='video/mp4'>
+                <source src="media/why-autologel.webm" type='video/webm'>
+            </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="setGrade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

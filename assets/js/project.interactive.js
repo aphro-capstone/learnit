@@ -6,8 +6,10 @@ jQuery(function($){
 
 		if( $(this).attr('data-type') ) triggerType = $(this).attr('data-type'); 
 
-		$("#gamesinte").modal("show");
-		$('#gamesinte .modal-body').load( SITE_URL + USER_ROLE  +  '/games/' + triggerType);
+		console.log(SITE_URL + USER_ROLE  +  '/games/' + triggerType);
+
+		$("#gamesinte").modal({ backdrop : 'static', keyboard : false });
+		$('#game-container').load( SITE_URL + USER_ROLE  +  '/games/' + triggerType);
 
 
 
@@ -22,6 +24,11 @@ jQuery(function($){
 
 		document.getElementsByTagName('body')[0].appendChild(script);
 
+	});
+
+	$('.videobox').on('click',function(){
+		$('#multimedia').modal( { backdrop : 'static' , keyboard : false  } );
+		$('#multimedia video').play();	
 	});
 
 });

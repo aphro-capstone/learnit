@@ -513,6 +513,8 @@ header:not(.calendar-header){
         z-index: 999;
     position: fixed;
     top: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 
@@ -2951,6 +2953,52 @@ body.navbar-open .navmobile-overlay{
     background: #02ff5b;
     color: #000;
 }
+
+.panel-heading.has-ribbon-header{
+    height: 65px;
+}
+.panel .ribbon.title-ribbon:before{
+        position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    content: "";
+    left: 100%;
+    border-width: calc(2.5em - 3px)!important;
+    border-style: solid;
+    border-top-color: transparent!important;
+    border-left-color: #7997e1;
+    border-bottom-color: transparent!important;
+    border-right-color: transparent;
+    width: 0;
+}
+
+.panel .ribbon.title-ribbon:after{
+        content: "";
+    position: absolute;
+    width: 0;
+    border-width: 25px;
+    border-style: solid;
+    border-top-color: transparent!important;
+    border-left-color: transparent!important;
+    border-right-color: transparent!important;
+    left: -27px;
+    top: 36px;
+    z-index: 1;
+    border-bottom-color: #6783c8;
+    transform: rotate(-90deg);
+}
+
+.ribbon.left-ribbon.title-ribbon{
+        left: -9px;
+}
+
+.panel .ribbon.title-ribbon .content{
+        font-size: 2.5em;
+        font-weight: 700;
+}
+
+
 
 @media only screen and ( max-width: 990px ){
     body.login-page .navbar{

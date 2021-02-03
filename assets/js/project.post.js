@@ -131,6 +131,9 @@ var postItem = () => {
                         $(document).trigger('click');
 
                         $('#posts').prepend($(Response.newpost));
+
+                        $('#yourPosts textarea').val('');
+                        attachmentlist = [];
                     }else{
                         notify('error',Response.Error);
                     }

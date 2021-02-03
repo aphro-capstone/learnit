@@ -2,16 +2,43 @@
 
 body.activities {
     font-family: 'Raleway', sans-serif;
+
+
+}
+ 
+#picact{
     background-image: url(../../images/games/gamebg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: 
+    min-height: 200px;
+    margin-right: -20px;
+    margin-left: -20px;
+    background-position: center;
+    position: relative;
+
 
 }
 
+#picact .title{
+  padding: 110px;
+  font-size: 3em;
+  font-weight: 900;
+  position: relative;
+  z-index: 3;
+  padding-left: 0;
+  padding-bottom: 150px;
+}
+
+#picact .title span{
+  color: #fff;
+}
+
+
 .wrapper {
-	max-width: 1000px;
+	max-width: 100%;
 	margin: auto;
-	width: 300%;
+	width: 100%;
 	text-align: center;
 	padding: 5%;
   height: 100%;
@@ -22,15 +49,16 @@ body.activities {
 
 h1 {
   color: white;
-  font-family: 'Courier New';
+  font-family: 'Garamond';
   font-size: 50px;
+  font-weight: 700;
 }
 
 h1 + p {
 	margin-bottom: 5%;
   color: white;
   font-family: 'Courier New';
-  font-size: 20px;
+  font-size: 30px;
 
 }
 
@@ -88,7 +116,7 @@ button:active {
 
 .scoreWrap p, .scoreWrap span, .timeWrap p, .timeWrap span {
     font-size: 30px;
-    color: #FF7373;
+    color: #000;
 }
 
 .wordsWrap {
@@ -147,9 +175,14 @@ button:active {
 
 }
 
+
 .game-box {
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+        margin-bottom: 15px;
+    border: 1px solid #fff;
+    box-shadow: 2px 5px 8px #000;
 }
 
 .backtext .img-container{
@@ -163,9 +196,102 @@ button:active {
 }
 
 
+.videobox .backtext{
+  top: auto;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  position: absolute;
+}
+
+.videobox .backtext i{
+
+  color: #fffc;
+}
+
+.videobox .backtext span{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+
+
+#multimedia-container video{
+  width: 100%;
+}
+
 body.activities .container{
   position: relative;
   z-index: 4;
 }
 
- 
+ #picact + .container{
+  margin-top: -80px;
+ }
+
+ .panel{
+    padding: 15px 30px;
+}
+
+#multimedia button[data-dismiss="modal"],
+#gamesinte button[data-dismiss="modal"]{
+      position: absolute;
+    top: 15px;
+    right: 15px;
+        z-index: 99;
+}
+
+
+#typing-it-wrapper .scoreboard{
+      width: 175px;
+}
+
+
+#typing-it-wrapper{
+      background-image: url(../../images/games/type-it-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#typing-it-wrapper .scoreWrap{
+  position: relative;
+}
+
+#typing-it-wrapper .timeWrap{
+  position: relative;
+}
+
+#typing-it-wrapper .score-div{
+  position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 0;
+    color: #fff;
+}
+
+#typing-it-wrapper .time-div{
+  position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 0;
+    color: #fff;
+}
+
+
+
+@media screen and (max-width : 768px) {
+    
+    #gamesinte{
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #gamesinte .modal-dialog{
+      max-width: 100%!important;
+      width: 100%!important;
+    }
+}
