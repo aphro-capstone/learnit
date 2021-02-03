@@ -370,7 +370,7 @@ var showTables = function( table = '' ){
 							<td class="text-center"></td>\
 							<td class="text-center"></td>\
 							<td class="text-center"></td>\
-							<td class="teacher-td"></td>\
+							<td class="teacher-td has-selection"><div class="contain-select"></div></td>\
 							<td class="text-center"></td>\
 							<td></td>\
 							<td class="text-center"></td>\
@@ -395,10 +395,11 @@ var showTables = function( table = '' ){
 		availableteacherList.forEach(  (tl) => {
 			select.append('<option value="'+ tl.id +'"> '+ tl.name +' </option>');
 		});
-
+		el.find('td').eq(6).find('> div').append( select );
 		select.select2();
+		// select.select2('readonly',true);
 
-		el.find('td').eq(6).html( select );
+		
 
 		reassignbtn.on('click',function(){
 			let td = $(this).closest('tr').find('td').eq(6);

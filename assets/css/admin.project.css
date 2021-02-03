@@ -246,3 +246,25 @@ tr.hidden-row.visible td{
 td.activeEdit span.hiddentext{
     display: none;
 }
+
+td .select2-container{
+    width: 100%!important;
+}
+
+td .select2-container--default .select2-selection--single{
+    border-radius: 4px;
+    background-color: #7997e1;
+}
+
+td .select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: #fff;
+}
+td .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-top-color: #fff;
+}
+
+table tbody tr td.has-selection{
+    padding: 5px;
+}
+
+table td{ vertical-align: middle!important;}
