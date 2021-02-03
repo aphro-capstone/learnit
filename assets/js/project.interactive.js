@@ -26,4 +26,9 @@ jQuery(function($){
 
 	});
 
+	$('.videobox').on('click',function(){
+		$('#multimedia').modal( { backdrop : 'static' , keyboard : false  } );
+		$('#multimedia video').play();	
+	});
+
 });
