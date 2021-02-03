@@ -32,7 +32,7 @@
 					<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/score.jpg" alt="">
 				<div class="time-div">
 					<p class="mb-0">Time</p>
-					<span class="score">60</span>
+					<span class="time">60</span>
 				</div>
 			</div>
 		</div>
