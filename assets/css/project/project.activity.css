@@ -205,8 +205,9 @@ button:active {
 }
 
 .videobox .backtext i{
-
   color: #fffc;
+    font-size: 70px;
+    margin: auto;
 }
 
 .videobox .backtext span{
