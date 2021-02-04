@@ -37,7 +37,7 @@
 								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.png" alt="">
 						</div>
 						<div class="backtext">
-							<span> Guess IT </span>
+							<span> Checker </span>
 						</div>
 					</div>
 				</div>
