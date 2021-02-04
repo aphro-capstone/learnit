@@ -421,9 +421,21 @@ class Admin extends MY_Controller {
 		$classid = $this->input->post('classid');
 		$ntid = $this->input->post('NTid');
 		$ptid = $this->input->post('PTid');
+		$classname = $this->input->post('classname');
 
 
 		if( $this->ProjectModel->update( array( 'class_id' => $classid) , 'classes', array('teacher_id' => $ntid)) ){
+			
+			$reassignmentLogfields = array(
+								'classid' =>  $classid,
+								'new_teacher_id' =>  $ntid,
+								'prev_teacher_id' =>  $ptid,
+							);
+
+			$this->ProjectModel->insert_CI_Query( $reassignmentLogfields, 'class_teacher_transition_log' );
+			
+
+			$this->addnotificationLogs($ntid,'The class ' . $classname . ' has been reassigned to you.', 'reassignment');
 			$this->returnResponse('Successfuly reassigned class');
 		}else{
 			$this->returnResponse( null,'Failed to reassign class' );

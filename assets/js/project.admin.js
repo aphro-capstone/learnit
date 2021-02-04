@@ -335,7 +335,7 @@ var showTables = function( table = '' ){
 					if( R.Error == null){
 						notify( 'success', R.msg, () => {
 							window.location.reload();
-						},false);
+						});
 					}else{
 						notify( 'error', R.Error,undefined,false);
 					}
@@ -484,14 +484,14 @@ var showTables = function( table = '' ){
 
 	this.createClassListTR = (v) =>{
 		 
-		this.assignnewTeacher = function(classid,NTid){
-
+		this.assignnewTeacher = function(classid,NTid,classname){
+			
 			if( NTid == v.teacherid ) return;
 			$.ajax({
 				url: domainOrigin + 'admin/assignteacher',
 				type: 'post',
 				dataType : 'json',
-				data: {classid : classid ,NTid : NTid, PTid : v.teacherid},
+				data: {classid : classid ,NTid : NTid, PTid : v.teacherid, classname :classname },
 				success: function(R) {
 					if( R.Error == null){
 						notify( 'success', R.msg,undefined,false);
@@ -529,10 +529,9 @@ var showTables = function( table = '' ){
 		el.find('td').eq(8).html( moment(v.class_created).format('MMM DD, YYYY H:mm:ss a')  );
  
 		
-		
 		let select = $('<select class="select select2" disabled></select>');
 		availableteacherList.forEach(  (tl) => {
-			select.append('<option value="'+ tl.id +'"> '+ tl.name +' </option>');
+			select.append('<option value="'+ tl.id +'" '+ (v.teacherid == tl.id ? 'selected' : '')  +'  > '+ tl.name +' </option>');
 		});
 		el.find('td').eq(6).find('> div').append( select );
 		select.select2();  
@@ -556,7 +555,7 @@ var showTables = function( table = '' ){
 				if( td.hasClass('reassign') ){
 					$(this).html('<i class="fa fa-edit"></i> Reassign');
 					td.find('select').prop('disabled',true);
-					assignnewTeacher( v.class_id, select.val() );
+					assignnewTeacher( v.class_id, select.val(), v.class_name );
 				}else{
 					$(this).html('<i class="fa fa-save"></i> Assign new teacher');
 					td.find('select').prop('disabled',false);
@@ -580,8 +579,10 @@ var showTables = function( table = '' ){
 
 	users.forEach(el => {
 		if(el.role == 'teacher') {
-			i.createTeacherStudTR( el,i.tables.teachertable ); 
-			availableteacherList.push( { id : el.user_id,name: el.name, stat : el.application_status } );
+			i.createTeacherStudTR( el,i.tables.teachertable );
+			if(  el.user_status == 1){
+				availableteacherList.push( { id : el.user_id,name: el.name } );
+			} 
 		}
 		else  i.createTeacherStudTR ( el,i.tables.studtable );
 	});

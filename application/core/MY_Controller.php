@@ -1019,4 +1019,13 @@ class MY_Controller extends CI_Controller
    }
  
 
+   protected function addnotificationLogs($userid,$msg,$logtype){
+        $notificationlogs = array(
+            'user_id' =>  $userid,
+            'notification_msg' =>  $msg,
+            'log_type' =>  $logtype,
+        );
+
+        $this->ProjectModel->insert_CI_Query( $notificationlogs, 'user_utility_notification_logs' );
+   }
 }
