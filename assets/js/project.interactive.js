@@ -26,9 +26,20 @@ jQuery(function($){
 
 	});
 
+	$('#multimedia').on('hidden.bs.modal',function(){
+		$(this).find('video')[0].pause();
+		$(this).find('video').remove();
+	});
 	$('.videobox').on('click',function(){
+		let vidpath = SITE_URL + $(this).attr('data-src');
 		$('#multimedia').modal( { backdrop : 'static' , keyboard : false  } );
-		$('#multimedia video').play();	
+
+		let video = $('<video preload="auto" controls="controls" autoplay>\
+					<source src="'+ vidpath +'" type="video/mp4">\
+					<source src="media/why-autologel.webm" type="video/webm">\
+				</video>');
+		$('#multimedia #multimedia-container').append(video);
+		 
 	});
 
 	$('#gamesinte').on('hidden.bs.modal',function(){

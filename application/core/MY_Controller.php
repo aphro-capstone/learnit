@@ -763,35 +763,15 @@ class MY_Controller extends CI_Controller
    }
 
    protected function getActivities($game){
-    $dataPass = array (
-            'body_classes' => 'activities', 
-            'projectCss'	=> array(
-                                            'project.activity'
-            ),"projectScripts" => array('project.interactive')
-        ); 
-
-    $template = 'activities';
-
-    if( $game == 'typing-it' ){
-        $template = 'interactive/Games/typing-it';
-        $dataPass['projectScripts'][] = 'interactives/typeit';
-    }elseif ($game == 'quiz-it'){
-        $template = 'interactive/Games/quiz-it';
-        $dataPass ['projectScripts'][] ='interactives/project.guessinggame';
-        $dataPass['projectCss'][] = '../interactiveCSS/guessinggameCss';
-
-    }else if ( $game == 'scrabble-it' ){
-        $template = 'interactive/games/scrabble-it';
-        $dataPass['projectScripts'][] = 'interactives/project.guessinggame';
-        $dataPass['projectCss'][] = '../interactiveCSS/scrabbleCss';
-
-    }else if ( $game == 'hangman' ){
-        $template = 'interactive/games/hangman';
-        $dataPass['projectScripts'][] = 'interactives/project.guessinggame';
-        $dataPass['projectCss'][] = '../interactiveCSS/hangman';
-    }
-
-    $this->load->template( 'shared/' . $template,$dataPass);
+        $dataPass = array (
+                'body_classes' => 'activities', 
+                'projectCss'	=> array(
+                                                'project.activity'
+                ),"projectScripts" => array('project.interactive')
+            );  
+        $videosArgs = array( 'from' => 'multimedia' );
+        $dataPass['multimedia'] =$this->prepare_query($videosArgs)->result_array();
+    $this->load->template( 'shared/activities',$dataPass);
    }
 
 
