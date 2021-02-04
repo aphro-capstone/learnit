@@ -45,21 +45,24 @@ header .head-icon i:hover{
 }
 
 #sidenav{
-	width: 350px;
+    width: 310px;
+    min-width: 310px;
     background: #fff;
-    transition: margin-left .3s ease-in-out,left .3s ease-in-out,margin-right .3s ease-in-out,right .3s ease-in-out;
+    /* transition: margin-left .3s ease-in-out,left .3s ease-in-out,margin-right .3s ease-in-out,right .3s ease-in-out; */
     box-shadow: 1px 3px 6px #87878747;
 }
 
 .container-wrapper.opennav #sidenav{
-	margin-left: -350px;
+	margin-left: -310px;
 }
 
 #main-container{
-	position: relative;
+    position: relative;
+    width: calc( 100% - 310px );
 }
+
 .container-wrapper.opennav #main-container{
-	/*width: calc(100% - 285px);*/
+	width: 100%;
     /*left: 285px;*/
     transition: margin-left .3s ease-in-out,left .3s ease-in-out,margin-right .3s ease-in-out,right .3s ease-in-out;
 }
@@ -248,23 +251,50 @@ td.activeEdit span.hiddentext{
 }
 
 td .select2-container{
-    width: 100%!important;
+    width: calc(100% - 10px)!important;
+    height: calc(100% - 10px);
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 td .select2-container--default .select2-selection--single{
     border-radius: 4px;
     background-color: #7997e1;
+    height: 100%;
+    vertical-align: middle;
+    display: flex;
 }
 
 td .select2-container--default .select2-selection--single .select2-selection__rendered{
     color: #fff;
+    margin: auto;
+    margin-left: 0;
 }
 td .select2-container--default .select2-selection--single .select2-selection__arrow b{
     border-top-color: #fff;
 }
 
+td .select2-container--default .select2-selection__arrow{
+    top: calc(50% - 13px);
+}
+
+td .select2-container--default.select2-container--disabled .select2-selection--single{
+    background-color: #7997e191;
+    cursor: no-drop;
+}
+
 table tbody tr td.has-selection{
     padding: 5px;
+    position: relative;
+    min-width: 200px;
 }
 
 table td{ vertical-align: middle!important;}
+
+.dataTable-container{ overflow: auto;}
+td,th{margin: auto; white-space: nowrap;}
+td.actions buttons{
+    margin: auto;
+    white-space: nowrap;
+}

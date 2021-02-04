@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends MY_Controller {
 
-
 	public function __construct() {
         parent::__construct();
         $this->checkRole('admin');
@@ -28,7 +27,10 @@ class Admin extends MY_Controller {
 		$studsArgs = array( 'select' => 'user_id,concat( ui_firstname, " ", ui_lastname ) as name,
 										ui_email,role,
 										application_status,
-										u.timestamp_created',
+										user_status,
+										ui_guardian_phone,
+										u.timestamp_created,
+										u.datetime_inactive as inactive_active_datetime',
 							'from' => 'userinfo ui',
 							'join'	=> array( array( 'table'=> 'users u', 'cond' => 'u.user_id = ui.cred_id' ) ),
 							'where'	=> array(  array( 'field'	=> 'role','type' => 'wherein', 'value'=> array( 'teacher','student' )), )
@@ -39,7 +41,9 @@ class Admin extends MY_Controller {
 										class_code,
 										class_status,
 										code_status,
-										concat( class_sy_from, ' - ', class_sy_to ) as s_y,
+										ui.cred_id as teacherid,
+										class_sy_from,
+										class_sy_to,
 										c.timestamp_created as class_created,
 										concat( ui_firstname, ' ', ui_lastname ) as teachername,
 										(select count(cs_id) from li_class_students where class_id= c.class_id and admission_status = 1 ) as studentcount,
@@ -55,7 +59,7 @@ class Admin extends MY_Controller {
 
 		$users = array_map(function($a){
 			if( $a['role'] == 'teacher' ){
-				$args = array( 'select' => 'class_id,class_name',
+				$args = array( 'select' => 'class_id,class_name,class_status',
 										'from' => 'classes',
 										'where'	=> array(  array( 'field'	=> 'teacher_id', 'value'=> $a['user_id']))
 				);
@@ -327,6 +331,8 @@ class Admin extends MY_Controller {
 			if( $action == 'credentials' ){
 				$did = $this->input->post('did');
 				$this->getCredentials( $did );
+			}else if( $action == 'endschoolyear'){
+				$this->endSchoolYear();
 			}
 			echo 1;
 		}else{
@@ -409,6 +415,288 @@ class Admin extends MY_Controller {
 		}else{
 			$this->returnResponse('Failed to delete the video');
 		}
+	}
+
+	public function assignteacher(){
+		$classid = $this->input->post('classid');
+		$ntid = $this->input->post('NTid');
+		$ptid = $this->input->post('PTid');
+
+
+		if( $this->ProjectModel->update( array( 'class_id' => $classid) , 'classes', array('teacher_id' => $ntid)) ){
+			$this->returnResponse('Successfuly reassigned class');
+		}else{
+			$this->returnResponse( null,'Failed to reassign class' );
+		}
+	}
+
+	public function updateuser(){
+		$userid = $this->input->post('userid');
+		$stats = $this->input->post('stats');
+		$role = $this->input->post('role');
+
+		if( $stats == 1 ) $stats = 0;
+		else if( $stats == 0 ) $stats = 1;
+		$datetimeinactive = date_format(new Datetime(), 'Y-m-d H:i:s');
+
+
+
+		if( $this->ProjectModel->update( array( 'user_id' => $userid) , 'users', array('user_status' => $stats,'datetime_inactive' => $datetimeinactive )) ){
+
+			if( $role == 'student'){
+				$this->ProjectModel->update( array('student_id' => $userid) , 'class_students', array('admission_status' => 0));
+			}else{
+
+			}
+
+
+			$this->returnResponse('Successfuly updated user status');
+		}else{
+			$this->returnResponse( null,'Failed to reassign class' );
+		}
+	}
+	
+
+	private function createTeacherReport(){
+
+		
+		$studsArgs = array(
+						'select' => 'user_id,ui_firstname,ui_midname, ui_lastname,
+									ui_email,
+									user_status,
+									ui_guardian_phone,
+									u.timestamp_created',
+						'from' => 'userinfo ui',
+						'join'	=> array( array( 'table'=> 'users u', 'cond' => 'u.user_id = ui.cred_id' ) ),
+						'where'	=> array(  array( 'field'	=> 'role', 'value'=>'teacher' ), ) );
+
+		$teachers = $this->prepare_query( $studsArgs )->result_array();
+
+		$teachers = array_map(function($a){
+			$args = array( 'select' => 'class_id,class_name,class_status',
+										'from' => 'classes',
+										'where'	=> array(  array( 'field'	=> 'teacher_id', 'value'=> $a['user_id']))
+				);
+
+				$a['classes'] = $this->prepare_query( $args )->result_array();
+
+			return $a;
+		},$teachers);
+	
+
+		ob_start();    
+		$content="";
+		$normalout=true;
+
+		$header = array( 'ID','First Name', 'Middle Name', 'Last Name' ,'EMAIL', 'Registered Date', 'Contact', 'Status', '# of classes handled','# of active classes', 'Active Classes','All classes handled');
+		$header = implode("\t", $header);
+	 
+		// i guess if some condition is true...
+		
+		$content=ob_get_clean();
+		$normalout=false;
+		header( "Content-Type: application/vnd.ms-excel" );
+		header( "Content-disposition: attachment; filename=learnit_teachers_list.xls" );
+		echo $header. "\r\n";
+
+		foreach( $teachers as $teacher ){
+			$row = array();
+ 
+			$row[] =  $teacher['user_id'];
+			$row[] =  $teacher['ui_firstname'];
+			$row[] =  $teacher['ui_midname'];
+			$row[] =  $teacher['ui_lastname'];
+			$row[] =  $teacher['ui_email'];
+			$row[] =  date_format( new Datetime( $teacher['timestamp_created'] ), 'Y-m-d h:i:s'  );
+			$row[] =  $teacher['ui_guardian_phone'];
+			$row[] =  $teacher['user_status'] == '1' ? 'Active' : 'Inactive';
+			$row[] = count($teacher['classes']);
+
+			$activeClasses = 0;
+			$activeClasslist = array();
+			$allClassList = array();
+
+			if( count( $teacher['classes'] ) > 0 ){
+				foreach( $teacher['classes'] as $class ){
+					$allClassList[] = $class['class_name'];
+					if( $class['class_status'] == '1' ){
+						$activeClasslist[] = $class['class_name'];
+						$activeClasses++;
+					}
+				}
+			}
+			$row[] = $activeClasses;
+			$row[] = implode(', ', $activeClasslist);
+			$row[] = implode(', ', $allClassList);
+
+			echo implode("\t", $row) . "\r\n"; 
+		} 
+
+		die(); 
+	}
+
+	private function createStudReport(){
+		$studsArgs = array(
+			'select' => 'user_id,ui_firstname,ui_midname, ui_lastname,
+						ui_email,
+						user_status,
+						ui_guardian_phone,
+						u.timestamp_created,
+						ui_profile_data',
+			'from' => 'userinfo ui',
+			'join'	=> array( array( 'table'=> 'users u', 'cond' => 'u.user_id = ui.cred_id' ) ),
+			'where'	=> array(  array( 'field'	=> 'role', 'value'=>'student' ), ) );
+
+		$studs = $this->prepare_query( $studsArgs )->result_array();
+
+		$studs = array_map(function($a){
+						$args = array( 'select' => 'c.class_id,class_name,class_status',
+									'from' => 'class_students cs',
+									'join'	=> array( array( 'table' => 'classes c' , 'cond' => 'c.class_id = cs.class_id') ),
+									'where'	=> array(  array( 'field'	=> 'student_id', 'value'=> $a['user_id']))
+						);
+
+						$a['classes'] = $this->prepare_query( $args )->result_array();
+
+			return $a;
+		},$studs);
+
+
+		ob_start();    
+		$content="";
+		$normalout=true;
+
+		$header = array( 'ID','First Name', 'Middle Name', 'Last Name' ,'Status', 'Email', 'Registered Date', '# of active classes', 'Active Classes', 'Guardian contact','Guardian Name',);
+		$header = implode("\t", $header);
+
+		// i guess if some condition is true...
+
+		$content=ob_get_clean();
+		$normalout=false;
+		header( "Content-Type: application/vnd.ms-excel" );
+		header( "Content-disposition: attachment; filename=learnit_students_list.xls" );
+		echo $header. "\r\n";
+
+		foreach( $studs as $stud ){
+		$row = array();
+
+		$row[] =  $stud['user_id'];
+		$row[] =  $stud['ui_firstname'];
+		$row[] =  $stud['ui_midname'];
+		$row[] =  $stud['ui_lastname'];
+		$row[] =  $stud['user_status'] == '1' ? 'Active' : 'Inactive';
+		$row[] =  $stud['ui_email'];
+		$row[] =  date_format( new Datetime( $stud['timestamp_created'] ), 'Y-m-d h:i:s'  );
+		
+
+		$activeClasses = 0;
+		$activeClasslist = array();
+		$allClassList = array();
+
+		if( count( $stud['classes'] ) > 0 ){
+			foreach( $stud['classes'] as $class ){ 
+				if( $class['class_status'] == '1' ){
+					$activeClasslist[] = $class['class_name'];
+					$activeClasses++;
+				}
+			}
+		}
+		$row[] = $activeClasses;
+		$row[] = implode(', ', $activeClasslist); 
+		$row[] =  $stud['ui_guardian_phone'];
+
+		$profdata = json_decode( $stud['ui_profile_data'],true );
+		$row[] = $profdata['ui_guardian_name'];
+		echo implode("\t", $row) . "\r\n"; 
+		} 
+
+		die(); 
+	}
+
+	private function createClassListReport(){
+		$classArgs = array( 'select' => "c.class_id,
+										class_name,
+										class_code,
+										class_status,
+										code_status,
+										ui.cred_id as teacherid,
+										class_sy_from,
+										class_sy_to,
+										c.timestamp_created as class_created,
+										concat( ui_firstname, ' ', ui_lastname ) as teachername,
+										(select count(cs_id) from li_class_students where class_id= c.class_id and admission_status = 1 ) as studentcount,
+										",
+							'from' => 'classes c',
+							'join'	=> array( array( 'table'=> 'userinfo ui', 'cond' => 'ui.cred_id = c.teacher_id' ) ),
+		);
+
+		$classlist = $this->prepare_query( $classArgs )->result_array();
+ 
+		
+		ob_start();    
+		$content="";
+		$normalout=true;
+
+		$header = array( 'ID','Classname', 'Class Status', 'Code' ,'Code Status', 'School Year', 'Teacher', '# of students', 'Date Created');
+		$header = implode("\t", $header);
+
+		// i guess if some condition is true...
+
+		$content=ob_get_clean();
+		$normalout=false;
+		header( "Content-Type: application/vnd.ms-excel" );
+		header( "Content-disposition: attachment; filename=learnit_class_list.xls" );
+		echo $header. "\r\n";
+
+		foreach( $classlist as $class ){
+		$row = array();
+
+		$row[] =  $class['class_id'];
+		$row[] =  $class['class_name'];
+		$row[] =  $class['class_status'] == 1 ? 'Active' : 'Inactive/Archived';
+		$row[] =  $class['class_code'];
+		$row[] =  $class['code_status'] == 1 ? 'Open' : 'Closed';
+		$row[] =  $class['class_sy_from'] . ' - ' . $class['class_sy_to'];
+		$row[] =  $class['teachername'];
+		$row[] =  $class['studentcount'];
+		$row[] =  date_format( new Datetime( $class['class_created'] ), 'Y-m-d H:i:s'  );
+		 
+		echo implode("\t", $row) . "\r\n"; 
+		} 
+
+		die(); 
+	}
+
+	public function reportExcel($type){
+		if( $type == 'teacherlist' ){
+			$this->createTeacherReport();
+		}else if( $type == 'studlist' ){
+			$this->createStudReport();
+		}else if( $type == 'classlist' ){
+			$this->createClassListReport();
+		} 
+	}
+
+
+
+	private function endSchoolYear(){
+		$curdate = new Datetime();
+		$curmonth = date('m');
+		$curyear = date('Y');
+
+		$query_year_from;
+		$query_year_to;
+		
+		if( $curmonth > __SCHOOL_YEAR_MONTH_START__  ){
+			$query_year_to = $curyear + 1;
+			$query_year_from = $curyear;
+		}else{
+			$query_year_to = $curyear;
+			$query_year_from = $curyear - 1;
+		}
+ 
+		$whereArray = array( 'class_sy_from' => $query_year_from, 'class_sy_to' => $query_year_to );
+		$this->ProjectModel->update( $whereArray, 'classes', array( 'class_status' => 2 ));
 	}
 
 }

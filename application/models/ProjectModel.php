@@ -27,6 +27,7 @@ class ProjectModel extends CI_Model {
 
                 if( isset( $val['type'] ) ){
                     if( $val['type'] == 'wherein' ) $this->db->where_in( $val['field'], $val['value'] ); 
+                    else if( $val['type'] == 'or' ) $this->db->or_where( $val['field'] );
                 }else{
                     $this->db->where($val['field'],$val['value']);
                 }

@@ -77,7 +77,7 @@
 					<li class="<?php echo $nav_active == 'settings-nav' ? 'active' : ''; ?>"> <a href="<?=site_url();?>admin/settings">  <i class="fa fa-cogs"></i>  Settings </a> </li>
 				</ul>				
 			</div>
-			<div id="main-container" class="full-width ">
+			<div id="main-container" >
 				<div class="heading p-5">
 					<h3 class="page-title"><?=$pagetitle; ?></h3>
 					<p class="page-sub-title mb-5"><?=$pagesub;  ?></p>

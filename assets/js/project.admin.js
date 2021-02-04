@@ -179,11 +179,28 @@ jQuery( ($) => {
 	$('#uploadMultimedia').on('hidden.bs.modal',function(){
 		$(this).find('form').trigger('reset');
 		$(this).find('.uploadshow').html('');
+	}); 
+
+
+	$('#endschoolyear').on('click',function(){
+		$.confirm({
+			title: 'End School Year',
+			type : 'red',
+			content: 'This will archive all classes active this year. Are you sure you want to proceed ?',
+			buttons : {
+				confirm : function(){
+					checkadminPass( function(){
+						notify( 'success', 'Successfully ended school year.', () => {
+							window.location.reload();
+						} );
+					},'endschoolyear', null );
+				},
+				close : function(){}
+			}
+		});
 	});
-	
-
 	showTables();
-
+	
 	$('.dataTable-container table').DataTable();  
 });
 
@@ -303,68 +320,192 @@ var showTables = function( table = '' ){
 	this.reassignClass = function(val,id){
 
 	};
+	this.updateUserStats = (v,activeclasscount) => {
+		console.log(v);
+		let ajaxproceed = true;
 
-	this.createTeacherStudTR = (v,appendTo) => {
-		let el = $('<tr> <td></td> <td></td> <td></td><td class="text-center"></td> <td class="text-center"></td><td class="text-center position-relative"></td><td ></td><td class="text-center"></td> </tr>');
-		let appstatus = v.application_status;
-		let status = '-';
-
-		if( appstatus == 1 )  appstatus = 'Pending';
-		else if( appstatus == 2 ){
-			appstatus = 'Approved';
-			status = 'Active';
+		let msg = '';
+		let doAjx = function(){
+			$.ajax({
+				url: domainOrigin + 'admin/updateuser',
+				type: 'post',
+				dataType : 'json',
+				data: {userid : v.user_id ,stats : v.user_status,role : v.role},
+				success: function(R) {
+					if( R.Error == null){
+						notify( 'success', R.msg, () => {
+							window.location.reload();
+						},false);
+					}else{
+						notify( 'error', R.Error,undefined,false);
+					}
+			   },error:function(e){
+				   console.log(e.responseText);
+			   }
+		   });
 		}
-		else if( appstatus == 3 )  appstatus = 'Pending';
+		
+
+		if( v.user_status == 0 ){
+			doAjx();
+		}else{
+			if( v.role == 'teacher' ){
+				if( activeclasscount > 0 ){
+					msg = 'Cannot set teacher inactive because of active classes. Please reassign the classes first.';
+					ajaxproceed = false;
+				}
+			}else{
+				msg = 'Student will be withdrawn from all the classes he is in.'
+			}
+			
+
+			if( ajaxproceed ){
+				$.confirm({
+					title: 'Are you sure ?',
+					content : msg,
+					type : 'red',
+					icon : 'fa fa-exclamation-triangle',
+					buttons: {
+						confirm: function () {
+							doAjx(); 
+						},
+						cancel: function () {  }
+					}
+				}); 
+			}else{
+				$.confirm({
+					title : 'Notification',
+					content : msg,
+					type : 'red',
+					icon : 'fa fa-exclamation-triangle'
+				});
+			}
+			
+		}
 
 
+		
+	}
 
-
-
+	this.createTeacherStudTR = (v,appendTo) => { 
+		 
+		
+		
+		let el = $('<tr>\
+						<td></td>\
+						<td></td>\
+						<td></td>\
+						<td class="text-center"></td>\
+						<td class="text-center"></td>\
+						<td class="text-center"></td>\
+						<td class="text-center position-relative"></td>\
+						'+ ( v.role == 'teacher' ? '<td class="position-relative text-center"></td>' :'' )  +'\
+						<td ></td>\
+						<td > </td>\
+						<td class="text-center"></td></tr>');
+ 
+ 
 		el.find('td').eq(0).text( v.user_id );	
 		el.find('td').eq(1).text( v.name );	
 		el.find('td').eq(2).text( v.ui_email );	
-		el.find('td').eq(3).text( status );	
-		el.find('td').eq(4).text( appstatus );	
-		el.find('td').eq(5).html( v.classes.length  );
+		el.find('td').eq(3).text( v.ui_guardian_phone );	
+		el.find('td').eq(4).text( v.user_status == 1 ? 'Active' : 'Inactive' );	
+		el.find('td').eq(5).text( v.application_status == 1 ? 'Pending' : 'Approved' );	
+		el.find('td').eq(6).html( v.classes.length  );
 	
-	 
+		let td7 = el.find('td').eq(7);
+		let td8 = el.find('td').eq(8);
+		let td9 = el.find('td').eq(9);
+		let activeclasscount = 0;
+
+		if( v.role == 'teacher' ){
+			
+			el.find('td').eq(7).text(activeclasscount );
+			td7 = el.find('td').eq(8);
+			td8 = el.find('td').eq(9);
+			td9 = el.find('td').eq(10); 
+		}
+
+
 		if( v.classes.length > 0 ){
 			let viewClasses = $('<span class="btn btn-xs btn-primary pull-right tooltip-trigger"> <i class="fa fa-info"></i> </span>')
 			let allClasses = $('<ul class="all-classes custom-tooltip"></ul>');
+			
+			let viewClassesACTIVE = $('<span class="btn btn-xs btn-primary pull-right tooltip-trigger"> <i class="fa fa-info"></i> </span>')
+			let allClassesACTIVE = $('<ul class="all-classes custom-tooltip"></ul>');
+			
 			v.classes.forEach( ee => {
 				allClasses.append('<li>'+ ee.class_name +'</li>');
+				if( ee.class_status == 1 ){
+					activeclasscount++;
+					allClassesACTIVE.append('<li>'+ ee.class_name +'</li>');
+				}
 			});
 
 			viewClasses.append( allClasses );
-	
-			el.find('td').eq(5).append( viewClasses );
-		}
+			viewClassesACTIVE.append( allClassesACTIVE );
+			el.find('td').eq(6).append( viewClasses );
 			
+			if( v.role == 'teacher' ){
+				el.find('td').eq(7).text( activeclasscount )
+				el.find('td').eq(7).append( viewClassesACTIVE );
+			}
+		} 
+
+		
 
 
-
-		el.find('td').eq(6).text( moment( v.timestamp_created ).format('MMM DD, YYYY H:mm:ss a') );	
+ 
+		td7.text( moment( v.timestamp_created ).format('MMM DD, YYYY h:mm:ss a') );	
+		td8.text( moment( v.inactive_active_datetime ).format('MMM DD, YYYY h:mm:ss a') );	
 		 
 		credbtn = $('<button class="btn btn-xs btn-info btn-3d"> <i	class="fa fa-lock"> </i> Login Creds </button>');
-		viewallinfo = $('<button class="btn btn-xs btn-danger ml-1 btn-3d"> <i class="fa fa-edit"></i> Change Status </button>');
-
 		credbtn.on('click',function(){
 			checkadminPass( (d) => {
 				i.getCredentials( v ,d );
 			}, 'credentials', v.user_id );
+		});	
+
+		if( v.user_status == 1 ){
+			changeStat = $('<button class="btn btn-xs btn-danger ml-1 btn-3d"> <i class="fa fa-edit"></i> Set Inactive </button>');
+		}else{
+			changeStat = $('<button class="btn btn-xs btn-primary ml-1 btn-3d"> <i class="fa fa-edit"></i> Set Active </button>');
+		}
+
+		changeStat.on('click',function(){
+			updateUserStats(v,activeclasscount);
 		});
 
 
-		el.find('td').eq(7).append( credbtn);	 
-		el.find('td').eq(7).append( viewallinfo);	 
-
-
+		td9.append( credbtn);
+		td9.append( changeStat);
 		appendTo.append(el); 
 	};
 
 	this.createClassListTR = (v) =>{
+		 
+		this.assignnewTeacher = function(classid,NTid){
+
+			if( NTid == v.teacherid ) return;
+			$.ajax({
+				url: domainOrigin + 'admin/assignteacher',
+				type: 'post',
+				dataType : 'json',
+				data: {classid : classid ,NTid : NTid, PTid : v.teacherid},
+				success: function(R) {
+					if( R.Error == null){
+						notify( 'success', R.msg,undefined,false);
+					}else{
+						notify( 'error', R.Error,undefined,false);
+					}
+			   },error:function(e){
+				   console.log(e.responseText);
+			   }
+		   });
+		};
+
 		this.el = $(  '<tr>\
-							<td></td>\
+							<td class="text-center"></td>\
 							<td></td>\
 							<td class="text-center"></td>\
 							<td class="text-center"></td>\
@@ -373,60 +514,66 @@ var showTables = function( table = '' ){
 							<td class="teacher-td has-selection"><div class="contain-select"></div></td>\
 							<td class="text-center"></td>\
 							<td></td>\
-							<td class="text-center"></td>\
+							<td class="text-center actions"><div class="d-flex"></div></td>\
 						</tr>' ); 
 
 
 		el.find('td').eq(0).text( v.class_id );	
 		el.find('td').eq(1).text( v.class_name );	
-		el.find('td').eq(2).text( v.class_status );	
+		el.find('td').eq(2).html( v.class_status == 1 ? '<span class="open"> Active </span>' : '<span class="closed"> Inactive/Archived </span>' );	
 		el.find('td').eq(3).text( v.class_code );	
-		el.find('td').eq(4).text( v.code_status );	
-		el.find('td').eq(5).text( v.s_y );	
+		el.find('td').eq(4).html( v.code_status == 1 ? '<span class="open"> Open </span>' : '<span class="closed"> Closed </span>' );	
+		el.find('td').eq(5).text( v.class_sy_from + ' - ' + v.class_sy_to );	
 		
 		el.find('td').eq(7).text( v.studentcount );	
 		el.find('td').eq(8).html( moment(v.class_created).format('MMM DD, YYYY H:mm:ss a')  );
-
-
-		changestatusBtn = $('<button class="btn btn-danger btn-xs btn-3d" > <i class="fa fa-edit"></i> Change Class status </button>');
-		reassignbtn = $('<button class="btn btn-warning btn-xs btn-3d mr-1" > <i class="fa fa-edit"></i> <span>Reassign</span> </button>');
+ 
 		
-		let select = $('<select class="select select2"></select>');
+		
+		let select = $('<select class="select select2" disabled></select>');
 		availableteacherList.forEach(  (tl) => {
 			select.append('<option value="'+ tl.id +'"> '+ tl.name +' </option>');
 		});
 		el.find('td').eq(6).find('> div').append( select );
-		select.select2();
-		// select.select2('readonly',true);
+		select.select2();  
 
 		
+		let sy_start_month = 8;
+		let sy_end_month = 6;
+		let curDate = new Date();
+		let curMonth = curDate.getMonth();
+		let curYear = curDate.getFullYear();
+		let currentSY = false; 
 
-		reassignbtn.on('click',function(){
-			let td = $(this).closest('tr').find('td').eq(6);
-			if( $(this).text().trim() == 'Save New Assignment' ){
-				$(this).find('span').text('Reassign');
-				
-
-				let val = td.find('select').val();
-				td.find('select').remove();
-				td.find('.select2-container').remove();
-				td.removeClass('activeEdit');
+		if( (curYear == v.class_sy_from && curMonth >= sy_start_month) 
+			|| curYear == v.class_sy_to && curMonth <= sy_end_month  )  currentSY = true;
 
 
-
-			}else{
-				$(this).find('span').text('Save New Assignment');
-				td.addClass('activeEdit').append(select);
-				
-				
-			}
-			
-
-			
-		});
-
-		el.find('td').eq(9).append(reassignbtn);
-		el.find('td').eq(9).append(changestatusBtn);
+		if( v.class_status == 1 && currentSY  ){
+			reassignbtn = $('<button class="btn btn-warning btn-xs btn-3d mr-2 m-auto" > <i class="fa fa-edit"></i> <span>Reassign</span> </button>');
+			reassignbtn.on('click',function(){
+				let td = $(this).closest('tr').find('td').eq(6);
+				if( td.hasClass('reassign') ){
+					$(this).html('<i class="fa fa-edit"></i> Reassign');
+					td.find('select').prop('disabled',true);
+					assignnewTeacher( v.class_id, select.val() );
+				}else{
+					$(this).html('<i class="fa fa-save"></i> Assign new teacher');
+					td.find('select').prop('disabled',false);
+					
+				}
+				td.toggleClass('reassign');
+			});
+	
+			el.find('td').eq(9).find('>div').append(reassignbtn);
+		} 
+		
+		// if( currentSY ){
+		// 	changestatusBtn = $('<button class="btn btn-danger btn-xs btn-3d m-auto" > <i class="fa fa-edit"></i> Change Class status </button>');
+		// 	el.find('td').eq(9).find('>div').append(changestatusBtn);
+		// }
+ 
+		
 
 		i.tables.classtable.append( el );
 	};

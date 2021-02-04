@@ -101,45 +101,20 @@ class Home extends MY_Controller {
     private function userRegistration($role){
         $uname = $this->input->post('uname');
         $pass =  $this->input->post('password');
-        $pass = base64_encode( uniqid() . $pass);
+        $pass = base64_encode( $pass);
         $email = $this->input->post('email');
         $classcode = $this->input->post('qrCodetext');
         
         $dataSet = array( 'uname' => $email,  'pass' => $pass, 'role' => $role );
         $args = array(
                     'select'    => '*',
-                    'from'      => 'users',
+                    'from'      => 'users u',
                     'where'     => array(   array( 'field' => 'uname', 'value'  =>  $email ))
                     );
 
         if($role == 'student'){ 
             $dataSet['uname'] = $uname;
-            // $dataSet['application_status'] = 2;
             $args['where'][0]['value'] = $uname;
-
-            //  Check the classcode first before proceeding
-            // Get Class ID from classcode START
-            // $classArgs = array(
-            //                 'select'    => 'class_id,class_name,ui_email',
-            //                 'from'      => 'classes as c',
-            //                 'join'      => array( array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = c.teacher_id') ),
-            //                 'where'     => array(   
-            //                                     array( 'field' => 'class_code', 'value'  =>  $classcode ),
-            //                                     array( 'field' => 'class_status', 'value'  =>  1 ),
-            //                                 )
-            //             );
-
-
-            // $classInfo = $this->prepare_query( $classArgs );
-            // // Get Class ID from classcode END
-
-            // if( $classInfo->num_rows() == 0 ){
-            //     echo json_encode( array( 'type' => 'error', 'msg' => 'Class code invalid! Either it does not exist or it has been closed already. Kindly try again or ask you teacher for verification of the code.' ) );
-            //     return;
-            // }else{
-                // $classInfo = $classInfo->result_array()[0];
-            // }
-
         }
 
         
@@ -151,6 +126,7 @@ class Home extends MY_Controller {
                                  ),
                                  array(),
                                  TRUE);
+        
         if($t > 0){
 
             $newRecord = $this->prepare_query(  $args )->result_array()[0];
@@ -197,70 +173,70 @@ class Home extends MY_Controller {
                 }
             }
         }else{
-            echo json_encode( array( 'type' => 'error', 'msg' => 'Sorry, registration failed. Email/username is already registered' ) );
+            echo json_encode( array( 'type' => 'error', 'msg' => 'Sorry, registration failed. Email/Username is already registered' ) );
         }
 
     }
 
     private function addStudentInfo($id,$vcode){
-        $fname  = $this->input->post('fname');
-        $lname = $this->input->post('lname');
+        $fname  = strtolower( $this->input->post('fname'));
+        $lname = strtolower( $this->input->post('lname'));
         $guardianphone = $this->input->post('guardianphone');
         $guardianname = $this->input->post('guardianname');
         $email = $this->input->post('email');
-
-       
-
-
-        // for Userinfo table
-
-
-
-        $userProfileData = array( 
-                            'ui_guardian_phone' =>  $guardianphone,
-                            'ui_guardian_name'  =>  $guardianname);
-
-        $DTS_1 = array(
-                        'cred_id'               => $id,
-                        'ui_firstname'          => $fname,
-                        'ui_lastname'           => $lname,
-                        'ui_profile_data'       => json_encode($userProfileData),
-                        'ui_email'              => $email,
-        );
-        // // for Class Students table
-        // $DTS_2 = array(
-        //                 'student_id'    => $id,
-        //                 'class_id'    => $classInfo['class_id'],
-
-        // );
-
-        $this->ProjectModel->insert_CI_Query( $DTS_1, 'userinfo');
-        // $this->ProjectModel->insert_CI_Query( $DTS_2, 'class_students');
-
-        $err = [] ;
-
-        if( !( is_bool( $msg ) && $msg ) )    $err[] = $msg; 
-
-        if( !( is_bool( $email ) && $email ) )   $err[] = $email; 
         
-        if( !empty( $err ) ){
-            $err = implode(' ; ', $err);
-        }else{ $err = null; }
-
-        echo json_encode( array( 'type' => 'success', 'msg' => 'Check your guardian\'s mobile/email for the verification code.', 'error' => $err,'time'=> 3000 ) );
-
-        // Send Message
-        // $SMSMESSAGE = 'Mr./Ms. ' . ucwords($fname . ' ' . $lname ) . ' has successfully registered to LearnIT as a student.';
-        $SMSMESSAGE = 'This is from LearnIT. Use this key to verify account : '. $vcode . '.'; 
-        
-        $msg = $this->sendSMS($guardianphone, $SMSMESSAGE);  //  ALREADY WORKING !!  UNCOMMENT TO CHECK/   Commented to prevent from spending the credits. 
-        
-        // Send Email
-        if( isset($email) ){
-            $email = $this->sendStudentVerification( $email, array( 'code' => $vcode) );
-        }
-        // $email = $this->sendNewStudentEmail( array( 'fname'  => $fname, 'lname'  => $lname, 'classname'  => $classInfo['class_name']), $classInfo['ui_email'] );
+        $args = array( 
+            'from'      => 'userinfo',
+            'where'     => array(   
+                                array( 'field' => 'ui_firstname', 'value'  =>  $fname ),
+                                array( 'field' => 'ui_lastname', 'value'  =>  $lname ), 
+                            )
+            );
          
+        $t = $this->prepare_query( $args )->num_rows();
+
+        if( $t == 0 ){
+            
+            $userProfileData = array( 'ui_guardian_name'  =>  $guardianname);
+
+            $DTS_1 = array(
+                            'cred_id'               => $id,
+                            'ui_firstname'          => $fname,
+                            'ui_lastname'           => $lname,
+                            'ui_profile_data'       => json_encode($userProfileData),
+                            'ui_email'              => $email,
+                            'ui_guardian_phone'     => $guardianphone
+            );
+            
+
+            $this->ProjectModel->insert_CI_Query( $DTS_1, 'userinfo');
+            $err = [] ;
+
+            if( !empty( $err ) ){
+                $err = implode(' ; ', $err);
+            }else{ $err = null; }
+
+            echo json_encode( array( 'type' => 'success', 'msg' => 'Check your guardian\'s mobile/email for the verification code.', 'error' => $err,'time'=> 3000 ) );
+
+            // Send Message
+            // $SMSMESSAGE = 'Mr./Ms. ' . ucwords($fname . ' ' . $lname ) . ' has successfully registered to LearnIT as a student.';
+            $SMSMESSAGE = 'This is from LearnIT. Use this key to verify account : '. $vcode . '.'; 
+            
+            $msg = $this->sendSMS($guardianphone, $SMSMESSAGE);  //  ALREADY WORKING !!  UNCOMMENT TO CHECK/   Commented to prevent from spending the credits. 
+            
+            // Send Email
+            if( isset($email) ){
+                $email = $this->sendStudentVerification( $email, array( 'code' => $vcode) );
+            }
+            
+            die();
+        }else{
+            echo json_encode( array( 'type' => 'error', 'msg' => 'Student is already registered. Contact your teacher if you forgot your password.' ) );
+            $this->ProjectModel->delete( $id, 'user_id', 'users') ;
+            die();
+        }
+        
+
     }
 
     public function sendEmailVerificaiton($emailReciever = '', $content = array() ){
