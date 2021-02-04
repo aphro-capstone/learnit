@@ -742,6 +742,10 @@ class Student extends MY_Controller {
 		return $this->_getDueTasks('shared/side-due-task/side-due-template',$classid);
 	}  
 
+	public function games($type){
+		$this->games__( $type );
+	}
+
  
 }
 
