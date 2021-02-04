@@ -103,10 +103,24 @@ const typeit = new Type_it();
 
 jQuery(function($){
     $(document).on('click','button.start', () => {
-        if( $('select[name="difficulty"]').val() == '' ){
+        if( $('#typing-it-wrapper select[name="difficulty"]').val() == '' ){
             notify('error','Please Select a difficulty first',undefined,false);
             return;
         }
-        typeit.start( $('select[name="difficulty"]').val() );
+        $("#typing-it-wrapper").addClass("gamestart");
+        console.log( $('#typing-it-wrapper select[name="difficulty"]').val() );
+        typeit.start( $('#typing-it-wrapper select[name="difficulty"]').val() );
     });
 });
+
+
+
+// function startbtn(){
+//     var x = document.getElementById("custom-select");
+//     if (x.style.display === "none"){
+//         x.style.display = "block";
+//     }else{
+//         x.style.display = "none";
+//     }
+
+// }

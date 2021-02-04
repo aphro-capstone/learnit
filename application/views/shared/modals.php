@@ -806,10 +806,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div id="multimedia-container">
-            <video preload="auto" controls="controls">
+            <!-- <video preload="auto" controls="controls">
                 <source src="../assets/multimedia/A Brief History of Computer Viruses.mp4" type='video/mp4'>
                 <source src="media/why-autologel.webm" type='video/webm'>
-            </video>
+            </video> -->
         </div>
       </div>
     </div>

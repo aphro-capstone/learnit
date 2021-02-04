@@ -31,4 +31,8 @@ jQuery(function($){
 		$('#multimedia video').play();	
 	});
 
+	$('#gamesinte').on('hidden.bs.modal',function(){
+		$('#gamescript').off().remove();
+	});
+
 });
