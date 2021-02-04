@@ -1,6 +1,6 @@
 /*----------- Game State Data ----------*/
 
-const board = [
+var board = [
     null, 0, null, 1, null, 2, null, 3,
     4, null, 5, null, 6, null, 7, null,
     null, 8, null, 9, null, 10, null, 11,
@@ -20,12 +20,12 @@ let findPiece = function (pieceId) {
 };
 
 // DOM referenes
-const cells = document.querySelectorAll("td");
+var cells = document.querySelectorAll("td");
 let redsPieces = document.querySelectorAll("p");
 let blacksPieces = document.querySelectorAll("span")
-const redTurnText = document.querySelectorAll(".red-turn-text");
-const blackTurntext = document.querySelectorAll(".black-turn-text");
-const divider = document.querySelector("#divider")
+var redTurnText = document.querySelectorAll(".red-turn-text");
+var blackTurntext = document.querySelectorAll(".black-turn-text");
+var divider = document.querySelector("#divider")
 
 // player properties
 let turn = true;

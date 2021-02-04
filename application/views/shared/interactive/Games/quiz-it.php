@@ -1,6 +1,5 @@
 <link rel="stylesheet" type="text/css" href="<?=site_url();?>assets/css/interactiveCSS/quiz-it.css"/>
-
-<main>
+<div class="wrapper" id="quiz-it">
     <div class="red-turn-text mobile">
         Reds turn
     </div>
@@ -97,5 +96,5 @@
     </div>
     <div class="black-turn-text mobile">
         Blacks turn
-    </div>
-</main>
+    </div> 
+</div>

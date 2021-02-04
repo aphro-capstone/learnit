@@ -2,54 +2,53 @@
     margin: auto;
 }
 
-main {
+#quiz-it {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 100vh;
 }
 
-div {
+#quiz-it div {
     display: flex;
     justify-content: space-between;
 }
 
-.mobile {
+#quiz-it .mobile {
     display: none;
 }
 
-.desktop {
+#quiz-it .desktop {
     margin: 0;
     width: 100%;
 }
 
-.noPieceHere {
+#quiz-it .noPieceHere {
     background-color: #F0D2B4;
 }
 
-td {
+#quiz-it td {
     text-align: center;
     background-color: #BA7A3A;
     width: 65px;
     height: 65px;
 }
 
-.red-turn-text {
+#quiz-it .red-turn-text {
     text-align: center;
     color: black;
     font-family: "open sans";
     font-size: 55px;
 }
 
-.black-turn-text {
+#quiz-it .black-turn-text {
     text-align: center;
     font-family: "open sans";
     font-size: 55px;
     color: lightgray;
 }
 
-.black-piece {
+#quiz-it .black-piece {
     width: 40px;
     height: 40px;
     padding: 12px;
@@ -59,7 +58,7 @@ td {
     margin: auto;
 }
 
-.red-piece {
+#quiz-it .red-piece {
     width: 40px;
     height: 40px;
     padding: 12px;
@@ -69,65 +68,65 @@ td {
     margin: auto;
 }
 
-.king.red-piece {
+#quiz-it .king.red-piece {
     background-color: orange;
 }
 
-.king.black-piece {
+#quiz-it .king.black-piece {
     background-color: purple;
 }
 
-p {
+#quiz-it p {
     display: inline-block;
 }
 
-#divider {
+#quiz-it #divider {
     font-size: 90px;
     margin-left: 15px;
     margin-right: 15px;
 }
 
-span {
+#quiz-it span {
     display: inline-block;
 }
 
 @media screen and (max-width: 560px) {
-    .red-piece {
+    #quiz-it .red-piece {
         height: 4.5vw;
         width: 4.5vw;
     }
 
-    .black-piece {
+    #quiz-it .black-piece {
         height: 4.5vw;
         width: 4.5vw;
     }
 
-    td {
+    #quiz-it td {
         width: 12vw;
         height: 12vw;
     }
 
-    .red-turn-text {
+    #quiz-it .red-turn-text {
         font-size: 40px;
     }
     
-    .black-turn-text {
+    #quiz-it .black-turn-text {
         font-size: 40px;
     }
 
-    table {
+    #quiz-it table {
         margin: 0;
     }
 
-    .mobile {
+    #quiz-it .mobile {
         display: block;
     }
 
-    .desktop {
+    #quiz-it .desktop {
         display: none;
     }
 
-    .red-turn-text {
+    #quiz-it .red-turn-text {
         -webkit-transform:rotate(-180deg);
         -moz-transform:rotate(-180deg);
         -o-transform:rotate(-180deg);
@@ -137,45 +136,45 @@ span {
 }
 
 @media screen and (max-width: 380px) {
-    .red-piece {
+    #quiz-it .red-piece {
         height: 3vw;
         width: 3vw;
     }
 
-    .black-piece {
+    #quiz-it .black-piece {
         height: 3vw;
         width: 3vw;
     }
 }
 
 @media screen and (max-width: 345px) {
-    .red-piece {
+    #quiz-it  .red-piece {
         height: 2.5vw;
         width: 2.5vw;
     }
 
-    .black-piece {
+    #quiz-it  .black-piece {
         height: 2.5vw;
         width: 2.5vw;
     }
 }
 
 @media screen and (max-width: 300px) {
-    .red-piece {
+    #quiz-it .red-piece {
         height: 1.5vw;
         width: 1.5vw;
     }
 
-    .black-piece {
+    #quiz-it .black-piece {
         height: 1.5vw;
         width: 1.5vw;
     }
 
-    .red-turn-text {
+    #quiz-it .red-turn-text {
         font-size: 35px;
     }
     
-    .black-turn-text {
+    #quiz-it .black-turn-text {
         font-size: 35px;
     }
 }
