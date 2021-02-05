@@ -98,7 +98,7 @@
 			</div>
 		</div>
 		<div class="panel-content mt-4">
-			<div class="row">
+			<div class="row" id="videosContainer">
 				<?php foreach($multimedia as $media):  ?>
 					<div class="col-sm-12 col-md-4 col-lg-4">
 						

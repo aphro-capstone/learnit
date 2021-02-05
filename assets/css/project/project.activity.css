@@ -10,7 +10,7 @@ body.activities {
     background-image: url(../../images/games/gamebg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: 
+    background-position: center;
     min-height: 200px;
     margin-right: -20px;
     margin-left: -20px;
@@ -73,7 +73,7 @@ h1 + p {
 
 /*.bg {
 	background-color: #04AF71;*/
-}
+/* } */
 
 button {
    border: none;
@@ -306,6 +306,18 @@ body.activities .container{
 
 #typing-it-wrapper.gamestart .outerWrap{
   display: block;
+}
+
+
+#multimedia button.close,
+#gamesinte button.close
+{
+  padding: 0px;
+  color: #fff;
+  font-size: 65px;
+  opacity: 1;
+  top: 0;
+  box-shadow: none;
 }
 
 

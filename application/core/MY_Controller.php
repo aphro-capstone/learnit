@@ -766,8 +766,14 @@ class MY_Controller extends CI_Controller
         $dataPass = array (
                 'body_classes' => 'activities', 
                 'projectCss'	=> array(
-                                                'project.activity'
-                ),"projectScripts" => array('project.interactive')
+                                        'project.activity',
+                                        '../../plugins/slick-1.8.1/slick'
+
+                                ),
+                "projectScripts" => array(
+                                        'project.interactive',
+                                        '../plugins/slick-1.8.1/slick.min'
+                )
             );  
         $videosArgs = array( 'from' => 'multimedia' );
         $dataPass['multimedia'] =$this->prepare_query($videosArgs)->result_array();

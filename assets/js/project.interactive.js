@@ -46,4 +46,11 @@ jQuery(function($){
 		$('#gamescript').off().remove();
 	});
 
+	console.log(1);
+	$('#videosContainer').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3
+	  });
+
 });
