@@ -767,8 +767,8 @@ class MY_Controller extends CI_Controller
                 'body_classes' => 'activities', 
                 'projectCss'	=> array(
                                         'project.activity',
-                                        '../../plugins/slick-1.8.1/slick'
-
+                                        '../../plugins/slick-1.8.1/slick',
+                                        '../../plugins/slick-1.8.1/slick-theme'
                                 ),
                 "projectScripts" => array(
                                         'project.interactive',
@@ -879,7 +879,10 @@ class MY_Controller extends CI_Controller
                 'select'    => 'tsk_title,tsk_id,tsk_duedate,tsk_status,tsk_type, tsk_type,
                                  (Select count(ts_id) from li_task_submissions as ts where ts.task_id = tsk_id) as sub_count',
                 'from'      => 'tasks as tsk',
-                'where'     => array()
+                'where'     => array( 
+                                    array( 'field' => 'tsk_duedate >= DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY)' ),
+                                    array( 'field' => 'tsk_duedate <= DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY) , INTERVAL 1 week)' ),
+                                    )
        );
 
         if( getRole() == 'teacher' ){
@@ -903,7 +906,7 @@ class MY_Controller extends CI_Controller
         $ret['week_end'] = $dto->format('Y-m-d 23:59:59');
  
         $res = $this->prepare_query($args)->result_array();
- 
+        
         $res = array_map(function($a){
             $assignee = array(
                         'select'	=> 'class_name',

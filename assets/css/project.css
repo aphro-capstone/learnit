@@ -474,7 +474,7 @@ div.selection div.option .text h4{
 }
 
 #main-content{
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 #main-content.show-focused{
@@ -2996,6 +2996,11 @@ body.navbar-open .navmobile-overlay{
 .panel .ribbon.title-ribbon .content{
         font-size: 2.5em;
         font-weight: 700;
+}
+
+.slick-track .slick-slide{
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 

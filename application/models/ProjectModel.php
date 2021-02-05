@@ -24,12 +24,15 @@ class ProjectModel extends CI_Model {
         // Check if there is conditional select where args
         if (  isset($args['where'])){
             foreach ($args['where'] as $where => $val){
-
-                if( isset( $val['type'] ) ){
-                    if( $val['type'] == 'wherein' ) $this->db->where_in( $val['field'], $val['value'] ); 
-                    else if( $val['type'] == 'or' ) $this->db->or_where( $val['field'] );
+                if( !isset($val['value']) ){
+                    $this->db->where( $val['field'] );
                 }else{
-                    $this->db->where($val['field'],$val['value']);
+                    if( isset( $val['type'] ) ){
+                        if( $val['type'] == 'wherein' ) $this->db->where_in( $val['field'], $val['value'] ); 
+                        else if( $val['type'] == 'or' ) $this->db->or_where( $val['field'] );
+                    }else{  
+                        $this->db->where($val['field'],$val['value']);
+                    }
                 }
             }
         }

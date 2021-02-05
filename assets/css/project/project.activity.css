@@ -75,7 +75,7 @@ h1 + p {
 	background-color: #04AF71;*/
 /* } */
 
-button {
+#gamesinte button {
    border: none;
   background-color: #FF7373;
   box-shadow: 0px 5px 0px 0px #CE4646;
@@ -91,7 +91,7 @@ button {
   cursor: pointer;
 }
 
-.start {
+#gamesinte .start {
   border: none;
   background-color: #fff;
   outline: none;

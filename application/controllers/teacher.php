@@ -248,9 +248,6 @@ class Teacher extends MY_Controller {
 							),
 							'where'		=> array( array( 'field' => 'lc.class_id', 'value' => $id ) )
 		);
-
-		
-
 		$classSingularInfo = $this->prepare_query( $classSingularArgs )->result_array()[0];
 
 		$classesListArgs = array(  
@@ -265,7 +262,18 @@ class Teacher extends MY_Controller {
 							)
 		);
 		$classes = $this->prepare_query( $classesListArgs )->result_array();
- 
+		
+		$members = array(  
+					'select' 	=> 	'cred_id as user_id, ui_profile_data, concat( ui_firstname, " ", ui_lastname )  as studname',
+					'from'		=>	'userinfo ui',
+					'where'		=> array( 
+										array( 'field' => 'cs.class_id', 'value'  =>  $id),
+										array( 'field' => 'cs.admission_status', 'value'  => 1),
+									),
+					'join'		=> array( array(	'table'	=>	'class_students cs',	'cond'	=>	'cs.student_id = ui.cred_id' ) )
+		);
+		$members = $this->prepare_query( $members )->result_array();
+		
 		$dataPass = array(
 						'classinfo' 	=> 	$classSingularInfo,
 						'classesInfo'	=>	$classes,
@@ -280,7 +288,8 @@ class Teacher extends MY_Controller {
 													'project.post'),
 						'projectCss'		=> array('project.library'),
 						'posts'			=> $this->getPosts($id),
-						'duetasks'		=> $this->getDueTask( $id )
+						'duetasks'		=> $this->getDueTask( $id ),
+						'members'		=> $members
 
 		);
 

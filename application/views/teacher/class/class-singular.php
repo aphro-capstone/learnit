@@ -18,6 +18,7 @@
 
 
 
+
 <div class="container">
 	<div class="row">
 
@@ -127,7 +128,7 @@
 			<div class="row mt-3">
 				<div class="col col-sm-12 col-md-8 pr-0">
 					<div class="tab-content">
-						<div class="tab-pane active">
+						<div class="tab-pane active" id="posts">
 							<?php $this->load->view('/shared/posts/my-post',array('originator' => 'class')); ?>
 							<div class="divider2"></div>
 							<?php $this->load->view('/shared/posts/posts'); ?>	

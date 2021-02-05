@@ -1,4 +1,5 @@
-<!-- head -->
+ 
+
 <div class="row" id="picact">
 	<div class="overlay"></div>
 	<div class="container">
@@ -19,70 +20,56 @@
 			</div>
 		</div>
 		<div class="panel-content mt-4">
-			<div class="row">
-				<div class="col-sm-12 col-md-6 col-lg-4">
-
-					<div class="game-box modal-games-trgr" data-type="typing-it">
-						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic.jpg" alt="">
-						</div>
-						<div class="backtext">
-							<span> Typing IT </span>
-						</div>
+			<div class="slick-container" id="games-list-container">
+				<div class="game-box modal-games-trgr" data-type="typing-it">
+					<div class="img-container">
+							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic.jpg" alt="">
+					</div>
+					<div class="backtext">
+						<span> Typing IT </span>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-4">
-					<div class="game-box modal-games-trgr" data-type="quiz-it">
-						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/checkers.png" alt="">
-						</div>
-						<div class="backtext">
-							<span> Checkers IT </span>
-						</div>
+				<div class="game-box modal-games-trgr" data-type="quiz-it">
+					<div class="img-container">
+							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/checkers.png" alt="">
+					</div>
+					<div class="backtext">
+						<span> Checkers IT </span>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-4">
-					<div class="game-box modal-games-trgr" data-type="scrabble-it">
-						<div class="img-container">
-							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic2.jpg" alt="">
-						</div>
-						<div class="backtext">
-							<span> Scrabble IT </span>
-						</div>
+				<div class="game-box modal-games-trgr" data-type="scrabble-it">
+					<div class="img-container">
+						<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic2.jpg" alt="">
+					</div>
+					<div class="backtext">
+						<span> Scrabble IT </span>
 					</div>
 				</div>
-
-			<div class="col-sm-12 col-md-6 col-lg-4">
-
-					<div class="game-box modal-games-trgr" data-type="hangman">
-						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/hangman.jpg" alt="">
-						</div>
-						<div class="backtext">
-							<span> Hang IT </span>
-						</div>
+				<div class="game-box modal-games-trgr" data-type="hangman">
+					<div class="img-container">
+							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/hangman.jpg" alt="">
+					</div>
+					<div class="backtext">
+						<span> Hang IT </span>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-4">
-					<div class="game-box modal-games-trgr"  data-type="chess-it">
-						<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/chess-it-bg.jpg" alt="">
-						</div>
-						<div class="backtext">
-							<span> Chess IT </span>
-						</div>
+				<div class="game-box modal-games-trgr"  data-type="chess-it">
+					<div class="img-container">
+							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/chess-it-bg.jpg" alt="">
+					</div>
+					<div class="backtext">
+						<span> Chess IT </span>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-4">
-					<div class="game-box modal-games-trgr">
-						<div class="img-container">
-							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.jpg" alt="">
-						</div>
-						<div class="backtext">
-							<span> Scrabble IT </span>
-						</div>
+				<div class="game-box modal-games-trgr">
+					<div class="img-container">
+						<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.jpg" alt="">
+					</div>
+					<div class="backtext">
+						<span> Scrabble IT </span>
 					</div>
 				</div>
+				  
 			</div>
 		</div>
 	</div>
@@ -98,19 +85,16 @@
 			</div>
 		</div>
 		<div class="panel-content mt-4">
-			<div class="row" id="videosContainer">
+			<div class="slick-container" id="videosContainer">
 				<?php foreach($multimedia as $media):  ?>
-					<div class="col-sm-12 col-md-4 col-lg-4">
-						
-						<div class="game-box videobox" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
-							<div class="img-container">
-								<img class="full-width" src="<?= 'data:image/png;base64,' . $media['snapshot']; ?> " alt="">
-							</div>
-							<div class="backtext">
-								<i class="fa fa-play-circle">
-									</i>
-								<span><?= $media['m_title'];?> </span>
-							</div>
+					<div class="game-box videobox" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
+						<div class="img-container">
+							<img class="full-width" src="<?= 'data:image/png;base64,' . $media['snapshot']; ?> " alt="">
+						</div>
+						<div class="backtext">
+							<i class="fa fa-play-circle">
+								</i>
+							<span><?= $media['m_title'];?> </span>
 						</div>
 					</div>
 				<?php endforeach; ?>
