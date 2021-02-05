@@ -123,7 +123,7 @@ h1 + p {
 }
 
 
-button:active {
+button:active:not(.slick-arrow) {
   transform: translate(0px, 5px);
   -webkit-transform: translate(0px, 5px);
   box-shadow: 0px 1px 0px 0px;
@@ -187,7 +187,6 @@ button:active {
     cursor: pointer;
     transition: ease all 1s;
     top: 100%;
-
 }
 
 
@@ -212,17 +211,19 @@ button:active {
 
 
 .videobox .backtext{
-  top: auto;
+  top: 0;
   width: 100%;
   display: flex;
   height: 100%;
   position: absolute;
+  background: transparent;
 }
 
 .videobox .backtext i{
   color: #fffc;
     font-size: 70px;
     margin: auto;
+    color: #7997e1;
 }
 
 .videobox .backtext span{
@@ -230,6 +231,32 @@ button:active {
     top: 10px;
     left: 10px;
 }
+
+
+.overlay-play-video{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  top: 0;
+  transition: ease all 0.3s;
+}
+.videobox:hover .overlay-play-video{
+  background: #0000009e;
+}
+
+.overlay-play-video i{
+  margin: auto;
+  font-size: 58px;
+  color: #8aacff;
+} 
+
+.videobox .bottomtext{
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
 
 
 
@@ -247,7 +274,7 @@ body.activities .container{
  }
 
  .panel{
-    padding: 15px 30px;
+    padding: 15px 0;
 }
 
 #multimedia button[data-dismiss="modal"],

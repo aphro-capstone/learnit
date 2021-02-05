@@ -78,7 +78,7 @@
 </div>
 
 <div id="playModal" class="modal fade">
-	<div class="modal-dialog" role="document"> 
+	<div class="modal-dialog modal-lg" role="document"> 
 		<div class="modal-content">
 				<video class="full-width" controls="" autoplay>
 					<source src="">

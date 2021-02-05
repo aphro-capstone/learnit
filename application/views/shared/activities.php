@@ -88,13 +88,14 @@
 			<div class="slick-container" id="videosContainer">
 				<?php foreach($multimedia as $media):  ?>
 					<div class="game-box videobox" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
-						<div class="img-container">
+						<div class="img-container position-relative">
 							<img class="full-width" src="<?= 'data:image/png;base64,' . $media['snapshot']; ?> " alt="">
-						</div>
-						<div class="backtext">
-							<i class="fa fa-play-circle">
-								</i>
-							<span><?= $media['m_title'];?> </span>
+							<div class="overlay-play-video">
+								<i class="fa fa-play-circle-o"> </i>
+							</div>
+						</div> 
+						<div class="bottomtext">
+							<span class="title	"><?= $media['m_title'];?> </span>
 						</div>
 					</div>
 				<?php endforeach; ?>

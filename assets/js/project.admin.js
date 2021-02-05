@@ -653,7 +653,7 @@ createMultimediaTR = function(el,additional = false){
 	});
 
 	playbtn.on('click',function(){
-		$('#playModal video').attr('src', ( domainOrigin + el.m_path  ));
+		$('#playModal video').attr('src', ( domainOrigin + 'assets/multimedia/' + el.m_path  ));
 		$('#playModal').modal('show');
 	});
 

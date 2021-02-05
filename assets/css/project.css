@@ -3004,6 +3004,37 @@ body.navbar-open .navmobile-overlay{
 }
 
 
+.slick-arrow{
+    height: 40px!important;
+    width: 40px!important;
+    background: #7997e1a6!important;
+    border-radius: 50%;
+    z-index: 2;
+    display: none!important ;
+}
+
+.slick-container:hover .slick-arrow{
+    display: block!important ;
+}
+.slick-arrow:before{
+    font: normal normal normal 14px/1 FontAwesome;
+    font-family: 'FontAwesome'!important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased!important;
+    color: #000!important;
+    font-size: 30px!important;
+    display: block;
+    margin: auto;
+} 
+
+.slick-prev.slick-arrow:before{
+    content: "\f053"!important; 
+}
+
+.slick-next.slick-arrow:before{
+    content: "\f054"!important; 
+}
+
 
 @media only screen and ( max-width: 990px ){
     body.login-page .navbar{
