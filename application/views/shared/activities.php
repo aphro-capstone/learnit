@@ -102,9 +102,9 @@
 				<?php foreach($multimedia as $media):  ?>
 					<div class="col-sm-12 col-md-4 col-lg-4">
 						
-						<div class="game-box videobox" data-src="<?=$media['m_path'];?>">
+						<div class="game-box videobox" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
 							<div class="img-container">
-								<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/v1.png" alt="">
+								<img class="full-width" src="<?= 'data:image/png;base64,' . $media['snapshot']; ?> " alt="">
 							</div>
 							<div class="backtext">
 								<i class="fa fa-play-circle">
