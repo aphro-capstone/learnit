@@ -87,8 +87,8 @@
 		<div class="panel-content mt-4">
 			<div class="slick-container" id="videosContainer">
 				<?php foreach($multimedia as $media):  ?>
-					<div class="game-box videobox" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
-						<div class="img-container position-relative">
+					<div class="game-box videobox" data-vid-id="<?= $media['m_id'];?>">
+						<div class="img-container position-relative" data-src="<?=  __MULTIMEDIA_UPLOAD_PATH__. $media['m_path'];?>">
 							<img class="full-width" src="<?= 'data:image/png;base64,' . $media['snapshot']; ?> " alt="">
 							<div class="overlay-play-video">
 								<i class="fa fa-play-circle-o"> </i>
@@ -96,6 +96,9 @@
 						</div> 
 						<div class="bottomtext">
 							<span class="title	"><?= $media['m_title'];?> </span>
+							<div class="buttons"> 
+								<span class="get-url"><i class="fa fa-globe" data-toggle="tooltip" data-placement="left" title="Get URL"></i></span>
+							</div>
 						</div>
 					</div>
 				<?php endforeach; ?>

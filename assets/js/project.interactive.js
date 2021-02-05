@@ -30,7 +30,7 @@ jQuery(function($){
 		$(this).find('video')[0].pause();
 		$(this).find('video').remove();
 	});
-	$('.videobox').on('click',function(){
+	$('.videobox .img-container').on('click',function(){
 		let vidpath = SITE_URL + $(this).attr('data-src');
 		$('#multimedia').modal( { backdrop : 'static' , keyboard : false  } );
 
@@ -46,13 +46,13 @@ jQuery(function($){
 		$('#gamescript').off().remove();
 	});
 
-	console.log(1);
+ 
 	$('.slick-container	').slick({
 		infinite: true,
 		slidesToShow: 3,
 		slidesToScroll: 3,
 		autoplay: true,
-		autoplaySpeed: 3000,
+		autoplaySpeed: 4000,
 		responsive: [
 			{
 			  breakpoint: 1024,
@@ -81,6 +81,20 @@ jQuery(function($){
 			// settings: "unslick"
 			// instead of a settings object
 		  ]
-	  });
+	});
+
+
+	$('.videobox .buttons span').on('click',function(){
+		if( $(this).hasClass('get-url') ){
+			$.confirm({
+				title : 'Video URL',
+				type : 'blue',
+				content : SITE_URL + USER_ROLE + '/videoplayurl/' + $(this).closest('.videobox').attr('data-vid-id'),
+				button : {
+					close :  function(){}
+				}
+			});
+		}
+	});
 
 });

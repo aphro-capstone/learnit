@@ -1025,4 +1025,24 @@ class MY_Controller extends CI_Controller
 
         $this->ProjectModel->insert_CI_Query( $notificationlogs, 'user_utility_notification_logs' );
    }
+
+   protected function soloVideo($id){
+        if( isset($id) && !is_null($id)){
+            $args = array('from' => 'multimedia', 'where' => array( array( 'field' => 'm_id','value' => $id ) ));
+            
+            $video = $this->prepare_query(  $args );
+           
+            if( $video->num_rows() > 0 ){
+                $var = array( 'video' =>  ($video->result_array())[0] );
+                $this->load->template('shared/interactive/video-solo',$var );
+            }else{
+                show_404();
+            }
+
+        }else{
+            show_404();
+        }
+
+
+   }
 }

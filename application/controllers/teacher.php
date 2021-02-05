@@ -1059,6 +1059,10 @@ class Teacher extends MY_Controller {
 			}
 		}
 	}
+
+	public function videoplayurl($id){
+		$this->soloVideo($id);
+	}
  
 }
 

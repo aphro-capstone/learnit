@@ -746,6 +746,10 @@ class Student extends MY_Controller {
 		$this->games__( $type );
 	}
 
+	public function videoplayurl($id){
+		$this->soloVideo($id);
+	}
+
  
 }
 
