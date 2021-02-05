@@ -313,11 +313,21 @@ class Admin extends MY_Controller {
 
 	public function checkAdmin(){
 		$data = $this->input->post('data');
+		$action = $this->input->post('action'); 
 
 		$args = array(  'from' => 'users' , 
-						'where' => array( array('field' => 'pass', 'value'=> md5( $data ) ) ) );
+						'where' => array( 
+										array('field' => 'user_id', 'value'=> getUserID() ),
+										array('field' => 'role', 'value'=> 'admin' ),
+										array('field' => 'pass', 'value'=> base64_encode( $data ) ),
+										 ) 
+					);
 		
 		if( $this->prepare_query( $args )->num_rows()  > 0){
+			if( $action == 'credentials' ){
+				$did = $this->input->post('did');
+				$this->getCredentials( $did );
+			}
 			echo 1;
 		}else{
 			echo 0;
@@ -325,23 +335,80 @@ class Admin extends MY_Controller {
 		die();
 	}
 
-	public function getCredentials(){
+	private function getCredentials($id){
 		
-		$this->load->library('encryption');
-		$d = $this->input->post('d');
+		$this->load->library('encryption'); 
 		
 		$args = array(  'select' => 'uname,pass',
 						'from' => 'users' , 
-						'where' => array( array('field' => 'user_id', 'value'=> $d ) ) );
+						'where' => array( array('field' => 'user_id', 'value'=> $id ) ) );
 		$d = $this->prepare_query( $args )->result_array();
+ 
+
 		$d = $d[0];
-		$d['pass'] = base64_decode( $d['pass'] );
-		// $d['pass'] = substr($d['pass'], 13  );
+		$d['pass'] = base64_decode( $d['pass'] ); 
 		
-		echo json_encode( $d );
+		$this->returnResponse(null,null, array( 'data' => $d ));
 
 		die();
 	}
 
+	public function addmultimedia(){
+		$title = $this->input->post('title');
+		$desc = $this->input->post('desc');
+		$size = $this->input->post('size');
+ 
+		$filePath = 'assets\multimedia\\';
+		$dbPath = date('Y') . '\\' . date('m') . '\\';
+
+		clearstatcache();   
+
+		if (!file_exists($filePath)) {
+			mkdir($filePath, 0777, true);
+		}
+		
+		if( $_FILES['multimedia']['name'] == '' ){  return json_encode(array()); }
+		if( is_array($_FILES['multimedia']['name']) && count( $_FILES['multimedia']['name'] ) == 0 ){ return json_encode(array());  }
+
+		$fileName = 'learnit_it_media-'. uniqid(). $_FILES['multimedia']['name']; 
+
+		$fileName = preg_replace('/\s+/', '', $fileName);
+
+		$tempFile = $_FILES['multimedia']['tmp_name'];
+		$targetFile = getcwd() .'\\'. $filePath .'\\'. $fileName;
+	  
+
+
+		if(  move_uploaded_file($tempFile, $targetFile)  ){   
+			
+			$m_add = array(
+				'm_title'	=>  $title,
+				'm_desc'	=>	$desc,
+				'size'		=> 	$size,
+				'm_path'	=> '\\'. $filePath .'\\'. $fileName
+			);
+			$id = $this->ProjectModel->insert_CI_Query( $m_add, 'multimedia',true );     // Add Post
+
+			$args = array( 'from' => 'multimedia' , 'where' => array( array( 'field'	=> 'm_id', 'value' => $id  ) ));
+			$item = $this->prepare_query( $args )->result_array();
+
+			echo json_encode( array('Error' => null, 'msg' => 'Successfully Uploaded video', 'data' => $item[0] ) );
+		}else{
+			$this->returnResponse(null, 'failed uploading video');
+		}
+		 
+	}
+
+
+	public function removeMultimedia(){
+		$id = $this->input->post('id');
+		$filepath = $this->input->post('path');
+		unlink( getcwd() . $filepath );
+		if( $this->ProjectModel->delete( $id, 'm_id', 'multimedia') ){
+			$this->returnResponse('Successfully deleted the video');
+		}else{
+			$this->returnResponse('Failed to delete the video');
+		}
+	}
 
 }

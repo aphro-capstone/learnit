@@ -239,6 +239,10 @@ tr.hidden-row.visible td{
     box-shadow: 0px 7px 0px #0560cf;
 }
 
+.btn.btn-3d.btn-default{
+    box-shadow: 0px 7px 0px #6c6c6c;
+    border: 1px solid #8f8f8f;
+}
 td.activeEdit span.hiddentext{
     display: none;
 }

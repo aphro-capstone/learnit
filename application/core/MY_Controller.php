@@ -325,7 +325,7 @@ class MY_Controller extends CI_Controller
         $response = array( 'Error' => $error, 'msg' => $msg );
 
         if(!empty( $add_data )){
-            $response = array_merge( $add_data ); 
+            $response = array_merge( $add_data,$response ); 
         }
 
         echo json_encode($response);

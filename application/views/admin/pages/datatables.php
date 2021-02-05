@@ -1,5 +1,4 @@
-
-
+ 
 <script>
 	const page = 'datatables';
 	const users = <?php echo json_encode( $userlist );?>;
