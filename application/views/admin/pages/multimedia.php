@@ -59,6 +59,7 @@
 						<button type="button" class="btn btn-xs btn-3d btn-danger clearupload"> <i class="fa fa-trash"></i> </button>
 					</div>
 					<div class="note"> <small class="font-italic"> (<strong>Note :</strong> Video file size maximum of 1Gb)</small> </div>
+					<img id="snapshot" src="" alt="" class="d-none">
 					<div class="uploadshow mt-3">
 
 					</div>

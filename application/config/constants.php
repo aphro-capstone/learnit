@@ -93,3 +93,7 @@ define('__PROJECT_NAME__',          'LearnIT');
 
 define('__SCHOOL_YEAR_MONTH_START__', 8); // August
 define('__SCHOOL_YEAR_MONTH_END__', 6); // July
+
+
+define('__MULTIMEDIA_UPLOAD_PATH__','\assets\multimedia\\');
+define('__MULTIMEDIA_SNAPSHOT_UPLOAD_PATH__','\assets\multimedia\snapshots\\');

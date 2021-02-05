@@ -363,14 +363,15 @@ class Admin extends MY_Controller {
 		$title = $this->input->post('title');
 		$desc = $this->input->post('desc');
 		$size = $this->input->post('size');
+		$snapshot = $this->input->post( 'snapshot' );
  
 		$filePath = 'assets\multimedia\\';
 		$dbPath = date('Y') . '\\' . date('m') . '\\';
 
 		clearstatcache();   
 
-		if (!file_exists($filePath)) {
-			mkdir($filePath, 0777, true);
+		if (!file_exists( __MULTIMEDIA_UPLOAD_PATH__ )) {
+			mkdir( __MULTIMEDIA_UPLOAD_PATH__ , 0777, true);
 		}
 		
 		if( $_FILES['multimedia']['name'] == '' ){  return json_encode(array()); }
@@ -381,17 +382,17 @@ class Admin extends MY_Controller {
 		$fileName = preg_replace('/\s+/', '', $fileName);
 
 		$tempFile = $_FILES['multimedia']['tmp_name'];
-		$targetFile = getcwd() .'\\'. $filePath .'\\'. $fileName;
-	  
-
-
-		if(  move_uploaded_file($tempFile, $targetFile)  ){   
-			
+		$targetFile = getcwd() . __MULTIMEDIA_UPLOAD_PATH__ . $fileName;
+	   
+		if(  move_uploaded_file($tempFile, $targetFile)  ){  
+			$data = str_replace('[removed]','',$snapshot);
 			$m_add = array(
 				'm_title'	=>  $title,
 				'm_desc'	=>	$desc,
 				'size'		=> 	$size,
-				'm_path'	=> '\\'. $filePath .'\\'. $fileName
+				'm_path'	=>  $fileName,
+				'snapshot'	=> $data
+
 			);
 			$id = $this->ProjectModel->insert_CI_Query( $m_add, 'multimedia',true );     // Add Post
 
@@ -403,6 +404,18 @@ class Admin extends MY_Controller {
 			$this->returnResponse(null, 'failed uploading video');
 		}
 		 
+	}
+
+	public function stream(){
+
+		clearstatcache();   
+		$dirname =  'assets\multimedia\snapshots' ;
+		var_dump( $dirname );
+
+		rmdir($dirname);
+		mkdir($dirname, 0777, true);
+		echo substr(sprintf('%o', fileperms($dirname)), -4);
+		$ifp = fopen( getcwd(). '\assets\multimedia\snapshots' , 'wb' ); 
 	}
 
 

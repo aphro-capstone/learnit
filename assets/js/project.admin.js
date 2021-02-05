@@ -129,6 +129,7 @@ jQuery( ($) => {
 		$('#uploadMultimedia form').ajaxSubmit({
 			beforeSubmit : function(formData, formObject, formOption){
 				formData.push({ name: "size", required: false,type: "text",value: upload.s }); 
+				formData.push({ name: "snapshot", required: false,type: "text",value: $('#snapshot').attr('src') }); 
 			},
 			beforeSend : function(){
 				 $('#uploadMultimedia').modal('hide');
@@ -722,8 +723,19 @@ var previewUploadVid = function(){
 			</div>');
 			$('#uploadMultimedia .uploadshow').html( aa ); 
 
+			var snapshot = function(){
+				setTimeout( function(){
+					var canvas = document.createElement('canvas');
+					var ctx = canvas.getContext('2d');
+					ctx.drawImage(aa.find('video')[0], 0, 0, canvas.width, canvas.height);
+					$('#snapshot').attr('src', canvas.toDataURL('image/png'));
+					aa.find('video')[0].removeEventListener('canplay', snapshot)
+				},1000);
+			};
+
 			aa.find('video source').attr('src',URL.createObjectURL(file) );
 			aa.find('video')[0].load(); 
+			aa.find('video')[0].addEventListener('canplay', snapshot);
 		}
 		
 	}else{
