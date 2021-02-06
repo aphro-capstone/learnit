@@ -8,8 +8,8 @@ $(function(){
 
 
 let iniHangman = function () {
-  var alphabet = ['b', 'a', 'c', 'd', 'e', 'f', 'g', 'h',]
-       [ 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+  var alphabet = ['b', 'a', 'c', 'd', 'e', 'f', 'g', 'h',
+        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
         't', 'u', 'v', 'w', 'x', 'y', 'z'];
   
   var categories;         // Array of topics
@@ -85,6 +85,7 @@ let iniHangman = function () {
     showLives.innerHTML = "You have " + lives + " lives";
     if (lives < 1) {
       showLives.innerHTML = "Game Over";
+      showAnswer();
     }
     for (var i = 0; i < geusses.length; i++) {
       if (counter + space === geusses.length) {
@@ -92,6 +93,27 @@ let iniHangman = function () {
       }
     }
   }
+
+  var showAnswer = function(){
+    $.confirm({
+      title:'Game Over!',
+      type : 'red',
+      content : 'You failed to guess the word. The word is <strong>'+ word +'</strong>'
+    });
+
+    $('#my-word li.guess').each(function(a,b){
+      if(  $(this).text() == '_' ){
+        $(this).text( word.charAt(a) );
+      }
+    });
+
+    $('#alphabet li').each(function(a,b){
+      $(this).addClass('active');
+      $(this)[0].onclick = null;
+    });
+  }
+
+
 
       // Animate man
   var animate = function () {
@@ -107,14 +129,14 @@ let iniHangman = function () {
     context = myStickman.getContext('2d');
     context.beginPath();
     context.strokeStyle = "#fff";
-    context.lineWidth = 2;
+    context.lineWidth = 7;
   };
   
     head = function(){
       myStickman = document.getElementById("stickman");
       context = myStickman.getContext('2d');
       context.beginPath();
-      context.arc(60, 25, 10, 0, Math.PI*2, true);
+      context.arc(120, 50, 15, 70, Math.PI*2, true);
       context.stroke();
     }
     
@@ -126,31 +148,32 @@ let iniHangman = function () {
 }
 
    frame1 = function() {
-     draw (0, 150, 150, 150);
+     draw (0, 150, 70, 150);
    };
    
    frame2 = function() {
-     draw (10, 0, 10, 600);
+     draw (30, 0, 30, 600);
    };
   
    frame3 = function() {
-     draw (0, 5, 70, 5);
+     draw (30, 5, 150, 5);
+     draw (30, 50, 70, 0);
    };
   
    frame4 = function() {
-     draw (60, 5, 60, 15);
+     draw (120, 0, 120, 40);
    };
   
    torso = function() {
-     draw (60, 36, 60, 70);
+     draw (120, 70, 120, 80);
    };
   
    rightArm = function() {
-     draw (60, 46, 100, 50);
+     draw (120, 80, 70, 60);
    };
   
    leftArm = function() {
-     draw (60, 46, 20, 50);
+     draw (120, 80, 180, 50);
    };
   
    rightLeg = function() {
@@ -164,12 +187,30 @@ let iniHangman = function () {
   drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
 
 
-  // OnClick Function
-   check = function () {
-    list.onclick = function () {
-      var geuss = (this.innerHTML);
+
+
+  buttonClick = function(letter){
+    var geuss = (this.innerHTML);
+    if( letter != undefined){
+      geuss = letter;
+      found = false;
+      $('#alphabet li:not(.active)').each(function(){
+        if( $(this).text() == letter ){
+
+          $(this).addClass('active')
+          $(this)[0].onclick = null;
+          found = true;
+          return false;
+        }
+      });
+
+      if( !found ) return;
+    }else{
       this.setAttribute("class", "active");
       this.onclick = null;
+    }
+      
+      
       for (var i = 0; i < word.length; i++) {
         if (word[i] === geuss) {
           geusses[i].innerHTML = geuss;
@@ -184,10 +225,14 @@ let iniHangman = function () {
       } else {
         comments();
       }
-    }
   }
-  
+
+
+  // OnClick Function
+   check = function () {
+    list.onclick = buttonClick;
     
+    }
   // Play
   play = function () {
     categories = [
@@ -238,6 +283,15 @@ let iniHangman = function () {
     context.clearRect(0, 0, 400, 400);
     play();
   }
+
+  var inputKeys = function(e){
+    let key = e.which;
+    if(key >= 65 && key <= 90){
+      buttonClick(e.originalEvent.key);
+    }
+  }
+
+  $(document).on('keyup',inputKeys);
 }
 
 

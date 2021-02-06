@@ -1,5 +1,4 @@
 
-
 body.activities {
     font-family: 'Raleway', sans-serif;
 
@@ -318,6 +317,7 @@ body.activities .container{
   opacity: 1;
   top: 0;
   box-shadow: none;
+  background: transparent;
 }
 
 

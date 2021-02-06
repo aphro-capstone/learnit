@@ -6,15 +6,16 @@ $grey:#f3f3f3;
 $white: #fff;
 $base-color:$green ; */
 
- 
 
 #game-container {
-  background:#c1d72e;
+  background:#6c4233;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
   color:#fff;
   height:100%;
   text-align:center;
-  font-size:18px;
+  font-size:18px;/*
+  background-image: url(../../images/games/hangman.jpg);
+  background-size: cover;*/
 }
 
 #hangman.wrappper{
@@ -64,7 +65,7 @@ $base-color:$green ; */
   height:45px;
   padding-top:10px;
   background:#fff;
-  color:#c1d72e;
+  color:#6c4233;
   cursor:pointer;
   border-radius: 5px;
   border: solid 1px #fff;
@@ -115,8 +116,8 @@ $base-color:$green ; */
 
 #hangman button{
   border-radius: 5px;
-  background:#c1d72e;
-  color:#fff;
+  /*background:#c1d72e;
+  */color:#fff;
   border: solid 1px #fff;
   text-decoration:none;
   cursor:pointer;
@@ -131,7 +132,7 @@ $base-color:$green ; */
 #hangman button:hover{
   background:#fff;
   border: solid 1px #fff;
-  color:#c1d72e;
+  color:#6c4233;
 }
 
 #hangman #catagoryName{clear: both;}
