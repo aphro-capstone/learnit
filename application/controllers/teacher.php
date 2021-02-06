@@ -263,16 +263,7 @@ class Teacher extends MY_Controller {
 		);
 		$classes = $this->prepare_query( $classesListArgs )->result_array();
 		
-		$members = array(  
-					'select' 	=> 	'cred_id as user_id, ui_profile_data, concat( ui_firstname, " ", ui_lastname )  as studname',
-					'from'		=>	'userinfo ui',
-					'where'		=> array( 
-										array( 'field' => 'cs.class_id', 'value'  =>  $id),
-										array( 'field' => 'cs.admission_status', 'value'  => 1),
-									),
-					'join'		=> array( array(	'table'	=>	'class_students cs',	'cond'	=>	'cs.student_id = ui.cred_id' ) )
-		);
-		$members = $this->prepare_query( $members )->result_array();
+		$members = $this->GET_CLASS_STUDENTS($id,'cred_id as user_id, ui_profile_data, concat( ui_firstname, " ", ui_lastname )  as studname' );
 		
 		$dataPass = array(
 						'classinfo' 	=> 	$classSingularInfo,
@@ -364,8 +355,20 @@ class Teacher extends MY_Controller {
 				'nav'	=> array( 'menu' => 'class', 'sub-menu'	=> 'gradebook' ),
 				'pageTitle'	=> 'GradeBook',
 				'projectCss'	=> array('project.gradebook'),
-				'projectScripts'	=> array(  'Project.gradebook' )
+				'projectScripts'	=> array(  'Project.gradebook' ),
+				'modals' 			=> $this->projectModals('gradebookModals'),
+				// 'classlist'			=> $this->getClass
 		);
+
+		$classlist = array(
+					'select'	=> 'class_id,class_name,sc_color',
+					'from'		=> 'classes as c',
+					'join'		=> array(  array( 'table' => 'settings_colors as sc', 'cond' => 'sc.sc_id = c.color_id') ),
+					'where'		=> array( array( 'field' => 'teacher_id', 'value' => getUserID() ) )
+		);
+
+		$var['classlist']	= $this->prepare_query( $classlist )->result_array();
+
 		$this->load->template('teacher/class/gradebook',$var);
 	}
 
@@ -692,15 +695,15 @@ class Teacher extends MY_Controller {
 									tsk_duedate,
 									tsk_instruction,
 									tsk_title,
-									concat(ui_firstname," ", ui_lastname) as teachername,
+									concat(ui_firstname," ", ui_lastname) as studname	,
 									class_name,c.class_id',
 					'from'		=> 'tasks as tsk',
 					'join'		=> array(  
+											array( 'table' => 'task_submissions ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
 											array( 'table' => 'assignments as a', 'cond' => 'a.task_id = tsk.tsk_id'),
 											array( 'table' => 'task_class_assignees as tca', 'cond' => 'tca.task_id = tsk.tsk_id'),
 											array( 'table' => 'classes c', 'cond' => 'c.class_id = tca.class_id'),
-											array( 'table' => 'userinfo ui', 'cond' => 'ui.cred_id = c.teacher_id'),
-											array( 'table' => 'task_submissions ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
+											array( 'table' => 'userinfo ui', 'cond' => 'ui.cred_id = ts.student_id'),
 										),
 					'where'		=> array( array( 'field' => 'ts.ts_id', 'value' => $id ) )
 			);
@@ -1064,5 +1067,109 @@ class Teacher extends MY_Controller {
 		$this->soloVideo($id);
 	}
  
+
+	public function gradebook(){
+		$action = $this->input->post('action');
+
+		if( $action == 'addgradingperiod' ){
+			$this->addgradingperiod();
+		}else if( $action == 'addgradeitem' ){
+			$this->addgradeitem();
+		}else if ( $action == 'export' ){
+			$this->exportgradebook();
+		}else if( $action == 'getgradingperiods' ){
+			$this->getClassPeriods();
+		}
+	}
+	
+
+	private function getGradebooktabledata( $periodID ){
+		
+		$args = array( 'from' => 'class_grading_period_columns', 
+						'where' => array( array( 'field' => 'cgp_id', 'value' => $periodID ) ) );
+		$headers = $this->prepare_query( $args )->result_array();
+
+		// get records
+		$headers = array_map( function($a){
+			$args = array(
+							'from' => 'class_grading_student_grades cgsg',
+							'where'	=> array( array( 'field' => 'cgpc_id', 'value'=> $a['cgpc_id']  ) )
+			);
+			$a['grades-content'] = $this->prepare_query( $args )->result_array();
+			return $a;
+		},$headers);
+
+		return $headers;
+	}
+
+	private function getClassPeriods(){
+		$classid = $this->input->post('class');
+		
+		$args = array( 'from' => 'class_grading_periods', 'where' => array(  array('field' => 'class_id', 'value' => $classid) ) );
+		$data = $this->prepare_query( $args )->result_array();
+		
+		$data = array_map( function($a){
+			$a['table'] = $this->getGradebooktabledata($a['cgp_id']);
+			return $a;
+		},$data);
+		
+		$studs = $this->GET_CLASS_STUDENTS( $classid,'cred_id as user_id, concat(ui_firstname," ",ui_lastname ) as name, ui_profile_data as userimage' );
+		$studs = array_map( function($a){
+			$a['userimage'] = json_decode( $a['userimage'],true );
+			$a['userimage'] = isset( $a['userimage']['ui_profile_image_path'] ) ? $a['userimage']['ui_profile_image_path'] : 'assets/images/user.png';
+			return $a;
+		},$studs);
+
+		$var = array( 
+						'periods' => $data,
+						'students' => $studs
+					);
+
+		echo json_encode( $var  );
+	}
+
+	private function addgradingperiod(){
+		$name = $this->input->post( 'name');
+		$classid = $this->input->post( 'class');
+
+
+		$add = array(
+			'class_id '			=>  $classid,
+			'cg_period_name'	=>	$name, 
+		);
+		$periodid = $this->ProjectModel->insert_CI_Query( $add, 'class_grading_periods',true );     // Add Post	
+		
+		if( $periodid ){
+			echo $periodid;
+			die();
+		}
+		echo 0;
+		die();
+	}
+	private function addgradeitem(){
+
+	}
+
+	private function exportgradebook(){
+
+	}
+
+
+
+
+	private function GET_CLASS_STUDENTS ($classID,$select = null,$admission = 1) {
+		$members = array(  
+					'select' 	=> 	!is_null($select) ? $select : '',
+					'from'		=>	'userinfo ui',
+					'where'		=> array( 
+										array( 'field' => 'cs.class_id', 'value'  =>  $classID),
+										array( 'field' => 'cs.admission_status', 'value'  => $admission),
+									),
+					'join'		=> array( array(	'table'	=>	'class_students cs',	'cond'	=>	'cs.student_id = ui.cred_id' ) )
+		);
+
+		return $this->prepare_query( $members )->result_array();
+	}
+	
 }
 

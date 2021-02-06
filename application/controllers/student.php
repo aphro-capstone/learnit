@@ -322,7 +322,8 @@ class Student extends MY_Controller {
 			
 			if(!empty( $assD )){
 				$var['AD'] = $assD[0];
-				$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() );
+				$var['studentview'] = true;
+				$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() )[0];
 				$this->load->template('student/assignment-template',$var);
 			}else{
 				show_404();

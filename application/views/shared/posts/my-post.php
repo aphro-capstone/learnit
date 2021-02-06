@@ -94,8 +94,9 @@
 	<div class="panel-footer expanded-content">
 		<div class="d-table full-width">
 			<div class="buttons pull-left"> 
-				<a href="#" class="button-icons attachfilebutton" data-toggle="tooltip" data-placement="bottom" title="Attach Image/file" > <i class="fa fa-book"></i> </a> 
-				<a href="#" class="button-icons" data-toggle="tooltip" data-placement="bottom" title="Get from Library" > <i class="fa fa-book"></i> </a> 
+				<a href="#" class="button-icons attachfilebutton" data-toggle="tooltip" data-placement="top" title="Attach Image/file" > <i class="fa fa-book"></i> </a> 
+				<a href="#" class="button-icons ember-from-library" data-toggle="tooltip" data-placement="top" title="Get from Library" > <i class="fa fa-book"></i> </a> 
+				<!-- <a href="#" class="button-icons ember-from-video" data-toggle="tooltip" data-placement="top" title="Embed Video URL" > <i class="fa fa-globe"></i> </a>  -->
 			</div>
 			<button class="btn btn-primary pull-right" id="postBtn"> Post </button>
 		</div>

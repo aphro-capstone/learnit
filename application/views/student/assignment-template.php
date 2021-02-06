@@ -85,15 +85,18 @@
 								<span class="small-text"> <?php echo date_format( date_create($AD['tsk_duedate']), 'Y/m/d @ H:i a') ?> </span>
 							</div>
 						</div>
-						<div class="d-flex mt-2">
+						<div class="d-flex mt-4">
 							<div class="img-container mr-2" style="width:36px;s">
 								<img src="<?=base_url() . 'assets/images/avatars/user.png'; ?>">
 							</div>
 							<div class="">
-								<?php if( $teacherView == 'true' ): ?>
-									<span class="d-block"> <?= $AD['teachername'];?> </span>
+								 
+								<?php if( isset($studentview) ): ?>
+									<span class="d-block" style="font-size: 18px;"> <strong><?= ucwords( $AD['teachername']  ) ;?></strong> </span>
+								<?php elseif( isset($submissionCheck) ): ?>
+									<span class="d-block" style="font-size: 18px;"><strong> <?= ucwords(  $AD['studname'] ) ;?> </strong> </span>
 								<?php endif; ?>
-								<span class="d-block"> <a href="<?=getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span>
+								<span class="d-block"> <strong>Class : </strong> <a href="<?=getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span>
 							</div>
 						</div>
 						<hr>
@@ -142,10 +145,10 @@
 					<?php endif; ?>
 
 
-					<?php if( getRole() == 'teacher' && $taskRemark != 'graded'): ?>
+					<?php if( getRole() == 'teacher' && ($taskRemark == 'graded' || $taskRemark == 'submitted')): ?>
 						<div class="panel-footer">
 							<div class="d-table full-width">
-								<a href="#setGrade" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"> Grade Assignment </i></a>
+								<a href="#setGrade" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"><?= $taskRemark == 'submitted' ? 'Grade Assignment' : 'Update Grade';  ?>  </i></a>
 							</div>
 						</div>
 					<?php endif; ?>

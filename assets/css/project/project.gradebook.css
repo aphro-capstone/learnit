@@ -35,7 +35,9 @@ body#gradebook #main-content{
 }
  
 .grid-header .student-header{
-	width: 300px;
+    width: 300px;
+    min-width: 300px;
+    position:  absolute;
 } 
 
 .grid-header .grade-header{
@@ -43,8 +45,11 @@ body#gradebook #main-content{
 	width: 230px;
 }
 
-.grade-content-td{
-	text-align: center;
+table td.grade-content-td{
+    text-align: center;
+    padding: 7px;
+    height: 53px;
+    vertical-align: middle;
 }
 
 .grade-content{
@@ -60,10 +65,11 @@ body#gradebook #main-content{
 }
 
 .grid-body .student-item{
-	position: relative;
-    padding: 10px;
-    display: flex;
+	 
     width: 300px;
+    min-width: 300px;
+    position: absolute;
+    padding: 8px 5px;
 }
 
 .grid-body .student-item .img-container{
@@ -102,11 +108,21 @@ body#gradebook #main-content{
 
 .gradebook-table{width: auto;}
 .table-header{background: #f1f1f1;}
-.fixed-td{position: fixed!important;}
+/* .fixed-td{position: fixed!important;} */
 
 .fixed-td + th,
 .fixed-td + td
 {
 	margin-left: 300px;
-    display: block;
+    display: block; 
+}
+
+
+.periods li.active button{
+    background: #7b7b7b;
+}
+
+#gradebook-table tr,
+#gradebook-table th{
+    height: 53px;
 }

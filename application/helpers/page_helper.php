@@ -101,6 +101,23 @@ function computeAttachmentSize($bytes, $precision = 4){
     // Uncomment one of the following alternatives
     // $bytes /= pow(1024, $pow);
     // $bytes /= (1 << (10 * $pow)); 
+	$size = round($bytes, $precision);
+	$unit = $units[$pow];
+	if( $size > 999999 ){
+		$size = $size /1000000;
+		$unit ='Mb';
+	}else if($size > 999){
+		$size = $size/1000;
+		$unit = 'Kb';
+	}else{
+		$unit = 'Byte';
+	}
 
-    return round($bytes, $precision) . ' ' . $units[$pow]; 
+    return $size . ' '. $unit; 
+}
+
+
+function getdataFromprof( $prof, $key ){
+	$prof = json_decode( $prof,true );
+	return $prof[$key];
 }
