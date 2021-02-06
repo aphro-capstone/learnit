@@ -1,0 +1,218 @@
+
+#checker-it {
+  color: #333333;
+  font-family: "Lato", Calibri, sans-serif;
+  font-size: 16px; 
+  display: table;
+}
+
+#checker-it h1 {
+    margin-top: 10px;
+}
+
+#checker-it h2{
+    font-size: 1.3em;
+}
+
+#checker-it h3 {
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+#checker-it a{
+    text-decoration: none;
+    color: #333333;
+    font-weight: 700;
+}
+
+#checker-it a:hover {
+    text-decoration: underline;
+}
+ 
+#checker-it hr{
+    border: 0;
+    height: 1px;
+    background-color: #333;
+    background-image: linear-gradient(to right, #333333, #ccc);
+}
+
+#checker-it .clearfix {
+    clear: both; 
+}
+
+#checker-it div.column {
+  position: relative;
+  float: left;
+  overflow: auto;
+  height: 100%;
+  min-height: 100%;
+  width: 50%; 
+  display: table;
+}
+
+@media screen and (max-width: 1000px) { 
+#checker-it div.column {
+    width: 100% !important;
+    overflow: hidden;
+    height: auto;
+    } 
+}
+
+#checker-it div.stats {
+  margin: 50px auto !important; 
+  width: 70%;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  background-color: #F1F1FF;
+  color: #3A3042;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px #232621; 
+}
+
+#checker-it div.stats .wrapper {
+    display: flex; 
+}
+
+#checker-it div.stats #player1 {
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    float: left;
+    background-color: #B93848;
+    box-sizing: border-box;
+    padding: 0 15px 20px;
+    border-top-left-radius: 3px;
+    color: #232621; 
+}
+
+#checker-it div.stats #player1 .capturedPiece {
+      width: 2.4vmin;
+      height: 2.4vmin;
+      background-color: #232621;
+      background-size: 65%;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 6vmin;
+      display: inline-block;
+      box-sizing: border-box;
+      transition: all 0.2s linear;
+      margin: 5px; 
+  }
+#checker-it div.stats #player2 {
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    float: left;
+    background-color: #232621;
+    box-sizing: border-box;
+    padding: 0 15px 20px;
+    border-top-right-radius: 3px;
+    color: #B93848; 
+}
+
+#checker-it div.stats #player2 .capturedPiece {
+      width: 2.4vmin;
+      height: 2.4vmin;
+      background-color: #B93848;
+      background-size: 65%;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 6vmin;
+      display: inline-block;
+      box-sizing: border-box;
+      transition: all 0.2s linear;
+      margin: 5px; 
+}
+
+#checker-it div.stats div.turn {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to right, #BEEE62 50%, transparent 50%);
+    border-radius: 0 0 3px 3px; 
+}
+
+#checker-it div.stats span#winner {
+    display: block;
+    padding: 10px 0 0;
+    text-align: center; 
+}
+ 
+#checker-it div.stats button#cleargame {
+    display: block;
+    border: 0;
+    color: #F1F1FF;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto 10px;
+    padding: 10px;
+    background-color: #16A8C7;
+    box-shadow: 1px 1px 3px #232621;
+    transition: background-color 0.15s linear; 
+}
+
+#checker-it div.stats button#cleargame:hover {
+    background-color: #0c5a6b; 
+}
+
+#checker-it div#board {
+  background-color: #B93848;
+  position: relative;
+  z-index: 3;
+    border-width: 10px;
+    border-style: solid;
+    border-image: initial;
+    box-sizing: border-box;
+    border-color: rgb(255, 212, 140) rgb(236, 198, 133);
+}
+
+#checker-it div#board .tile {
+    width: 12.5%;
+    height: 12.5%;
+    position: absolute;
+    background-color: #232621; 
+}
+
+#checker-it  div#board .player1pieces .piece {
+    position: absolute;
+    width: 10.5%;
+    height: 11%;
+    background-color: #e4a6ae;
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+    margin-top: 1%;
+    margin-left: 1%;
+    cursor: pointer;
+    border: 1vmin solid #B93848; 
+}
+
+#checker-it div#board .player1pieces .piece.selected {
+    box-shadow: 0 0 10px 5px #16A8C7; 
+}
+
+#checker-it div#board .player2pieces .piece {
+    position: absolute;
+    width: 10.5%;
+    height: 11%;
+    background-color: #F1F1FF;
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+    margin-top: 1%;
+    margin-left: 1%;
+    cursor: pointer;
+    border: 1vmin solid #8b8bff; 
+}
+    div#board .player2pieces .piece.selected {
+    box-shadow: 0 0 10px 5px #16A8C7; 
+}
+
+/*# sourceMappingURL=style.css.map */

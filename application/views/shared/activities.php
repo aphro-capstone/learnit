@@ -29,7 +29,7 @@
 						<span> Typing IT </span>
 					</div>
 				</div>
-				<div class="game-box modal-games-trgr" data-type="quiz-it">
+				<div class="game-box modal-games-trgr" data-type="checker-it">
 					<div class="img-container">
 							<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/checkers.png" alt="">
 					</div>

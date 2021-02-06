@@ -1,5 +1,4 @@
 
-
 body.activities {
     font-family: 'Raleway', sans-serif;
 
@@ -104,6 +103,7 @@ h1 + p {
   position: relative;
   display: inline-block;
   cursor: pointer;
+  box-shadow: none;
 
 }
 
@@ -355,6 +355,7 @@ body.activities .container{
   opacity: 1;
   top: 0;
   box-shadow: none;
+  background: transparent;
 }
 
 .videobox .bottomtext .buttons span{
