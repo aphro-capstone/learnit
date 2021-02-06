@@ -114,10 +114,9 @@ $base-color:$green ; */
   display:block;
 }
 
-#hangman button{
+#hint{
   border-radius: 5px;
-  /*background:#c1d72e;
-  */color:#fff;
+  color:#fff;
   border: solid 1px #fff;
   text-decoration:none;
   cursor:pointer;
@@ -126,6 +125,23 @@ $base-color:$green ; */
   width:180px;
   margin: 10px;
   outline: none;
+  box-shadow: none;
+ 
+}
+
+
+#hangman button{
+  border-radius: 5px;
+  color:#fff;
+  border: solid 1px #fff;
+  text-decoration:none;
+  cursor:pointer;
+  font-size:1.2em;
+  padding:18px 10px;
+  width:180px;
+  margin: 10px;
+  outline: none;
+  box-shadow: none;
  
 }
 

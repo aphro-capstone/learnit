@@ -103,6 +103,7 @@ button {
   position: relative;
   display: inline-block;
   cursor: pointer;
+  box-shadow: none;
 
 }
 

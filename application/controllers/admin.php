@@ -377,7 +377,9 @@ class Admin extends MY_Controller {
 		if( $_FILES['multimedia']['name'] == '' ){  return json_encode(array()); }
 		if( is_array($_FILES['multimedia']['name']) && count( $_FILES['multimedia']['name'] ) == 0 ){ return json_encode(array());  }
 
-		$fileName = 'learnit_it_media-'. uniqid(). $_FILES['multimedia']['name']; 
+		$filename__ = $_FILES['multimedia']['name'];
+		$filename__ = md5( $filename__ );
+		$fileName = 'learnit_it_media-'. uniqid(). $filename__; 
 
 		$fileName = preg_replace('/\s+/', '', $fileName);
 

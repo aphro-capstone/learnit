@@ -136,7 +136,7 @@ let iniHangman = function () {
       myStickman = document.getElementById("stickman");
       context = myStickman.getContext('2d');
       context.beginPath();
-      context.arc(120, 50, 15, 70, Math.PI*2, true);
+      context.arc(120, 50, 10, 70, Math.PI*2, true);
       context.stroke();
     }
     
@@ -165,23 +165,23 @@ let iniHangman = function () {
    };
   
    torso = function() {
-     draw (120, 70, 120, 80);
+     draw (120, 60, 120, 100);
    };
   
    rightArm = function() {
-     draw (120, 80, 70, 60);
+     draw (120, 70, 135, 90);
    };
   
    leftArm = function() {
-     draw (120, 80, 180, 50);
+     draw (105, 90, 120, 70);
    };
   
    rightLeg = function() {
-     draw (60, 70, 100, 100);
+     draw (120, 90, 130, 120);
    };
   
    leftLeg = function() {
-     draw (60, 70, 20, 100);
+     draw (110, 120, 120, 90);
    };
   
   drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
