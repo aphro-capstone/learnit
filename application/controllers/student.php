@@ -323,7 +323,14 @@ class Student extends MY_Controller {
 			if(!empty( $assD )){
 				$var['AD'] = $assD[0];
 				$var['studentview'] = true;
-				$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() )[0];
+				$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'], getUserID() );
+
+				if( count($var['AD'][ 'submissions' ]) == 0 ){
+					unset( $var['AD'][ 'submissions' ] );
+				}else{
+					$var['AD'][ 'submissions' ] = $var['AD'][ 'submissions' ][0];
+				}
+
 				$this->load->template('student/assignment-template',$var);
 			}else{
 				show_404();

@@ -209,14 +209,14 @@ const iniClassDue = () => {
                     el.find('.student-name').text(b.studname);
                     el.find('.date-submitted').text( moment( b.datetime_submitted ).format('MMMM DD, YYYY @ hh:mm A') );
                     if( viewType == 'assignment' ){
-                        total['score'] = total.score + b.ass_grade;
-                        total['over'] = total.over + b.ass_over;
+                        total['score'] = total.score + parseFloat( b.ass_grade );
+                        total['over'] = total.over + parseFloat( b.ass_over );
                         el.find('.score').text(b.ass_grade);
                         el.find('.over').text(b.ass_over); 
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/assignment/submission:' + b.ts_id )
                     }else{
-                        total['score'] = total.score + b.quiz_score;
-                        total['over'] = total.over + b.total_points;
+                        total['score'] = total.score + parseFloat(b.quiz_score);
+                        total['over'] = total.over + b.parseFloat( total_points );
                         el.find('.score').text(b.quiz_score);
                         el.find('.over').text(b.total_points); 
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
@@ -225,8 +225,8 @@ const iniClassDue = () => {
 
                     table.append(el);
             } );
-
-            $('.average-percentage').html( ((total.score/ total.over) * 100) + '%' );
+            console.log(total);
+            $('.average-percentage').html( ((total.score/ total.over) * 100).toFixed(0) + '%' );
 
         }else{
             table.append('<tr><td colspan="4" class="text-center"> No records to show </td></tr>' );

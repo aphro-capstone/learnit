@@ -15,7 +15,7 @@
 	if( isset( $AD['submissions'] ) ){
 		$taskRemark = 'submitted';
 
-		if( $AD['submissions']['ass_over'] != 0 ){
+		if( isset($AD['submissions']['ass_over']) && $AD['submissions']['ass_over'] != 0 ){
 			$taskRemark = 'graded';
 		}
 	}
@@ -96,7 +96,11 @@
 								<?php elseif( isset($submissionCheck) ): ?>
 									<span class="d-block" style="font-size: 18px;"><strong> <?= ucwords(  $AD['studname'] ) ;?> </strong> </span>
 								<?php endif; ?>
-								<span class="d-block"> <strong>Class : </strong> <a href="<?=getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span>
+								<!-- <span class="d-block"> <strong>Class : </strong> <a href="<?php //echo getSiteLink('classes/class-' . $AD['class_id'])?>"> <?=$AD['class_name']?> </a> </span> -->
+								
+								<?php if(isset( $AD['submissions'] ) && isset( $AD['submissions']['ass_over'] ) && $AD['submissions']['ass_over'] > 0  ): ?>
+									<p class="d-block mb-0 mt-3 "> Score : <span class="score" style="font-size: 35px; font-weight: 800;"> <?= $AD['submissions']['ass_grade'] ?> </span> / <span style="font-size: 16px;font-weight: 600;"> <?= $AD['submissions']['ass_over'] ?>  </span></span>
+								<?php endif; ?>
 							</div>
 						</div>
 						<hr>
@@ -148,7 +152,12 @@
 					<?php if( getRole() == 'teacher' && ($taskRemark == 'graded' || $taskRemark == 'submitted')): ?>
 						<div class="panel-footer">
 							<div class="d-table full-width">
-								<a href="#setGrade" data-toggle="modal" class="btn btn-primary pull-right">  <i class="fa fa-graduation-cap"><?= $taskRemark == 'submitted' ? 'Grade Assignment' : 'Update Grade';  ?>  </i></a>
+								<?php if(  $taskRemark == 'submitted' ): ?>
+									<a href="#" id="setGrademodalbtn" class="btn btn-primary pull-right ">  <i class="fa fa-graduation-cap"> </i> Grade Assignment </a>
+								<?php else: ?>
+									<a href="#" id="setGrademodalbtn" class="btn btn-info pull-right update " data-vals=<?php echo json_encode(array( $AD['submissions']['ass_grade'],$AD['submissions']['ass_over'] ))?>>  <i class="fa fa-save"> </i>  Update Grade   </a>
+								<?php endif; ?>
+								
 							</div>
 						</div>
 					<?php endif; ?>

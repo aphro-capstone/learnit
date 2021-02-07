@@ -61,16 +61,20 @@ var iniAssignment = function(){
 		$('#setGradebtn').on('click',function(){	
 			let score = $('#setGrade [name="score"]').val();
 			let over = $('#setGrade [name="over"]').val();
-
+			console.log(score,over);
 			if( over == ''  || score == '' ){
 				notify('error','A field is empty, please check.',undefined,false);
 				return;
-			}else if ( score > over ){
+			}else if ( parseFloat(over) > parseFloat(over) ){
 				notify('error','Score cannot be greater than the over!',undefined,false);
 				return;
 			}
 
-			let grade = { score : score, over :  over,tsaid : TSAID  };	
+			let grade = { 
+							score : score, 
+							over :  over,
+							tsaid : TSAID,
+							tsk : tskID  };	
 
 			$.ajax({
 				url: SITE_URL + USER_ROLE + '/addGrade/assignment', 
@@ -91,6 +95,22 @@ var iniAssignment = function(){
 
 			});
 		});
+
+
+		$('#setGrademodalbtn').on('click',function(e){
+			e.preventDefault();
+			let modal = $('#setGrade');
+			if($(this).hasClass('update')){
+				let vals = JSON.parse( $(this).attr('data-vals'));
+				modal.find('.modal-title').text('Update given grade');
+				modal.find('.modal-body .d-flex > .form-group:first-child input').val( vals[0] );				
+				modal.find('.modal-body .d-flex > .form-group:last-child input').val( vals[1] );				
+			}else{
+				modal.find('.modal-title').text('Grade Assignment');
+			}
+
+			modal.modal('show');
+		}); 
 
 
 

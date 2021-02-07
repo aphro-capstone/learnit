@@ -27,16 +27,7 @@
 </section>
 
 <div class="wrapper grading-content">
-	<div class="loading">
-		<div class="overlay"></div>
-		<div class="sk-spinner sk-spinner-wave">
-			<div class="sk-rect1"></div>
-			<div class="sk-rect2"></div>
-			<div class="sk-rect3"></div>
-			<div class="sk-rect4"></div>
-			<div class="sk-rect5"></div>
-		</div>	
-	</div>
+	
 	<div class="content">
 		<section class="d-flex full-width bg-none p-3 navigation-section"> 
 			<ul class="no-style d-flex mr-0 ml-auto right mb-0">
@@ -61,16 +52,26 @@
 				</div>
 				
 			</div>
-
-			<div class="grid gradebook-grid">
-				<table class="table gradebook-table table-bordered" id="gradebook-table">
-					<thead class="grid-header">
-						<th class="student-header fixed-td table-header"> Students </th> 
-					</thead>
-					<tbody class="grid-body"> </tbody>
-				</table>
-			</div>
-
+ 			<div class="contain">
+			 	<div class="loading">
+					<div class="overlay"></div>
+					<div class="sk-spinner sk-spinner-wave">
+						<div class="sk-rect1"></div>
+						<div class="sk-rect2"></div>
+						<div class="sk-rect3"></div>
+						<div class="sk-rect4"></div>
+						<div class="sk-rect5"></div>
+					</div>	
+				</div>
+				<div class="grid gradebook-grid">
+					<table class="table gradebook-table table-bordered" id="gradebook-table">
+						<thead class="grid-header">
+							<th class="student-header fixed-td table-header"> Students </th> 
+						</thead>
+						<tbody class="grid-body"> </tbody>
+					</table>
+				</div>
+			 </div>
 		</section>
 	</div>
 	

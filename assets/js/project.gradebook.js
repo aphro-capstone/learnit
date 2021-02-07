@@ -54,12 +54,20 @@ jQuery( ($) => {
 		$(this).closest('.dropdown').find('.data-toggle span').text( $(this).text() );
 		getGradeBook( $(this).parent().attr('data-class-id') );
 	});
+
+	$(document).on('resize',function(){
+
+	});
 	
 	getGradeBook( $('.classes-dropdown li.active').attr('data-class-id')  );
 });
 
 
  
+
+var resize = function(){
+	$('#gradebook-container').css('height', $(window).height())
+}
 
 
 
@@ -144,58 +152,63 @@ var getGradeBook = (classid) => {
 		});
 	};
 
-	this.createTable = ( tableData  ) => {
-		var getGrading = function(grading,i){
+	this.createTable = ( tableData  ) => { 
+		// console.log(tableData);
+		var getGrading = function(i){
 			let el = $('<td class="grade-content-td">\
 							<div class="grade-content">\
-								<input type="text" placeholder="Score"> / <input type="text" name="" placeholder="Over">\
+								<input type="text" placeholder="Score" class="score"> <span class="ml-1 mr-1 mt-auto mb-auto"> / </span> <input type="text" name="" placeholder="Over" class="over">\
 							</div>\
-						</td>');
+						</td>'); 
+
+			
 			return el;
 		};
 
 		var createGradeHeadings = () => { 
+			
 			tableData.forEach( el => {
-				let aa = $('<th class="grade-header table-header" data-id="'+ el.cgpc_id +'">'+ el.cgg_name +' </th>');
+				let aa;
+				if( el.tsk_title != undefined ){
+					aa = $('<th class="grade-header table-header task-grade" data-id="'+ el.tsk_id +'"><span class="m-auto">'+ el.tsk_title +'</span> </th>');
+				}else{
+					aa = $('<th class="grade-header table-header" data-id="'+ el.cgpc_id +'"><span class="m-auto">'+ el.cgg_name +'</span> </th>');
+				}
+				
 				gbook.find('thead tr').append(aa);
 
-				gbook.find('tbody tr').each( function(){
-					$(this).append( getGrading() );
-				} );
-
-
-
+				gbook.find('tbody tr').each( function(a,b){ 
+					$(this).append( getGrading(a) )	;
+				});
 			});
+
+			setTableData();
 		};
 
-		console.log(tableData);
+
+		var setTableData = () => {
+
+
+			gbook.find('thead .grade-header').each( function(a,b){ 
+				// let studid = $(b).attr('data-id');
+				let grades = tableData[a].grades;
+				grades.forEach(e => {
+					let td = gbook.find('tbody tr[data-id="'+ e.stud_id +'"] td.grade-content-td').eq(a);
+					
+					if( $(b).hasClass('task-grade') ){
+						td.find('input.score').val( e.ass_grade );
+						td.find('input.over').val( e.ass_over );
+					}else{
+						td.find('input.score').val( e.cgsg_score );
+						td.find('input.over').val( e.cgsg_over );
+					}
+				});
+			});
+		}
+		
 		createGradeHeadings();
 	}
-
-
-
-		
-		
-
-
-	// 	for( let x = 0; x < studs.length;x++ ){
-	// 		let stud = studs[x];
-			
-	// 		let tr = $('<tr data-id="'+ stud.id +'"></tr>');
-	// 			tr.append( getStudTH(stud,x) );
-
-			
-	// 		// for( let y = 0; y < stud.gradings.length ;y++ ){
-	// 		// 	tr.append( getGrading(stud.gradings[y],y) );
-	// 		// }  
-
-	// 		console.log(stud);
-	// 		$('#gradebook-table tbody').append(tr);
-	// 	}
-	// }
  
-
-	
  
 
 	$('.grading-content').addClass('isloading');

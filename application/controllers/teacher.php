@@ -154,19 +154,26 @@ class Teacher extends MY_Controller {
 			
 
 
-			$query = $this->insertIfnotexist( 	
-				$argsCheck,
-			  	array( 'data' => $dataToinsert, 'table' => 'classes' ),
-			  	array(),
+			$classid = $this->insertIfnotexist( 	
+				$argsCheck, array( 'data' => $dataToinsert, 'table' => 'classes' ), array(),
 			  	TRUE,
 			  	TRUE);
-
+			
+			
 			$this->JSONENCODE_CONDITION( 
-				$query,
+				$classid,
 				"Your class $className has been created.",
-				'Failed to update color,  something went wrong.',
-				array( 'code' => $classCode,'id'	=> $query  )
+				'Failed to create class,  something went wrong.',
+				array( 'code' => $classCode,'id'	=> $classid  )
 			);
+
+			if( $classid ){
+				$postAdd = array(
+					'class_id'			=>  $classid,
+					'cg_period_name'	=>	1, 
+				);
+				$this->ProjectModel->insert_CI_Query( $postAdd, 'class_grading_periods' );
+			}
 
  
 		} catch( Exception $e ){
@@ -695,24 +702,21 @@ class Teacher extends MY_Controller {
 									tsk_duedate,
 									tsk_instruction,
 									tsk_title,
-									concat(ui_firstname," ", ui_lastname) as studname	,
-									class_name,c.class_id',
+									student_id,
+									(select  concat(ui_firstname, " ", ui_lastname) from li_userinfo where cred_id = ts.student_id) as studname',
 					'from'		=> 'tasks as tsk',
 					'join'		=> array(  
 											array( 'table' => 'task_submissions ts', 'cond' => 'ts.task_id = tsk.tsk_id'),
 											array( 'table' => 'assignments as a', 'cond' => 'a.task_id = tsk.tsk_id'),
-											array( 'table' => 'task_class_assignees as tca', 'cond' => 'tca.task_id = tsk.tsk_id'),
-											array( 'table' => 'classes c', 'cond' => 'c.class_id = tca.class_id'),
-											array( 'table' => 'userinfo ui', 'cond' => 'ui.cred_id = ts.student_id'),
 										),
 					'where'		=> array( array( 'field' => 'ts.ts_id', 'value' => $id ) )
 			);
 			
-
-		$assD = $this->prepare_query( $assD )->result_array();
+		
+		$assD = $this->prepare_query( $assD )->result_array(); 
 		$var['AD'] = $assD[0];
 		$var['submissionCheck'] = true;
-		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0]['task_id'] );
+		$var['AD'][ 'submissions' ] = $this->getTaskSubmissions($assD[0] );
 		$var['AD']['submissions']	= $var['AD'][ 'submissions' ][0];
 		
 		$this->load->template('student/assignment-template',$var);
@@ -722,20 +726,20 @@ class Teacher extends MY_Controller {
 		}
 	}
 
-	public function getTaskSubmissions($taskID,$submission_suffix = 'ass'){
-
+	public function getTaskSubmissions($task,$submission_suffix = 'ass'){
 		$args = array(
 			'select' => '*',
 			'from' => 'task_submissions as ts',
 			'join'	=> array(  array(  'table'	=> 'task_submission_' . $submission_suffix . ' as si',  'cond' 	=> 'si.ts_id = ts.ts_id' ) ),
-			'where'	=> array(  array(  'field' => 'ts.task_id',  'value'  =>  $taskID )),
+			'where'	=> array(  
+								array(  'field' => 'ts.task_id',  'value'  =>  $task['task_id'] ),
+								array(  'field' => 'ts.student_id',  'value'  =>  $task['student_id'] ),
+							),
 		); 
 
 		return $this->prepare_query( $args )->result_array();
 	}
-
-
-
+ 
 
 	public function remove(){
 		$form = $this->input->post('form');
@@ -841,13 +845,18 @@ class Teacher extends MY_Controller {
 					'class_id'	=> intval($id)
 				); 
 			} 
-
+			
 			$this->ProjectModel->insert_CI_Query( $assigneeAdd, 'task_class_assignees',false,true );
 		}
 
-
-
-		
+		//     Check whether to add to gradebook or delte if exist
+		$tskid = isset($tid) ? $tid : $taskID;
+		if( $otheroptions['isaddtogradebook']  || $otheroptions['isaddtogradebook'] == 'true' ){
+			$this->taskAddRemoveTaskFromGradebook($tskid,$assignIDs,'add');
+		}else{
+			$this->taskAddRemoveTaskFromGradebook($tskid,null,'remove');
+		}
+ 
 
 		if( $type == 0 ){
 			$this->createQuiz($taskID,$postID,$data);
@@ -1048,13 +1057,13 @@ class Teacher extends MY_Controller {
 	}
 	 
 	public function addGrade($type){
+		$tskID = $this->input->post('tsk');
 		if( $type == 'assignment' ){
 			$tsaid = $this->input->post('tsaid');
 			$score = $this->input->post('score');
 			$over = $this->input->post('over');
 			$whereArray = array( 'tsa_id' => $tsaid);
 			$dataUpdate	= array( 'ass_grade'	=> $score, 'ass_over' => $over );
-			
 			if( $this->ProjectModel->update( $whereArray, 'task_submission_ass', $dataUpdate) ){
 				echo json_encode( array( 'Error' => null, 'msg' => 'Successfully graded assignment'  ) );
 			}else{
@@ -1085,19 +1094,62 @@ class Teacher extends MY_Controller {
 
 	private function getGradebooktabledata( $periodID ){
 		
-		$args = array( 'from' => 'class_grading_period_columns', 
+		$args1 = array( 'from' => 'class_grading_period_columns', 
 						'where' => array( array( 'field' => 'cgp_id', 'value' => $periodID ) ) );
-		$headers = $this->prepare_query( $args )->result_array();
 
-		// get records
+
+		$args2 = array( 'select' => 'tsk_title,tsk_options,tsk.timestamp_created,tsk_type,tsk_id',
+						'from'	=> 'class_grading_period_tasks cgp',
+						'join'	=>  array( array(	'table'	=>	'tasks tsk',	'cond'	=>	'tsk.tsk_id = cgp.task_id' ) ),  
+						'where'	=> array( array( 'field' => 'cgp_id', 'value' =>  $periodID) ),
+					);
+		$headers = $this->prepare_query( $args1 )->result_array();
+		$headersTasks = $this->prepare_query( $args2 )->result_array();
+		
+		$headersTasks = array_filter( $headersTasks,function($a){ 
+			$options = json_decode($a['tsk_options'],true);
+
+			return $options['isaddtogradebook'] || $options['isaddtogradebook'] == 'true';
+		},ARRAY_FILTER_USE_BOTH);
+
+
+		$headers = array_merge( $headers,$headersTasks ); 
 		$headers = array_map( function($a){
-			$args = array(
-							'from' => 'class_grading_student_grades cgsg',
-							'where'	=> array( array( 'field' => 'cgpc_id', 'value'=> $a['cgpc_id']  ) )
-			);
-			$a['grades-content'] = $this->prepare_query( $args )->result_array();
+			if( isset($a['tsk_title']) ){
+				 $args = array( 
+					 			'select'	=> 'status,student_id as stud_id',
+								'from' => 'task_submissions ts',
+								'join'	=> array(),
+								'where'	=> array( array( 'field' => 'task_id','value'=> $a['tsk_id'] ) ));
+				if( $a['tsk_type'] == 0 ){
+					// fetch quiz submission info
+					$args['select']	= $args['select'] . ',quiz_score,(select total_points from li_quizzes where task_id = ts.task_id ) as total_point';
+					$args['join'][] = array( 'table' => 'task_submission_quiz tsq', 'cond'	=> 'tsq.ts_id = ts.ts_id' );
+				}else{
+					//  fetch assignment sub info
+					$args['select']	= $args['select'] . ',ass_grade,ass_over';
+					$args['join'][] = array( 'table' => 'task_submission_ass tsa', 'cond'	=> 'tsa.ts_id = ts.ts_id' );
+				}
+				unset( $a['tsk_options'] );
+				unset( $a['tsk_type'] );
+				$a['grades'] = $this->prepare_query( $args )->result_array();
+			}else{
+				$args = array(
+								'from' => 'class_grading_student_grades cgsg',
+								'where'	=> array( array( 'field' => 'cgpc_id', 'value'=> $a['cgpc_id']  ) )
+				);
+				$a['grades'] = $this->prepare_query( $args )->result_array();
+			}
+			
 			return $a;
 		},$headers);
+
+		// Set Order
+		usort($headers, function($a, $b) { 
+			return new Datetime( $b['timestamp_created'] ) > new Datetime( $a['timestamp_created'] );
+		});
+
+
 
 		return $headers;
 	}
@@ -1171,5 +1223,29 @@ class Teacher extends MY_Controller {
 		return $this->prepare_query( $members )->result_array();
 	}
 	
+
+
+
+	private function taskAddRemoveTaskFromGradebook($taskid,$classids = null,$action){
+
+		if( $action == 'add' ){
+			foreach( $classids as $cid ){
+				$args = array( 
+									'select' => 'cgp_id',
+									'from' => 'class_grading_periods', 
+									'where' => array( array('field'	=> 'class_id', 'value' => $cid)),
+									'order' => array( array( 'by' => 'cgp_id', 'path' => 'desc') ),
+									'limit' => '1'
+							);
+				$periodID = $this->prepare_query( $args )->result_array();
+
+				$periodID = $periodID[0]['cgp_id'];
+							
+				$this->ProjectModel->insert_CI_Query( array('cgp_id' => $periodID,'task_id' => $taskid), 'class_grading_period_tasks',true );     // Add Post
+			}
+		}else{
+			$this->ProjectModel->delete( $taskid, 'task_id', 'class_grading_period_tasks');			
+		}
+	}
 }
 

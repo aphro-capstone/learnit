@@ -109,7 +109,7 @@ class MY_Controller extends CI_Controller
     }
  	
 
-    protected function JSONENCODE_CONDITION( $condition,$success,$error,$otherArrVals = array() ){
+    protected function JSONENCODE_CONDITION( $condition,$success,$error,$otherArrVals = array(),$callback = null ){
         if($condition){
             echo json_encode( 
                     array_merge( 
@@ -117,6 +117,9 @@ class MY_Controller extends CI_Controller
                         $otherArrVals
                     )
                 );
+            if( !is_null( $callback ) ){
+                call_user_func($callback);
+            }
         }else{
             echo json_encode( 
                     array_merge( 
