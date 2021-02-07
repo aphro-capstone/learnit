@@ -61,12 +61,12 @@
 						<span> Chess IT </span>
 					</div>
 				</div>
-				<div class="game-box modal-games-trgr">
+				<div class="game-box modal-games-trgr" data-type="tictactoe-it">
 					<div class="img-container">
 						<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.jpg" alt="">
 					</div>
 					<div class="backtext">
-						<span> Scrabble IT </span>
+						<span> Tic-Tac-Toe IT </span>
 					</div>
 				</div>
 				  
