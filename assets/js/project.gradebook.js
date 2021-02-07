@@ -67,9 +67,9 @@ jQuery( ($) => {
 
 var resize = function(){
 
-
-
-	$('#gradebook-container').css('height', $(window).height() - 230);
+	let height = $(window).height() - 230;
+	$('#gradebook-container').css('height', height ); 
+	$('#gradebook-container .gradebook-grid').css('height',height - 83 ); 
 }
 
 
@@ -109,6 +109,10 @@ var getGradeBook = (classid) => {
 	this.studentsList ;
 	let iii = this;
 	let gbook = $('#gradebook-table');
+
+	$('#gradebook-container .headpart button').prop('disabled',true);
+
+
 	gbook.find('.grade-header').remove();
 	gbook.find('tbody').html('');
 
@@ -141,6 +145,7 @@ var getGradeBook = (classid) => {
 				a.find('button').text(el.cg_period_name); 
 				a.on('click',function(){
 					if( !$(this).hasClass('active') ){
+						$('.periods li').removeClass('active');
 						$(this).addClass('active');
 						createTable( el.table );
 					}
@@ -153,18 +158,22 @@ var getGradeBook = (classid) => {
 			p.find('li.addgradeli').before( a );
 		
 		});
+
+
 	};
 
-	this.createTable = ( tableData  ) => { 
-		// console.log(tableData);
+	this.createTable = ( tableData  ) => {  
+		$('#gradebook-container .loading').css('display','flex');
+		gbook.find('thead th.grade-header').remove();
+		gbook.find('tbody td.grade-content-td').remove();
+
+
 		var getGrading = function(i){
 			let el = $('<td class="grade-content-td">\
 							<div class="grade-content">\
 								<input type="text" placeholder="Score" class="score"> <span class="ml-1 mr-1 mt-auto mb-auto"> / </span> <input type="text" name="" placeholder="Over" class="over">\
 							</div>\
 						</td>'); 
-
-			
 			return el;
 		};
 
@@ -210,11 +219,13 @@ var getGradeBook = (classid) => {
 		}
 		
 		createGradeHeadings();
+		$('#gradebook-container .loading').css('display','none');
 	}
  
  
+ 
 
-	$('.grading-content').addClass('isloading');
+	$('#gradebook-container .loading').css('display','flex');
 
 	$.ajax({
 		url : SITE_URL + 'teacher/gradebook',
@@ -223,8 +234,14 @@ var getGradeBook = (classid) => {
 		dataType : 'json',
 		success: function(r){  
 			iii.createStudentsList( r.students );
-			iii.showGradingPeriods( r.periods  ); 
-			$('.grading-content').removeClass('isloading');
+			if( gbook.find('tbody tr').length > 0 ){
+				iii.showGradingPeriods( r.periods  );
+				$('#gradebook-container').removeClass('no-student');
+				$('#gradebook-container .headpart button').prop('disabled',false); 
+			}else{
+				$('#gradebook-container').addClass('no-student');
+				$('#gradebook-container .loading').css('display','none');
+			}	
 		},
 		error : function(r){
 			console.log(r);

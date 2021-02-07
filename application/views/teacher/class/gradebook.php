@@ -36,7 +36,7 @@
 				<li class="mr-4"> <span> Enter </span> <span> <i class="fa fa-arrow-right"></i></span><span> Edit/onfirm  </span></li>
 			</ul>
 		</section>
-		<section id="gradebook-container" class="bg-white p-3">
+		<section id="gradebook-container" class="bg-white p-3 position-relative">
 			<div class="headpart">
 				<div class="pull-left d-flex">
 					<span class="text"> Grading Period: </span>
@@ -70,6 +70,12 @@
 						</thead>
 						<tbody class="grid-body"> </tbody>
 					</table>
+				</div>
+				<div class="no-student-yet text-center">
+					<div class="scholl faded m-auto img-container" style="max-width: 27vmin; width: 80%;">
+						<img src="<?=site_url();?>/assets/images/school.png" alt="">
+					</div>
+					<span class="mt-3 d-block faded" style="font-weight: 600; font-size: 20px;">No student had enrolled in class yet.</span>
 				</div>
 			 </div>
 		</section>

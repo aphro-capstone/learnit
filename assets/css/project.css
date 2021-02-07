@@ -69,6 +69,11 @@
     display: none;
 }
 
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #7997e1;
+    border-color: #8fa8e5;
+}
 
 .loading.show{
     display: flex;
