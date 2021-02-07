@@ -16,6 +16,9 @@
 		$col2 = 'col-md-8 cold-lg-9';
 	} 
 
+	if( getRole() == 'student' && $isviewQuiz ){
+		$col1 = 'col-md-12 col-lg-12';
+	}
 
 	if( !$VQWS ){
 		// $col1 = 'd-none';
@@ -54,33 +57,42 @@
 		<?php if($VQWS): ?>
 			<div class="col-sm-12 <?=$col1;?>">
 				<?php if($isviewQuiz) : ?>
-					<div class="panel mt-3" >
-						<div class="panel-content">
-							<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-tasks text-primary"></i>	<?= $QSD['tsk_title'] ?> </h2>
-							<?php if( getRole() == 'teacher' && $VQWS): ?>
-								<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-user text-info"></i>	<?= $QSD['studname'] ?> </h2>
-							<?php endif; ?>
-							<hr>
-							<div class="d-block mb-2">
-								<span> Total Point</span>
-								<span class="d-block" style="font-size: 2em;"> <?= $QSD['quiz_score'];?> / <?= $QSD['quiz_total'];?> </span>
+					<div class="<?php echo getRole() == 'student' ? 'row': '' ?> ">
+						<div class="<?php echo getRole() == 'student' ? 'col-sm-12 col-md-6 col-lg-6': '' ?> ">
+							<div class="panel mt-3" >
+								<div class="panel-content">
+									<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-tasks text-primary"></i>	<?= $QSD['tsk_title'] ?> </h2>
+									<?php if( getRole() == 'teacher' && $VQWS): ?>
+										<h2 class="normal-title m-0 normal-title m-0 pl-0 pr-0 pb-0"> <i class="fa fa-user text-info"></i>	<?= $QSD['studname'] ?> </h2>
+									<?php endif; ?>
+									<hr>
+									<div class="d-block mb-2">
+										<span> Total Point</span>
+										<span class="d-block" style="font-size: 2em;"> <?= $QSD['quiz_score'];?> / <?= $QSD['quiz_total'];?> </span>
+									</div>
+									<span class="d-block small"> Submitted : <?= date_format( new Datetime( $QSD['datetime_submitted'] ), 'F j, Y @ h:m A' );  ?>  </span>
+									<span class="d-block small"> Time Taken : <?= $QSD['duration_consumed']  ?>s </span>
+								</div>
 							</div>
-							<span class="d-block small"> Submitted : <?= date_format( new Datetime( $QSD['datetime_submitted'] ), 'F j, Y @ h:m A' );  ?>  </span>
-							<span class="d-block small"> Time Taken : <?= $QSD['duration_consumed']  ?>s </span>
 						</div>
-					</div>
-
-					<ul class="no-style questions-overview mt-3" >
-						<li class="header"> Question Overviews </li>
-						<li class="overview-legends">
-							<ul class="no-style">
-								<li> <div class="color perfect"></div> Perfect   </li>
-								<li> <div class="color semi-perfect"></div> Semi-Perfect   </li>
-								<li> <div class="color wrong"></div> Wrong   </li>
+						
+						<div class="<?php echo getRole() == 'student' ? 'col-sm-12 col-md-6 col-lg-6': '' ?> ">
+							<ul class="no-style questions-overview mt-3" >
+								<li class="header"> Question Overviews </li>
+								<li class="overview-legends">
+									<ul class="no-style">
+										<li> <div class="color perfect"></div> Perfect   </li>
+										<li> <div class="color semi-perfect"></div> Semi-Perfect   </li>
+										<li> <div class="color wrong"></div> Wrong   </li>
+									</ul>
+								</li>
 							</ul>
-						</li>
-					</ul>
-					<ul class="overview-items no-style">	</ul>
+							<ul class="overview-items no-style">	</ul>
+					</div>	
+					</div>
+					
+
+					
 
 				<?php else: ?>
 					<ul class="no-style questions-overview mt-3" >
@@ -120,7 +132,7 @@
 		
 		
 		
-		<div class="col-sm-12 <?=$col2;?>">
+		<div class="col-sm-12 <?=$col2;?> <?php echo $isView && getRole() == 'student' ? 'd-none':''  ?> ">
 			<div class="panel mt-3 panel2" >
 				<?php if(!$isviewQuiz): ?>
 					<div class="panel-header border-bottom d-flex full-width">

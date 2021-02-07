@@ -273,6 +273,7 @@ class Student extends MY_Controller {
 				$var['isView'] = $pref == 'view' ? TRUE : FALSE;
 				$var['quizid'] = $id;
 				$var['pageTitle']	= 'Quiz';
+				// var_dump( $var['QSD'] ); 
 				// var_dump($var['QSD']);
 				$this->load->template('student/quiz-template', $var);
 			}else{

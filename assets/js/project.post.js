@@ -209,16 +209,18 @@ const displayTaskModal = (postID,this_) =>{
         if(ID == undefined) ID = post.ass_id;
 
        
-
+        console.log(post);
         $('.view-quiz-result-student').attr('href', SITE_URL + 'student/' + 'quiz/view:'+ ID ); 
 
         $('.take-quiz-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
         $('.view-assignment-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
         
-        if( post.student_sub_count != undefined && post.student_sub_count  > 0 ){
+        if( post.submissionCount != undefined && post.submissionCount  > 0 ){
             $('.take-quiz-student').hide();
         }else{
+            $('.view-quiz-result-student').hide();
             $('.take-quiz-student').show();
+            modal.find('.hasTaken').html('');
         }
 
 
