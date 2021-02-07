@@ -571,7 +571,8 @@
                  |<span class="ml-2"><i class="fa fa-clock-o"></i></span> <span class="due-date ml-1">Due : May 1, 2020</span> 
               </div>
 
-                <p class="quiz-info"> <span class="question-count"> 30 </span> Questions  |  <span class="total-points"> 60</span> Points  | <span class="duration">60</span> minutes  <?php if(getRole() == 'student') { ?><span class="pull-right hasTaken"><strong> Submitted </strong> </span><?php }?> </p>
+                <p class="quiz-info"> <span class="question-count"> 30 </span> Questions  |  <span class="total-points"> 60</span> Points  | <span class="duration">60</span> minutes 
+                 <?php if(getRole() == 'student') { ?><span class="pull-right hasTaken"><strong> Submitted </strong> </span><?php }?> </p>
           </div>
           <hr>
           <p class="instructions">

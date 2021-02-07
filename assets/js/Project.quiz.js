@@ -945,7 +945,7 @@ const iniQuizQuestions = ( )=> {
 			let a =  $('<div class="custom_field text-boxes d-flex full-width img-capable mt-2 response-item" data-index="'+index +'">	 \
 							<p class=""><strong class="mr-1">'+ ( String.fromCharCode( index + 65 )  ) +'.</strong> ' +  b.text  +'</p>\
 						</div>'),
-				f =  $('<div class="radioboxinput mr-3 mt-auto mb-auto"><div class="frontend"></div> <input type="radio" name="question_1_response_multiple_choice"> </div>');
+				f =  $('<div class="radioboxinput mr-3 mt-auto mb-auto"><div class="frontend"></div> <input type="radio" name="question__'+  this.qnum+'_response_multiple_choice"> </div>');
 				g =  $('<div class="custom-checkbox mr-3 mt-auto mb-auto"><input type="checkbox" name=""><span class="checkbox fa fa-check"></span></div>');
 
 				a.append(b);
