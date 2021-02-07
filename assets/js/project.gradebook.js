@@ -56,9 +56,9 @@ jQuery( ($) => {
 	});
 
 	$(document).on('resize',function(){
-
+		resize();
 	});
-	
+	resize();
 	getGradeBook( $('.classes-dropdown li.active').attr('data-class-id')  );
 });
 
@@ -66,7 +66,10 @@ jQuery( ($) => {
  
 
 var resize = function(){
-	$('#gradebook-container').css('height', $(window).height())
+
+
+
+	$('#gradebook-container').css('height', $(window).height() - 230);
 }
 
 
