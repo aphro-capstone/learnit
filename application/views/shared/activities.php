@@ -63,7 +63,7 @@
 				</div>
 				<div class="game-box modal-games-trgr" data-type="tictactoe-it">
 					<div class="img-container">
-						<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/pic3.jpg" alt="">
+						<img class="full-width" src="<?php echo base_url();  ?>/assets/images/games/tictac.png" alt="">
 					</div>
 					<div class="backtext">
 						<span> Tic-Tac-Toe IT </span>
