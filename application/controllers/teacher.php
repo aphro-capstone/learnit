@@ -1314,14 +1314,16 @@ class Teacher extends MY_Controller {
 
 		$rows = array();
 		$totals = array();
+ 
 		foreach( $classStuds as $stud ){
 			$row = array( $stud['name'], );
 			
 			foreach( $data as $d ){
-			
+				
 				$score = '';
 				 
 				if(  isset($d['tsk_id'])  ){
+					
 					if( !in_array( $d[ 'tsk_title' ], $headers ) ){
 						$title =  $d[ 'tsk_title' ];
 						if( isset( $d['grades'][0] ) ){
@@ -1345,6 +1347,29 @@ class Teacher extends MY_Controller {
 						}, ARRAY_FILTER_USE_BOTH);
 
 						$score =  $d['tsk_type'] == 0 ? $grade[0]['quiz_score']: $grade[0]['ass_grade'];
+					}
+				}else{
+
+					if( !in_array( $d[ 'cgg_name' ], $headers ) ){
+						$title =  $d[ 'cgg_name' ];
+						if( isset( $d['grades'][0] ) ){
+							$title .= ' ( ' . ( $d['grades'][0]['cgsg_over'] ) . ' )';
+							$totals[] = $d['grades'][0]['cgsg_over'];
+						}
+
+						$headers[] =$title;
+					} 
+
+
+					$grades = $d['grades'];
+					if( count( $grades ) > 0 ){ 
+						$id = $stud['user_id'];
+						$grade = array_filter($grades, function($k) use ($id)  {
+						 
+							return $k['stud_id'] == $id ;
+						}, ARRAY_FILTER_USE_BOTH);
+
+						$score =  $grade[0]['cgsg_score'];
 					}
 				}
 
@@ -1382,15 +1407,15 @@ class Teacher extends MY_Controller {
 			
 			$rows[$x][] = number_format(( ($totalScore / $totalOver   ) * 100 ),0 ) . '%';
 		} 
-
-		
-
+ 
 		foreach( $rows as $row ){
 			echo implode("\t", $row) . "\r\n"; 
 		} 
 
 		die(); 
 	}
+
+
 
 	private function deleteCurrentPeriod(){
 		$cgpid = $this->input->post( 'cgp' );
@@ -1401,6 +1426,8 @@ class Teacher extends MY_Controller {
 			$this->returnResponse(null,'Failed to remove class period');
 		}
 	}
+
+
 	private function changeColumnPeriod(){
 		$cgpc = $this->input->post('cgpc');
 		$cgp = $this->input->post('cgp');
