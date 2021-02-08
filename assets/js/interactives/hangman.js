@@ -8,7 +8,7 @@ $(function(){
 
 
 let iniHangman = function () {
-  var alphabet = ['b', 'a', 'c', 'd', 'e', 'f', 'g', 'h',
+  var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
         'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
         't', 'u', 'v', 'w', 'x', 'y', 'z'];
   
@@ -50,11 +50,11 @@ let iniHangman = function () {
   // Select Catagory
   var selectCat = function () {
     if (chosenCategory === categories[0]) {
-      catagoryName.innerHTML = "The Chosen Category Is Premier League Football Teams";
+      catagoryName.innerHTML = "Category: Basic Parts of Computer System";
     } else if (chosenCategory === categories[1]) {
-      catagoryName.innerHTML = "The Chosen Category Is Films";
+      catagoryName.innerHTML = "Category: Computer History Timeline";
     } else if (chosenCategory === categories[2]) {
-      catagoryName.innerHTML = "The Chosen Category Is Cities";
+      catagoryName.innerHTML = "Category: Viruses";
     }
   }
 
@@ -195,7 +195,8 @@ let iniHangman = function () {
       geuss = letter;
       found = false;
       $('#alphabet li:not(.active)').each(function(){
-        if( $(this).text() == letter ){
+          console.log( $(this).text().toLowerCase(), letter.toLowerCase()  );
+        if( $(this).text().toLowerCase().trim() == letter.toLowerCase().trim() ){
 
           $(this).addClass('active')
           $(this)[0].onclick = null;
@@ -212,7 +213,7 @@ let iniHangman = function () {
       
       
       for (var i = 0; i < word.length; i++) {
-        if (word[i] === geuss) {
+        if (word[i].toLowerCase() === geuss.toLowerCase()) {
           geusses[i].innerHTML = geuss;
           counter += 1;
         } 
@@ -236,9 +237,11 @@ let iniHangman = function () {
   // Play
   play = function () {
     categories = [
-        ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
-        ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-        ["manchester", "milan", "madrid", "amsterdam", "prague"]
+        ["Keyboard", "Mouse", "Central-Processing-Unit", "Hard-disk", "Floppy-disk",
+         "Compact-disc", "Speakers", "Printer", "Monitor", "Web-camera", "Microphone"],
+        ["The-First-Computer", "Transistor", "IBM", "Bank-Computers", "Computer-Chips", "Video-Games",
+        "Invention-of-Mouse", "The-Internet", "Microsoft", "Microsoft-Expands", "Laptop", "World-Wide-Convention"],
+        ["Iloveyou-virus", "File-Infecting-Virus", "Macro-Virus", "Browser-Hijacker", "Polymorphic-Virus", "Resident-Virus"]
     ];
 
     chosenCategory = categories[Math.floor(Math.random() * categories.length)];
@@ -264,9 +267,11 @@ let iniHangman = function () {
     hint.onclick = function() {
 
       hints = [
-        ["Based in Mersyside", "Based in Mersyside", "First Welsh team to reach the Premier Leauge", "Owned by A russian Billionaire", "Once managed by Phil Brown", "2013 FA Cup runners up", "Gazza's first club"],
-        ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"],
-        ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
+        ["Input Devices", "Input Devices", "Processing Device", "Storage Devices", "Storage Devices",
+         "Storage Devices", "Output Devices", "Output Devices", "Output Devices", "Input Devices", "Input Devices"],
+        ["1936", "1947", "1953", "1955", "1958", "1962", "1963", "1969", "1975", "1989", "1991", "1996"],
+        ["Love Bug/Love Letter", "infects files with .exe or .com extensions", "Found in Microsoft Word or Excel",
+         "Alters your browser setting", "Evade anti-virus programs", "Infect files on your computer"]
     ];
 
     var catagoryIndex = categories.indexOf(chosenCategory);
