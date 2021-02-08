@@ -255,7 +255,8 @@ class Teacher extends MY_Controller {
 							),
 							'where'		=> array( array( 'field' => 'lc.class_id', 'value' => $id ) )
 		);
-		$classSingularInfo = $this->prepare_query( $classSingularArgs )->result_array()[0];
+		$classSingularInfo = $this->prepare_query( $classSingularArgs )->result_array();
+		$classSingularInfo = $classSingularInfo[0];
 
 		$classesListArgs = array(  
 							'select' 	=> 	'class_id,class_name,lsc.sc_color',
@@ -1141,8 +1142,14 @@ class Teacher extends MY_Controller {
 	}
 
 
-	private function getGradebooktabledata( ){
+	private function getGradebooktabledata( $cgp_id = null,$isReturn = false){
 		$periodID = $this->input->post('cgp');
+
+		if( isset($cgp_id) &&  !is_null( $cgp_id ) ){
+			$periodID = $cgp_id;
+		}
+
+
 
 		$args1 = array( 'from' => 'class_grading_period_columns', 
 						'where' => array( array( 'field' => 'cgp_id', 'value' => $periodID ) ) );
@@ -1198,9 +1205,13 @@ class Teacher extends MY_Controller {
 		usort($headers, function($a, $b) { 
 			return new Datetime( $b['timestamp_created'] ) > new Datetime( $a['timestamp_created'] );
 		});
-  
-		echo json_encode($headers);
-		die();
+		
+		if( !$isReturn ){
+			echo json_encode($headers);
+			die();
+		}
+		return $headers;
+		
 	}
 
 	private function delColumn(){
@@ -1292,8 +1303,94 @@ class Teacher extends MY_Controller {
 		
 	}
 
-	private function exportgradebook(){
+	public function exportgradebook($periodID,$classID){
+		 
+		$data = $this->getGradebooktabledata( $periodID, true );
+		$classStuds = $this->GET_CLASS_STUDENTS( $classID, 'cred_id as user_id, concat(ui_firstname," ",ui_lastname ) as name' ) ;
+	 
+		$headers = array(  'Student\'s Name' );
+		
+		// get header
 
+		$rows = array();
+		$totals = array();
+		foreach( $classStuds as $stud ){
+			$row = array( $stud['name'], );
+			
+			foreach( $data as $d ){
+			
+				$score = '';
+				 
+				if(  isset($d['tsk_id'])  ){
+					if( !in_array( $d[ 'tsk_title' ], $headers ) ){
+						$title =  $d[ 'tsk_title' ];
+						if( isset( $d['grades'][0] ) ){
+							if( $d['tsk_type'] == 0 ){
+								$title .= ' ( ' . ( $d['grades'][0]['total_point'] ) . ' )';
+								$totals[] = $d['grades'][0]['total_point'];
+							}else{
+								$title .= ' ( ' . ( $d['grades'][0]['ass_over'] ) . ' )';
+								$totals[] = $d['grades'][0]['ass_over'];
+							}
+						}
+						$headers[] =$title;
+					}
+
+					$grades = $d['grades'];
+					if( count( $grades ) > 0 ){ 
+						$id = $stud['user_id'];
+						$grade = array_filter($grades, function($k) use ($id)  {
+						 
+							return $k['stud_id'] == $id ;
+						}, ARRAY_FILTER_USE_BOTH);
+
+						$score =  $d['tsk_type'] == 0 ? $grade[0]['quiz_score']: $grade[0]['ass_grade'];
+					}
+				}
+
+				$row[] = $score;
+			}
+			$rows[] = $row;
+		}
+		$headers[] = 'Grade';
+		$headers = implode("\t", $headers);
+		
+
+		$content=ob_get_clean();
+		$normalout=false;
+		// header( "Content-Type: application/vnd.ms-excel" );
+		// header( "Content-disposition: attachment; filename=learnit_gradebook_c-".$classID."_p-". $periodID ."_list.xls" );
+		// echo $headers. "\r\n";
+		
+		// var_dump($totals);
+		for($x = 0; $x < count($rows); $x++){
+			$row = $rows[$x];
+			$totalScore = 0;
+			$counter = 0;
+			$totalOver = 0;
+			// $totalOver = 0;
+			
+			for($y = 1; $y < count($row); $y++){
+				$counter++;
+				if( is_numeric( $row[$y] ) ) $totalScore+= intval( $row[$y] );
+			}
+
+			for($y = 0; $y < count($totals); $y++){
+				$counter++;
+				if( is_numeric( $totals[$y] ) ) $totalOver+= intval( $totals[$y] );
+			}
+			
+			 
+			$rows[$x][] = ( ($totalScore / $totalOver   ) * 100 ) . '%';
+		} 
+
+		
+
+		foreach( $rows as $row ){
+			// echo implode("\t", $row) . "\r\n"; 
+		} 
+
+		die(); 
 	}
 
 	private function deleteCurrentPeriod(){
@@ -1319,7 +1416,7 @@ class Teacher extends MY_Controller {
 
 	private function GET_CLASS_STUDENTS ($classID,$select = null,$admission = 1) {
 		$members = array(  
-					'select' 	=> 	!is_null($select) ? $select : '',
+					'select' 	=> 	!is_null($select) ? $select : '*',
 					'from'		=>	'userinfo ui',
 					'where'		=> array( 
 										array( 'field' => 'cs.class_id', 'value'  =>  $classID),

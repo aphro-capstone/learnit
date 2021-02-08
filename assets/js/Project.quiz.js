@@ -1347,8 +1347,6 @@ const iniQuizQuestions = ( )=> {
 		else if( b.type == 4 ) return this.createMatchingResponse( b.responses ) ;
 		else if( b.type == 5 ) return this.createMultipleAnswerResponse( b.responses ) ;
 		else if( b.type == 2 ) return this.createShortAnswerResponse();  
-
-		
 	}
 
 

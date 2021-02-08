@@ -56,6 +56,12 @@ jQuery( ($) => {
 		}
 	});
 
+	$('.export-gradebook').on('click',function(){
+		let classid = $('.classes-dropdown li.active').attr('data-class-id');
+		let link = SITE_URL + 'teacher/exportgradebook/' + activePeriod+'/'+classid;
+		window.open(link,'_blank');
+	});
+
 
 	resize();
 	getGradeBook( $('.classes-dropdown li.active').attr('data-class-id')  );
@@ -483,8 +489,14 @@ var getGradeBook = (classid) => {
 					let td = iii.gbook.find('tbody tr[data-id="'+ e.stud_id +'"] td.grade-content-td').eq(a);
 					
 					if( $(b).hasClass('task-grade') ){
-						td.find('input.score').val( e.ass_grade );
-						td.find('input.over').val( e.ass_over );
+						console.log( tableData[a]);
+						if( tableData[a].tsk_type == 0){
+							td.find('input.score').val( e.quiz_score );
+							td.find('input.over').val( e.total_point );
+						}else{
+							td.find('input.score').val( e.ass_grade );
+							td.find('input.over').val( e.ass_over );
+						}
 					}else{
 						td.find('input.score').val( e.cgsg_score );
 						td.find('input.over').val( e.cgsg_over );
