@@ -30,8 +30,8 @@
 						<img src="<?=base_url()?>assets/images/avatars/user5.png	">
 					</div>
 					<div class="convoname">
-						<span class="convo-name d-block"> Aphrodite Gajo </span>
-						<span class="conversion-msg"> You : Hahaha  <i class="separator"></i> 1:16 AM </span>
+						<span class="convo-name d-block"> Jesther Gonzales </span>
+						<span class="conversion-msg"> You : Hi, how are you?  <i class="separator"></i> 4:00 PM </span>
 					</div>
 
 					<div class="dropdown option">
@@ -51,8 +51,8 @@
 						<img src="<?=base_url()?>assets/images/avatars/user2.png	">
 					</div>
 					<div class="contactname">
-						<span class="contact-name d-block"> Aphrodite Gajo </span>
-						<span class="conversion-msg"> You : Hahaha  <i class="separator"></i> 1:16 AM </span>
+						<span class="contact-name d-block"> Virna Alquizar </span>
+						<span class="conversion-msg"> You : Wat's up?  <i class="separator"></i> 3:16 PM </span>
 					</div>
 
 					<div class="dropdown option">
@@ -72,8 +72,8 @@
 						<img src="<?=base_url()?>assets/images/avatars/user3.png	">
 					</div>
 					<div class="contactname">
-						<span class="contact-name d-block"> Aphrodite Gajo </span>
-						<span class="conversion-msg"> You : Hahaha  <i class="separator"></i> 1:16 AM </span>
+						<span class="contact-name d-block"> Aquim Concepcion </span>
+						<span class="conversion-msg"> You : Be there in a minute  <i class="separator"></i> 2:20 PM </span>
 					</div>
 
 					<div class="dropdown option">
@@ -94,7 +94,7 @@
 					</div>
 					<div class="contactname">
 						<span class="contact-name d-block"> Aphrodite Gajo </span>
-						<span class="conversion-msg"> You : Hahaha  <i class="separator"></i> 1:16 AM </span>
+						<span class="conversion-msg"> You : Buy me something  <i class="separator"></i> 1:16 PM </span>
 					</div>
 
 					<div class="dropdown option">
@@ -144,7 +144,7 @@
 				<img src="<?= base_url(); ?>assets/images/avatars/user5.png">
 			</div>
 			<div class="text">
-				<span class="name d-block"> Aphrodite Gajo </span>	
+				<span class="name d-block"> Jesther Gonzales </span>	
 				<span class="active"> Active an hour ago </span>	
 			</div>
 			<span class="icon"> <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" data-original-title="Conversation Information"  ></i></span>
@@ -157,7 +157,7 @@
 					<img src="<?= base_url();?>assets/images/avatars/user5.png" alt="">
 				</div>
 				<div class="msg-content">
-					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:31 AM"> Sample Message Text </div>	
+					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:31 AM"> Hey </div>	
 					<div class="actions">
 						<div class="reaction-div d-flex">
 							<div class="reactions">
@@ -191,7 +191,7 @@
 					<img src="<?= base_url();?>assets/images/avatars/user5.png" alt="">
 				</div>
 				<div class="msg-content" data-toggle="tooltip" data-placement="top" data-original-title="10:35 AM">
-					<div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </div>
+					<div class="content">Check this photo </div>
 					<div class="actions">
 						<div class="reaction-div d-flex">
 							<div class="reactions">
@@ -261,7 +261,7 @@
 				
 				<div class="msg-content" >
 					
-					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:31 AM">Sample Message Text</div>
+					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:31 AM">Yoo!!</div>
 					<div class="actions">
 						<div class="dropdown more">
 							<span data-toggle="dropdown" class="icon"> <i class="fa fa-ellipsis-h" data-toggle="tooltip" data-placement="bottom" data-original-title="More"></i>  </span>
@@ -292,7 +292,7 @@
 			</div>
 			<div class="msg-item receiver-msg continueous-msg">
 				<div class="msg-content" >
-					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:35 AM">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </div>
+					<div class="content" data-toggle="tooltip" data-placement="top" data-original-title="10:35 AM">Cool!! We have both wallpaper. </div>
 					<div class="actions">
 						
 						<div class="dropdown more">

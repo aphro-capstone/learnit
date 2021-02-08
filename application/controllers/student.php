@@ -366,16 +366,20 @@ class Student extends MY_Controller {
 
 			//  CHeck if code exist
 			if(  $class_id->num_rows() > 0  ){
-				$classname = $class_id->result_array()[0]['class_name'];
-				$class_id = $class_id->result_array()[0]['class_id'];
-				$teacher_id = $class_id->result_array()[0]['teacher_id'];
+				$class_id = $class_id->result_array();
+				$class_id = $class_id[0];
+
+
+				$classname = $class_id['class_name'];
+				$class = $class_id['class_id'];
+				$teacher_id = $class_id['teacher_id'];
 				
 				$argsCheck = array(
 					'select' => 'cs_id,admission_status',
 					'from'	=> 'class_students',
 					'where'	=> array( 
 										array( 'field' => 'student_id', 'value'  =>  getUserID() ),
-										array( 'field' => 'class_id', 'value'  =>  $class_id),
+										array( 'field' => 'class_id', 'value'  =>  $class),
 					)
 				);
 
@@ -411,7 +415,7 @@ class Student extends MY_Controller {
 				}else{
 					$dataToinsert = array(
 						'student_id' 	=> getUserID(),								
-						'class_id' 		=> $class_id,								
+						'class_id' 		=> $class,								
 					);
 
 					$this->ProjectModel->insert_CI_Query( $dataToinsert, 'class_students' );
