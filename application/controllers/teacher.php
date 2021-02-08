@@ -930,7 +930,7 @@ class Teacher extends MY_Controller {
 			$studentsEmailsLists = array();
 
 			$SLA =  array(
-						'select'	=> "concat(ui.ui_firstname, ' ',ui.ui_lastname) as stud_name, ui.ui_email,ui_profile_data",
+						'select'	=> "cred_id as userid, concat(ui.ui_firstname, ' ',ui.ui_lastname) as stud_name, ui.ui_email,ui_profile_data",
 						'from'		=> 'class_students as cs', 
 						'join'		=> array(  array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = cs.student_id') ),
 						'where'		=> array( 
@@ -957,6 +957,8 @@ class Teacher extends MY_Controller {
 								'postID' 	=> $postID,
 								'guardian_name'	=> $stud_data['ui_guardian_name']
 							);
+				
+				$this->addnotificationLogs( $sl['userid'], 'A new '. $taskType .' has been assigned on ' . $class['class_name'],'new-task' );
 
 				$this->sendEmail($data, $content );
 			endforeach; 
@@ -1080,25 +1082,73 @@ class Teacher extends MY_Controller {
 	public function gradebook(){
 		$action = $this->input->post('action');
 
-		if( $action == 'addgradingperiod' ){
-			$this->addgradingperiod();
-		}else if( $action == 'addgradeitem' ){
-			$this->addgradeitem();
-		}else if ( $action == 'export' ){
-			$this->exportgradebook();
-		}else if( $action == 'getgradingperiods' ){
-			$this->getClassPeriods();
-		}
+		if( $action == 'addgradingperiod' ) 		$this->addgradingperiod();
+		else if( $action == 'addgradeitem' ) 		$this->addgradeitem();
+		else if( $action == 'getgradingperiods' ) 	$this->getClassPeriods();
+		else if ( $action == 'delPeriod' ) 			$this->deleteCurrentPeriod();
+		else if ( $action == 'addGradingColumn' ) 	$this->addgradingcolumn();
+		else if( $action == 'getperiodtabledata' ) 	$this->getGradebooktabledata();
+		else if( $action == 'delColumn' ) 			$this->delColumn();
+		else if( $action == 'changePeriod' )		$this->changeColumnPeriod();
+		else if( $action == 'editGrade' )			$this->updateGrades();
 	}
 	
-
-	private function getGradebooktabledata( $periodID ){
+	private function updateGrades(){
+		$cgpc = $this->input->post('cgpc');	
+		$stud = $this->input->post('stud');	
+		$score = $this->input->post('score');	
+		$over = $this->input->post('over');	
 		
+		// if( $type1 == 'manual' ){'cgpc_id' => $cgpc_stask_id, 'stud_id' =>$stud 
+		$args = array( 'select' => 'cgsg_id','from' => 'class_grading_student_grades',
+						'where'	=> array( 
+											array( 'field' => 'cgpc_id', 'value' => $cgpc),
+											array( 'field' => 'stud_id', 'value' => $stud),
+										)
+						);
+		
+		$dataInsert = array( 
+							'cgpc_id' => $cgpc,
+							'stud_id' => $stud,
+							'cgsg_score' => $score,
+							'cgsg_over' => $over, 
+						);
+
+		$t = $this->prepare_query( $args );
+
+		if(  $t->num_rows() > 0){
+			// update
+			$t = $t->result_array();
+			$t = $t[0];
+			$whereArray = array( 'cgsg_id' => $t['cgsg_id']);  
+
+			if($this->ProjectModel->update($whereArray,'class_grading_student_grades',$dataInsert)){
+				$this->returnResponse( 'Successfully updated grade' );
+			}else{
+				$this->returnResponse( 'Failed to update grade' );
+			}
+		}else{
+			// insert
+			if( $this->ProjectModel->insert_CI_Query( $dataInsert, 'class_grading_student_grades',true ) ){
+				$this->returnResponse( 'Successfully updated grade' );
+			}else{
+				$this->returnResponse( 'Failed to update grade' );
+			}
+			
+		}
+			
+		// }
+	}
+
+
+	private function getGradebooktabledata( ){
+		$periodID = $this->input->post('cgp');
+
 		$args1 = array( 'from' => 'class_grading_period_columns', 
 						'where' => array( array( 'field' => 'cgp_id', 'value' => $periodID ) ) );
 
 
-		$args2 = array( 'select' => 'tsk_title,tsk_options,tsk.timestamp_created,tsk_type,tsk_id',
+		$args2 = array( 'select' => 'tsk_title,tsk_options,tsk.timestamp_created,tsk_type,tsk_id,tsk_duedate',
 						'from'	=> 'class_grading_period_tasks cgp',
 						'join'	=>  array( array(	'table'	=>	'tasks tsk',	'cond'	=>	'tsk.tsk_id = cgp.task_id' ) ),  
 						'where'	=> array( array( 'field' => 'cgp_id', 'value' =>  $periodID) ),
@@ -1117,7 +1167,7 @@ class Teacher extends MY_Controller {
 		$headers = array_map( function($a){
 			if( isset($a['tsk_title']) ){
 				 $args = array( 
-					 			'select'	=> 'status,student_id as stud_id',
+					 			'select'	=> 'status,student_id as stud_id,ts.ts_id',
 								'from' => 'task_submissions ts',
 								'join'	=> array(),
 								'where'	=> array( array( 'field' => 'task_id','value'=> $a['tsk_id'] ) ));
@@ -1131,7 +1181,7 @@ class Teacher extends MY_Controller {
 					$args['join'][] = array( 'table' => 'task_submission_ass tsa', 'cond'	=> 'tsa.ts_id = ts.ts_id' );
 				}
 				unset( $a['tsk_options'] );
-				unset( $a['tsk_type'] );
+				// unset( $a['tsk_type'] );
 				$a['grades'] = $this->prepare_query( $args )->result_array();
 			}else{
 				$args = array(
@@ -1148,10 +1198,18 @@ class Teacher extends MY_Controller {
 		usort($headers, function($a, $b) { 
 			return new Datetime( $b['timestamp_created'] ) > new Datetime( $a['timestamp_created'] );
 		});
+  
+		echo json_encode($headers);
+		die();
+	}
 
-
-
-		return $headers;
+	private function delColumn(){
+		$cgpcID = $this->input->post('cgpc');
+		if( $this->ProjectModel->delete( $cgpcID, 'cgpc_id', 'class_grading_period_columns') ){
+			$this->returnResponse( 'Successfully removed column.' );
+		}else{
+			$this->returnResponse( null,'Failed to remove column' );
+		}
 	}
 
 	private function getClassPeriods(){
@@ -1159,12 +1217,7 @@ class Teacher extends MY_Controller {
 		
 		$args = array( 'from' => 'class_grading_periods', 'where' => array(  array('field' => 'class_id', 'value' => $classid) ) );
 		$data = $this->prepare_query( $args )->result_array();
-		
-		$data = array_map( function($a){
-			$a['table'] = $this->getGradebooktabledata($a['cgp_id']);
-			return $a;
-		},$data);
-		
+	 
 		$studs = $this->GET_CLASS_STUDENTS( $classid,'cred_id as user_id, concat(ui_firstname," ",ui_lastname ) as name, ui_profile_data as userimage' );
 		$studs = array_map( function($a){
 			$a['userimage'] = json_decode( $a['userimage'],true );
@@ -1183,7 +1236,7 @@ class Teacher extends MY_Controller {
 	private function addgradingperiod(){
 		$name = $this->input->post( 'name');
 		$classid = $this->input->post( 'class');
-
+		
 
 		$add = array(
 			'class_id '			=>  $classid,
@@ -1198,16 +1251,71 @@ class Teacher extends MY_Controller {
 		echo 0;
 		die();
 	}
-	private function addgradeitem(){
 
+	private function addgradingcolumn(){
+		$name = $this->input->post('name');
+		$cgpid = $this->input->post('cgp');
+		$defaultover = $this->input->post('defaultover');
+		$cgpc = $this->input->post('cgpc');
+
+		$args = array( 
+						'from' => 'class_grading_period_columns',
+						'where'	=> array( 
+											array( 'field' =>  'cgp_id','value' => $cgpid  ),
+											array( 'field' =>  'cgg_name', 'value' => $name  )
+										)
+					);
+
+		$args2 = array( 'cgp_id' => $cgpid,'cgg_name' => $name ,'default_over' => $defaultover );
+
+		
+		if( isset( $cgpc )  ){
+			$whereArray = array( 'cgpc_id' => $cgpc);  
+			if($this->ProjectModel->update($whereArray,'class_grading_period_columns',$args2)){
+				$this->returnResponse( 'Successfully updated column' );
+			}else{
+				$this->returnResponse( 'Failed to update column' );
+			}
+		}else{
+			$cgpc_id = $this->insertIfnotexist( 	
+					$args, array( 'data' => $args2, 'table' => 'class_grading_period_columns' ), array(),
+					TRUE, TRUE);
+
+			if( $cgpc_id ){
+				$this->returnResponse('Successfully added grading column');
+			}else {
+				$this->returnResponse( 'Failed to add grading column' );
+			}
+		}
+
+
+		
 	}
 
 	private function exportgradebook(){
 
 	}
 
+	private function deleteCurrentPeriod(){
+		$cgpid = $this->input->post( 'cgp' );
 
+		if( $this->ProjectModel->delete( $cgpid, 'cgp_id', 'class_grading_periods') ){
+			$this->returnResponse('Successfull removed class period');
+		}else{
+			$this->returnResponse(null,'Failed to remove class period');
+		}
+	}
+	private function changeColumnPeriod(){
+		$cgpc = $this->input->post('cgpc');
+		$cgp = $this->input->post('cgp');
 
+		$whereArray = array( 'cgpc_id' => $cgpc);  
+		if($this->ProjectModel->update($whereArray,'class_grading_period_columns',array( 'cgp_id' => $cgp )  )){
+			$this->returnResponse( 'Successfully updated column' );
+		}else{
+			$this->returnResponse( 'Failed to update column' );
+		}
+	}
 
 	private function GET_CLASS_STUDENTS ($classID,$select = null,$admission = 1) {
 		$members = array(  
@@ -1247,5 +1355,7 @@ class Teacher extends MY_Controller {
 			$this->ProjectModel->delete( $taskid, 'task_id', 'class_grading_period_tasks');			
 		}
 	}
+
+ 
 }
 

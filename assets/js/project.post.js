@@ -205,20 +205,26 @@ const displayTaskModal = (postID,this_) =>{
     }else if(USER_ROLE == 'student'){
 
         let ID = post.quiz_id;
-
-        if(ID == undefined) ID = post.ass_id;
+        let str = 'Quiz';
+        if(ID == undefined) {
+            ID = post.ass_id;
+            str = 'Assignment';
+        }
 
        
-        console.log(post);
         $('.view-quiz-result-student').attr('href', SITE_URL + 'student/' + 'quiz/view:'+ ID ); 
 
         $('.take-quiz-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
         $('.view-assignment-student').attr('href', SITE_URL + 'student/' + viewLink+ ID ); 
-        
+        $('.take-quiz-student').text('Take ' + str);
+
+
         if( post.submissionCount != undefined && post.submissionCount  > 0 ){
             $('.take-quiz-student').hide();
+            $('.take-quiz-student').hide();
         }else{
-            $('.view-quiz-result-student').hide();
+            $('.view-quiz-result-student').hide(); 
+            $('.view-assignment-student').hide();
             $('.take-quiz-student').show();
             modal.find('.hasTaken').html('');
         }

@@ -42,7 +42,9 @@ body#gradebook #main-content{
 
 .grid-header .grade-header{
 	text-align: center;
-	/* width: 230px; */
+    /* width: 230px; */
+    cursor: pointer;
+    position: relative;
 }
 
 table td.grade-content-td{
@@ -157,3 +159,38 @@ table td.grade-content-td{
     height: 100%;
     margin: auto;
 }
+
+.dropdowndivs{
+    position: absolute;
+    background: #fff;
+    
+    width: 240px;
+    border: 1px solid #cdcdcd;
+    text-align: left;
+    top:calc(100% + 8px);
+    z-index: 2;
+    display: none;
+    font-weight: normal;
+    left: -20%;
+    cursor: default;
+}   
+.dropdowndivs>div{
+    padding: 10px 15px;
+}
+.dropdowndivs:before{
+    content: " ";
+    position: absolute;
+    border-width: 12px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    bottom: 100%;
+    border-bottom-color: #fffffe;
+    left: 40%;
+}
+.grade-header.open .dropdowndivs{
+    display: block;
+}
+
+.dropdowndivs .action{cursor: pointer;}

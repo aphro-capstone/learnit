@@ -46,9 +46,9 @@
 					</ul>
 				</div>
 				<div class="pull-right d-flex">
-					<button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#createGradebook"> <i class="fa fa-plus"></i> <span>Add Grade</span>  </button>
-					<button type="button" class="btn btn-info ml-2"> <i class="fa fa-download"></i> <span>Export</span>  </button>
-					<button type="button" class="btn btn-danger ml-2"> <i class="fa fa-trash"></i> <span>Delete</span>  </button>
+					<button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#createGradebook"> <i class="fa fa-plus"></i> <span>Add Grade Column</span>  </button>
+					<button type="button" class="btn btn-info ml-2 export-gradebook"> <i class="fa fa-download"></i> <span>Export</span>  </button>
+					<button type="button" class="btn btn-danger ml-2 deleteperiod"> <i class="fa fa-trash"></i> <span>Delete current period</span>  </button>
 				</div>
 				
 			</div>

@@ -228,13 +228,13 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 	this.createResponsesSection = (isUpdate = false) => {
 		let i = this;
 
-		this.createInputBoxes = (x,useRadio = true) => {
+		this.createInputBoxes = (x,useRadio = true,uuid = '') => {
 			let a =  $('<div class="custom_field text-boxes d-flex full-width img-capable mt-2 response-item"></div>'),
 				b =  $('<input type="text" placeholder="Enter Answer">'),
 				c =  $('<span class="inputImage m-auto"></span>'),
 				d =  $('<input type="file" class="d-none" accept="image/x-png,image/gif,image/jpeg">'),
 				e =  $('<span class="fa fa-image inputfileBtn clickable-content" data-toggle="tooltip" data-placement="left" data-original-title="Add an image to your Answer"></span>'),
-				f =  $('<div class="radioboxinput mr-2 m-auto pull-right"><div class="frontend"></div> <input type="radio" name="question_1_response_multiple_choice"> </div>');
+				f =  $('<div class="radioboxinput mr-2 m-auto pull-right"><div class="frontend"></div> <input type="radio" name="question_'+ uuid +'_response_multiple_choice"> </div>');
 				g =  $('<div class="custom-checkbox"><input type="checkbox" name=""><span class="checkbox fa fa-check"></span></div>');
 
 				e.tooltip();
@@ -259,14 +259,14 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		};
 
 		this.createTrueFalseResponse = ( qnam) =>{
-
+			let uuid = create_UUID().replace(/-/g, "");
 			let a = $('<div class="row true_false_response response-div">\
 						<div class="col col-lg-6 col-md-6 col-sm-12">\
 							<div class="custom_field radioboxinput-container p-3 d-table full-width response-item " >\
 								<span class="text pull-left"> True </span>\
 								<div class="radioboxinput mr-2 m-auto pull-right">\
 									<div class="frontend"></div>\
-									<input type="radio" name="question_'+ qnam +'_response" value="true">\
+									<input type="radio" name="question_'+ uuid +'_response" value="true">\
 								</div>\
 							</div>\
 						</div>\
@@ -275,7 +275,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 								<span class="text pull-left"> False </span>\
 								<div class="radioboxinput mr-2 m-auto pull-right">\
 									<div class="frontend"></div>\
-									<input type="radio" name="question_'+ qnam +'_response" value="false">\
+									<input type="radio" name="question_'+ uuid +'_response" value="false">\
 								</div>\
 							</div>\
 						</div>\
@@ -286,8 +286,11 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		this.createMultipleChoiceResponse = () => {
 			let a = $('<div class="multiple_choice_response mt-3 response-div"></div>');
 			let i = this;
+
+			let uuid = create_UUID().replace(/-/g, "");
+
 			for(let x = 0;x < 3; x++){
-				a.append( this.createInputBoxes(x) );
+				a.append( this.createInputBoxes(x,true,uuid) );
 			}
 			
 
@@ -295,7 +298,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 			let button = $('<button class="btn btn-primary mt-2"> <i class="fa fa-plus"></i> Add Response</button>');
 		
 				button.click(function(){
-					i.createInputBoxes().insertBefore( button );
+					i.createInputBoxes(undefined,true,uuid).insertBefore( button );
 				});
 
 			a.append(button);
@@ -485,7 +488,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		};  
 
 		if( obj.type == 0 ){
-			obj['responses'] = this.QuestionItem.find('[name="question_'+ this.qnum +'_response"]').val();
+			obj['responses'] = this.QuestionItem.find('.response-item.selected input').val();
 		}else if( obj.type == 1 || obj.type == 5 ){
 			obj['responses'] = [];
 			this.QuestionItem.find('.response-item').each(function(a,b){
@@ -529,7 +532,6 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 				 pointMultiplier += $(b).find('input[type="checkbox"]').is(':checked') ? 1: 0;
 			});
 		}
-		console.log(this.getTotalPoints * pointMultiplier);
 		return this.questionPoints * pointMultiplier;
 	}
 
@@ -941,11 +943,11 @@ const updateQuestionNumbers = () => {
 
 const iniQuizQuestions = ( )=> {
 	this.createForm = (b,answer) => {
-		this.createInputBoxes = ( b ,useRadio = true,index) => {
+		this.createInputBoxes = ( b ,useRadio = true,index,uuid) => {
 			let a =  $('<div class="custom_field text-boxes d-flex full-width img-capable mt-2 response-item" data-index="'+index +'">	 \
 							<p class=""><strong class="mr-1">'+ ( String.fromCharCode( index + 65 )  ) +'.</strong> ' +  b.text  +'</p>\
 						</div>'),
-				f =  $('<div class="radioboxinput mr-3 mt-auto mb-auto"><div class="frontend"></div> <input type="radio" name="question__'+  this.qnum+'_response_multiple_choice"> </div>');
+				f =  $('<div class="radioboxinput mr-3 mt-auto mb-auto"><div class="frontend"></div> <input type="radio" name="question__'+  uuid +'_response_multiple_choice"> </div>');
 				g =  $('<div class="custom-checkbox mr-3 mt-auto mb-auto"><input type="checkbox" name=""><span class="checkbox fa fa-check"></span></div>');
 
 				a.append(b);
@@ -987,13 +989,16 @@ const iniQuizQuestions = ( )=> {
 		};
 
 		this.createTrueFalseResponse = ( R ) =>{
+			let uuid = create_UUID().replace(/-/g, "");
+			let sc = { c: 0 , o : 1 };
+
 			temp = $('<div class="row true_false_response response-div">\
 					<div class="col col-lg-6 col-md-6 col-sm-12">\
 						<div class="custom_field radioboxinput-container p-3 d-table full-width response-item" data-index="true" >\
 							<span class="text pull-left"> True </span>\
 							<div class="radioboxinput mr-2 m-auto pull-right">\
 								<div class="frontend"></div>\
-								<input type="radio" name="question_'+ R +'_response" value="true">\
+								<input type="radio" name="question_'+ uuid +'_response" value="true">\
 							</div>\
 						</div>\
 					</div>\
@@ -1002,25 +1007,27 @@ const iniQuizQuestions = ( )=> {
 							<span class="text pull-left"> False </span>\
 							<div class="radioboxinput mr-2 m-auto pull-right">\
 								<div class="frontend"></div>\
-								<input type="radio" name="question_'+ R +'_response" value="false">\
+								<input type="radio" name="question_'+uuid +'_response" value="false">\
 							</div>\
 						</div>\
 					</div>\
 				</div>');
+			 
 			if( answer ){
 				temp.find('.response-item').addClass('unclickable');
 				temp.find('[data-index="'+ answer[0] +'"]').addClass('selected-answer'); 
 				temp.find('[data-index="'+ answer[0] +'"] .radioboxinput').addClass('checked');
 				temp.find('[data-index="'+ answer[0] +'"] .radioboxinput input').prop('checked',true);
 
-				if( answer[0] == b.responses ) {
+				if( answer[0] == b.responses ) { 
 					temp.find('.selected-answer').addClass('correct-answer');
+					sc['c'] = 1;
 				}else{
 					temp.find('[data-index="'+ b.responses +'"]').addClass('correct-answer');
 					temp.find('.selected-answer').addClass('incorrect-answer');
 				}
 
-				return  { el : temp, sc : { c: 1 , o : 1 } };
+				return  { el : temp, sc : sc };
 			}else if( !VQWS ){
 				temp.find('[data-index="'+ b.responses +'"]').addClass('correct-answer');
 				temp.find('.response-item').addClass('unclickable');
@@ -1032,8 +1039,9 @@ const iniQuizQuestions = ( )=> {
 			let a = $('<div class="multiple_choice_response mt-3 response-div"></div>');
 			let i = this;
 			let score = { c:0,o:0 };
+			let uuid = create_UUID().replace(/-/g, "");
 			R.forEach( (b,c) => {
-				let aaa = this.createInputBoxes(b,true,c );
+				let aaa = this.createInputBoxes(b,true,c ,uuid);
 				a.append( aaa.el ? aaa.el : aaa );
 				if( studQuizView && answer ){
 					score['c'] = score.c + aaa.sc.c;
@@ -1286,8 +1294,9 @@ const iniQuizQuestions = ( )=> {
 			let a = $('<div class="multiple_answer mt-3 response-div"></div>');
 			let i = this;
 			let score = {c : 0,o : 0, m : 0};
+			let uuid = create_UUID().replace(/-/g, "");
 			R.forEach( (b,c) => {
-				let aaa = this.createInputBoxes(b,false,c );
+				let aaa = this.createInputBoxes(b,false,c ,uuid);
 				a.append( aaa.el ? aaa.el : aaa );
 				if( studQuizView && answer ){
 					score['c'] = score.c + aaa.sc.c;
@@ -1389,7 +1398,7 @@ const iniQuizQuestions = ( )=> {
 		dflex.append(right);
 		aa.append(dflex	);	
 
-
+		 
 		if( typeof quiz_answers !== 'undefined' ){
 			var FR = ins.createForm(b, studQuizView && quiz_answers[a] ? quiz_answers[a] : undefined);
 		}else{
@@ -1397,8 +1406,8 @@ const iniQuizQuestions = ( )=> {
 		}
 		
 		let callback = FR.cb; 
-		let score = FR.sc;
-		
+		let score = FR.sc; 
+
 		if( score ){
 			let p = (score.c * b.points);
 			if( b.type == 5 ){
@@ -1472,12 +1481,13 @@ const iniQuizQuestions = ( )=> {
 		
 		// overview
 		overviewitem = $('<li class="overview-item unanswered" > Question '+ (a+1) +' </li>');
-
+	 
 		if( studQuizView && b.type != 2 && typeof quiz_answers !== 'undefined' && quiz_answers[a] ){
 			// compute Remarks  
 			let r = score.c == score.o ? 1 : score.c == 0 ? 3: 2;
 			overviewitem.removeClass('unanswered').addClass('remark-' + r);
 			overviewitem.append('<span class="score">'+ score.c + '/' + score.o   +'</span>');
+			 
 		}
 
 

@@ -260,18 +260,18 @@
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header" style="border-bottom: none;">
-          <h5 class="modal-title">Create new Grade</h5>
+          <h5 class="modal-title">Add Grade Collumn</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group"> <input type="text" name=""  class="form-control" placeholder="Enter Grade"> </div>
-          <div class="form-group"> <input type="text" name=""  class="form-control" placeholder="Enter Default Over"> </div>
+          <div class="form-group"> <input type="text" name="name"  class="form-control" placeholder="Column Title"> </div>
+          <div class="form-group"> <input type="text" name="default-over"  class="form-control" placeholder="Enter Default Over"> </div>
         </div>
         <div class="modal-footer" style="border-top: none;">
           <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Close</button>
-          <button class="btn btn-primary"> Add Grade </button>
+          <button class="btn btn-primary createGradebookBtn"> Add Grade </button>
         </div>
       </div>
     </div>
@@ -530,11 +530,11 @@
         <hr>
         <div class="form-group">
               <label for="exampleInputEmail1">Other option  </label>
-              <div class="custom-checkbox mb-2 ml-3 other-option-div">
+              <!-- <div class="custom-checkbox mb-2 ml-3 other-option-div">
                 <input type="checkbox" name="israndomize" >
                 <span class="checkbox  fa fa-check"></span>
                 <span class="label"> Randomize Questions </span>
-          </div>
+          </div> -->
           <div class="custom-checkbox mb-2 ml-3 other-option-div">
                 <input type="checkbox" name="isaddtogradebook">
                 <span class="checkbox  fa fa-check"></span>

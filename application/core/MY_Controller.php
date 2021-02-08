@@ -1019,7 +1019,7 @@ class MY_Controller extends CI_Controller
    }
  
 
-   protected function addnotificationLogs($userid,$msg,$logtype){
+   protected function addnotificationLogs($userid,$msg,$logtype = ''){
         $notificationlogs = array(
             'user_id' =>  $userid,
             'notification_msg' =>  $msg,

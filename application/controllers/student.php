@@ -354,7 +354,7 @@ class Student extends MY_Controller {
 		// if($classcode){
 			// Get classes
 			$classesArgs = array(
-				'select' => 'class_id,class_name',
+				'select' => 'class_id,class_name,teacher_id',
 				'from' => 'classes',
 				'where'	=> array(
 								 array( 'field' => 'code_status', 'value'  => '1'  ),
@@ -368,6 +368,7 @@ class Student extends MY_Controller {
 			if(  $class_id->num_rows() > 0  ){
 				$classname = $class_id->result_array()[0]['class_name'];
 				$class_id = $class_id->result_array()[0]['class_id'];
+				$teacher_id = $class_id->result_array()[0]['teacher_id'];
 				
 				$argsCheck = array(
 					'select' => 'cs_id,admission_status',
@@ -398,6 +399,7 @@ class Student extends MY_Controller {
 												'Successfully re-enrolled to the class.',
 												'Re-enroll process failed, contact admin.'  );
 							$this->notifyNewSubjectEnroll($classname,4);
+							$this->addnotificationLogs($teacher_id, 'Student \'' . getUserName() .'\' had rejoined your class \''. $classname .'\'','my-student-log');
 						}else{
 							echo json_encode( array( 'type' => 'confirmation')); 
 						}
@@ -414,6 +416,7 @@ class Student extends MY_Controller {
 
 					$this->ProjectModel->insert_CI_Query( $dataToinsert, 'class_students' );
 					$this->notifyNewSubjectEnroll($classname,3);
+					$this->addnotificationLogs( $teacher_id,'A new student had joined your class \''. $classname .'\'');
 					echo json_encode( array( 'type' => 'success', 'msg' => 'Successfuly joined class.'));
 				}
 
@@ -442,12 +445,15 @@ class Student extends MY_Controller {
 								$this->ProjectModel->update( $whereArray, 'class_students', $dataUpdate),
 								'Successfully withdrawn from class.',
 								'Withdrawn process unsuccesful.'  );
+			 
+								
 			$class = $this->prepare_query(  array( 
-														'select' => 'class_name',
+														'select' => 'class_name,teacher_id',
 														'from' => 'class_students as lcs',
 														'join' => array( array(  'table'	=> 'classes as lc',  'cond' 	=> 'lc.class_id = lcs.class_id' ),  ),
 														'where' => array(  array(  'field' => 'lcs.cs_id',  'value'  =>  $classID )   ) ))->result_array();
 			$this->notifyNewSubjectEnroll( $class[0]['class_name'], 5 );
+			$this->addnotificationLogs($class[0]['teacher_id'] ,'A Student had withdrawn from class \''. $class[0]['class_name'] .'\'','my-student-log' );
 		}else{
 			show_404();
 		}
@@ -596,6 +602,24 @@ class Student extends MY_Controller {
 
 		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_ass',true ) ){
 			echo json_encode(array( 'Error' => null, 'msg' => 'Successfuly submitted assignment' ));
+
+			$args  = array( 'select'  => 'teacher_id,tsk_title',
+							'from' => 'task_submissions ts',
+							'join'	=> array(
+											array( 'table' => 'task_class_assignees as tca','cond' => 'tca.task_id = ts.task_id '),
+											array( 'table' => 'tasks as tsk','cond' => 'tsk.tsk_id = ts.task_id'),
+											array( 'table' => 'class_students cs','cond' => 'cs.class_id = tca.class_id'),
+											array( 'table' => 'classes c','cond' => 'c.class_id = cs.class_id'),
+							),'where' => array(  
+											array( 'field' => 'ts.student_id', 'value' => getUserID() ),
+											array( 'field' => 'cs.student_id', 'value' => getUserID() ),
+											array( 'field' => 'ts.ts_id', 'value' => $tsID ),
+							)
+						);
+			$t = $this->prepare_query( $args )->result_array();
+			$t = $t[0];
+
+			$this->addNotificationLogs( $t['teacher_id'] ,'Student \''. getUserName() .'\' had submitted an answer for assignment : ' . $t['tsk_title'] );
 			die();
 		}
 
@@ -643,6 +667,25 @@ class Student extends MY_Controller {
 		);
 
 		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_quiz',true ) ){
+
+			$args  = array( 'select'  => 'teacher_id,tsk_title',
+							'from' => 'task_submissions ts',
+							'join'	=> array(
+											array( 'table' => 'task_class_assignees as tca','cond' => 'tca.task_id = ts.task_id '),
+											array( 'table' => 'tasks as tsk','cond' => 'tsk.tsk_id = ts.task_id'),
+											array( 'table' => 'class_students cs','cond' => 'cs.class_id = tca.class_id'),
+											array( 'table' => 'classes c','cond' => 'c.class_id = cs.class_id'),
+							),'where' => array(  
+											array( 'field' => 'ts.student_id', 'value' => getUserID() ),
+											array( 'field' => 'cs.student_id', 'value' => getUserID() ),
+											array( 'field' => 'ts.ts_id', 'value' => $tsID ),
+							)
+						);
+			$t = $this->prepare_query( $args )->result_array();
+			$t = $t[0];
+
+			$this->addNotificationLogs( $t['teacher_id'] ,'Student \''. getUserName() .'\' had taken th quiz : ' . $t['tsk_title'] );
+
 			echo 1;
 			die();
 		}
@@ -677,7 +720,7 @@ class Student extends MY_Controller {
 			
 			
 			// if( !isset( $answers[$i] ) ) continue;
-			$answer = $answers[$i];
+			$answer = $answers[$i]; 
 			
 			$responses = $question['responses'] ;
 
