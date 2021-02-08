@@ -1358,9 +1358,9 @@ class Teacher extends MY_Controller {
 
 		$content=ob_get_clean();
 		$normalout=false;
-		// header( "Content-Type: application/vnd.ms-excel" );
-		// header( "Content-disposition: attachment; filename=learnit_gradebook_c-".$classID."_p-". $periodID ."_list.xls" );
-		// echo $headers. "\r\n";
+		header( "Content-Type: application/vnd.ms-excel" );
+		header( "Content-disposition: attachment; filename=learnit_gradebook_c-".$classID."_p-". $periodID ."_list.xls" );
+		echo $headers. "\r\n";
 		
 		// var_dump($totals);
 		for($x = 0; $x < count($rows); $x++){
@@ -1380,14 +1380,13 @@ class Teacher extends MY_Controller {
 				if( is_numeric( $totals[$y] ) ) $totalOver+= intval( $totals[$y] );
 			}
 			
-			 
-			$rows[$x][] = ( ($totalScore / $totalOver   ) * 100 ) . '%';
+			$rows[$x][] = number_format(( ($totalScore / $totalOver   ) * 100 ),0 ) . '%';
 		} 
 
 		
 
 		foreach( $rows as $row ){
-			// echo implode("\t", $row) . "\r\n"; 
+			echo implode("\t", $row) . "\r\n"; 
 		} 
 
 		die(); 
