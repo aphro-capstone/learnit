@@ -191,8 +191,12 @@ class Student extends MY_Controller {
 	public function progress(){
 		$vars = array();
 		$vars['nav'] = array( 
-							'menu' => 'Classes',
-							'sub-menu'	=> 'Progress' );
+					'menu' => 'Classes',
+					'sub-menu'	=> 'Progress',
+				 );
+
+				 
+		$vars['duetasks'] = $this->getDueTask();
 
 		$segment = $this->uri->segment(3);
 		

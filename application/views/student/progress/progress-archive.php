@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div class="col-sm-12 col-md-4 col-lg-3">
-			<?php  $this->load->view('shared/side-due-template'); ?>
+			<?php  $this->load->view('shared/side-due-task/side-due-template'); ?>
 		</div>
 	</div>	
 </div>
