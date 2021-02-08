@@ -169,9 +169,10 @@
   </div>
 <?php endif;?>
 
+ 
 <?php if( isset($modals) &&  in_array('addFolderModal', $modals) ): ?>
   <div class="modal fade" id="Addfolder" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" style="border-bottom: none;">
           <h5 class="modal-title">Add Folder</h5>
@@ -181,23 +182,12 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <input type="text" name="attachtitle"  class="form-control" placeholder="Title">  
-          </div>
-          <div class="form-group">
-            <select  class="form-control">
-              <option disabled="" selected="">Select Grade</option>
-            </select>
-          </div>
-          <div class="form-group">
-              <select class="form-control">
-              <option disabled="" selected="">Select Subject</option>
-            </select>
-          </div>
-          
+            <input type="text" name="foldername"  class="form-control" placeholder="Title">  
+          </div> 
         </div>
         <div class="modal-footer" style="border-top: none;">
           <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Cancel</button>
-          <button class="btn btn-primary"> Add</button>
+          <button class="btn btn-primary btnaddfolder"> Add</button>
         </div>
       </div>
     </div>
@@ -205,7 +195,6 @@
 <?php endif;?>
 
 <?php if( isset($modals) &&  in_array('joinClassModal', $modals) ): ?>
-  
   <div class="modal fade" id="joinClass" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -828,42 +817,83 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div id="multimedia-container">
-            <!-- <video preload="auto" controls="controls">
-                <source src="../assets/multimedia/A Brief History of Computer Viruses.mp4" type='video/mp4'>
-                <source src="media/why-autologel.webm" type='video/webm'>
-            </video> -->
-        </div>
+        <div id="multimedia-container"> </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="modal fade" id="setGrade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: none;">
+        <h5 class="modal-title">Grade Assignment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+            <div class="form-group input-group-icon left-icon mb-0">
+              <input type="text" class="form-control text-center " name="score" placeholder="Enter Grade">  
+            </div>
+            <span class="no-wrap ml-2 mr-2 mt-auto mb-auto"> out of </span>
+            <div class="form-group input-group-icon left-icon mb-0">
+              <input type="text" class="form-control text-center" name="over" placeholder="Over">  
+            </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+        <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Cancel</button>
+        <button class="btn btn-primary" id="setGradebtn">Set Grade</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadLibraryFiles" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header" style="border-bottom: none;">
-          <h5 class="modal-title">Grade Assignment</h5>
+          <h5 class="modal-title">Upload files to library</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="d-flex">
-              <div class="form-group input-group-icon left-icon mb-0">
-                <input type="text" class="form-control text-center " name="score" placeholder="Enter Grade">  
+            <div class="drop-item-box custom_drag-drop" id="drop-item-box">
+                <div class="dz-message placeholder" data-dz-message="">
+                  <span class="jumbo-text font-bold faded"> No submitted item. </span>
+                  <span class="d-block"> Drop your files/attachments in here or  </span>
+                </div>
               </div>
-              <span class="no-wrap ml-2 mr-2 mt-auto mb-auto"> out of </span>
-              <div class="form-group input-group-icon left-icon mb-0">
-                <input type="text" class="form-control text-center" name="over" placeholder="Over">  
-              </div>
-          </div>
-          
         </div>
         <div class="modal-footer" style="border-top: none;">
           <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Cancel</button>
-          <button class="btn btn-primary" id="setGradebtn">Set Grade</button>
+          <button class="btn btn-primary" id="uploadFileslibrary">Upload Files</button>
         </div>
       </div>
     </div>
   </div>
+
+
+<div class="modal fade" id="libraryfoldershareupload" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: none;">
+        <h5 class="modal-title">Share folder to class</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+        <button class="btn btn-default" data-dismiss="modal" aria-label="close"> Cancel</button>
+        <button class="btn btn-primary" id="sharefolderlib">Share Folder</button>
+      </div>
+    </div>
+  </div>
+</div>

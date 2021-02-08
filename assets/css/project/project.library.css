@@ -59,3 +59,10 @@
 {
     background: #ddf0ff;
 }
+
+
+.folders-panel:not(.no-show) .no-folder-show,
+#folder-panel1.type1-panel .type2-elems,
+#folder-panel1.type2-panel .type1-elems{
+    display: none;
+}

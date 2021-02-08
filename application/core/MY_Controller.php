@@ -84,7 +84,6 @@ class MY_Controller extends CI_Controller
     }
 
 
-
     // Parameters
     // 1st : args for checking 
     // 2nd : args to insert
@@ -141,11 +140,7 @@ class MY_Controller extends CI_Controller
         ); 
         return $this->prepare_query($args);
     }
-
-
-
  
-
     protected function getSettings($exclude = []){
 
         $settings = [];
@@ -213,11 +208,14 @@ class MY_Controller extends CI_Controller
                 'nav'	=> array( 'menu' => 'library' ),
                 'pageTitle'	=> 'Library',
                 'projectCss'	=> array('project.library'),
-                'projectScripts'	=> array(  'project.library' )
+                'projectScripts'	=> array(  'project.library','project.dragdrop' ),
+                'modals'     => $this->projectModals( )
         );
-
+ 
         $this->load->template('shared/library',$vars);
-    }
+    } 
+
+
     protected function getMessages(){
         $vars = array(
                 'nav'	=> array( 'menu' => 'messages' ),

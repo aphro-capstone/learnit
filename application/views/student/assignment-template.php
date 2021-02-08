@@ -134,7 +134,6 @@
 								<span class="jumbo-text font-bold faded"> No submitted item. </span>
 								<span class="d-block"> Drop your files/attachments in here or  </span>
 							</div>
-
 						</div>
 						<div class="d-table full-with mt-4">
 							<button class="btn btn-outline-secondary hoverable-btn mr-2 add-text-btn"> <i class="fa fa-file-text-o"></i> <span>Add text</span> </button>
