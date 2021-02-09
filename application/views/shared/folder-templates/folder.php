@@ -46,9 +46,9 @@
 
 				<?php elseif($opt == 2 ): ?>
 					<?php if( getRole() == 'teacher' ): ?>
-						<a   href="#folderManage" class="pull-right btn btn-info" data-toggle="modal" > <i class="fa fa-file" data-toggle="tooltip" data-placement="left" data-title="Manage"></i>  </a>
-						<a id="downloadStandalone" href="#" class="pull-right mr-1 btn btn-primary" data-toggle="tooltip" data-placement="left" data-title="Download for offline use."> <i class="fa fa-download"></i> </a>
-						
+							<a   href="#folderManage" class="pull-right btn btn-info" data-toggle="modal" > <i class="fa fa-file" data-toggle="tooltip" data-placement="left" data-title="Manage"></i>  </a>
+					<?php else: ?>
+							<a id="downloadStandalone" href="#" class="pull-right mr-1 btn btn-primary" data-toggle="tooltip" data-placement="left" data-title="Download for offline use."> <i class="fa fa-download"></i> </a>
 					<?php endif; ?>
 				<?php endif; ?>
 			</div>

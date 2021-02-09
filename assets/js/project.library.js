@@ -111,69 +111,14 @@ jQuery(function(){
 	});
 
 	$('#downloadStandalone').on('click',function(){
-		  
+		window.open(SITE_URL + USER_ROLE +  '/getDownloadablefiles/' +  activeFolder);
 	});
 
 	getFoldercontent();
 });
 
-
-
-function urlToPromise(url) {
-    return new Promise(function(resolve, reject) {
-        JSZipUtils.getBinaryContent(url, function (err, data) {
-            if(err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-}
-
-
-
-var getStandaloneFiles = function(){
-
-	this.download = () => {
-		var zip = new JSZip();
-		 var css = zip.folder('css');
-		 var js = zip.folder('js'); 
-		 console.log( SITE_URL +'assets/css/project.css' );
-		zip.file('project.css', urlToPromise( SITE_URL +'assets/css/project.css'), {binary:true});
-		zip.generateAsync({
-			type: "blob"
-		}).then(function(content) {
-			window.location.href = "data:application/zip;base64," + content;
-		});
-	}
-	download();
-
-	// $.ajax({
-	// 	url : SITE_URL + 'teacher/folder',
-	// 	type : 'post',
-	// 	data : { action : 'getDownloadablefiles', folder : activeFolder },
-	// 	dataType : 'json',
-	// 	success: function(r){
-	// 		console.log(r);
-	// 		if( r.Error == null ){
-	// 			// notify('success', r.msg);
-	// 			getFoldercontent();
-	// 		}else{
-	// 			notify( 'error', r.Error );
-	// 		}
-	// 	},
-	// 	error : function(r){
-	// 		console.error(r);
-	// 	}
-	// });	
-
-
-	     
-}
-
-
-
+ 
+  
 var getFoldercontent = function(){
 	this.folderCont = $('#folders_list');
 	this.folderCont.html('');
@@ -181,7 +126,7 @@ var getFoldercontent = function(){
 	let folder = '<div class="folder-item item">\
 				<div class="folder-icon"> <i class="fa fa-folder folder-item-el"> </i><i class="fa fa-file file-item-el"> </i></div>\
 				<div class="folder-info">\
-					<div class="folder-name file-item-el">Example file 3</div>\
+					<div class="folder-name file-item-el"></div>\
 					<div class="folder-name clickableFolder folder-item-el"></div>\
 					<div class="author"> Author : <span class="authorname"></span></div>\
 				</div>\

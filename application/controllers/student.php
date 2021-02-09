@@ -810,6 +810,48 @@ class Student extends MY_Controller {
 		$this->soloVideo($id);
 	}
 
+
+	
+	public function getDownloadablefiles($ID){
+		$this->load->library('zip');
+
+		$folderID = $this->input->post('folder');
+		
+		if( isset( $ID )){
+			$folderID = $ID;
+		}
+		
+		$args = array('from' => 'library_folders','where' => array( array( 'field'=>'lf_id','value'	=> $folderID ) ));
+		$folder = $this->prepare_query( $args )->result_array();
+
+
+		$files = array( 'from' => 'library_folder_files' ,'where' => array( array( 'field' => 'folder_id', 'value' => $folderID ) ));
+		$f_files = $this->prepare_query( $files )->result_array();
+ 
+
+		$filename = 'testing.zip';
+		$this->zip->add_dir('files');
+		$path1 = getcwd() . '/assets/uploads/library/';
+		foreach( $f_files as $file ){
+			$fileto = $file['file_path'];
+
+			$fileto = explode('\\',$fileto);
+			$fileto = end($fileto);
+
+
+			$this->zip->read_file( $path1 . $file['file_path'] ); 
+		}
+
+		$myFile = "index-learnit.html"; // or .php   
+		$fh = fopen($myFile, 'w'); // or die("error");  
+		$stringData = "your html code php code goes here";   
+		$html = $this->load->view('student/standalone-template', array( 'folder' => $folder, 'files' => $f_files  ),true);
+		fwrite($fh, $html);
+		fclose($fh);
+		$this->zip->read_file( $myFile); 
+		$this->zip->download($filename);   
+	}
+
  
 }
 
