@@ -239,7 +239,7 @@ var getFoldercontent = function(){
 				div.find('.folder-item-el').remove();
 				div.attr('data-id', e.lff_id );
 				div.find('.authorname').text(e.author_name);
-				div.find('.folder-name').text(e.lf_name);
+				div.find('.folder-name').text(e.file_name);
 				div.find('.folder-date').text( moment( e.timestamp_created ).format('MMM DD, YYYY  h:m a') );
 			
 			div.find('li.share').remove();
@@ -263,8 +263,9 @@ var getFoldercontent = function(){
 	let data = { action : 'fetchfolder',  parent : activeFolder };
 
 	if( typeof classID !== 'undefined'  )  data['classid'] = classID;
+ 
 	$.ajax({
-		url : SITE_URL + 'teacher/folder',
+		url : SITE_URL + USER_ROLE + '/folder',
 		type : 'post',
 		data : data,
 		dataType : 'json',

@@ -158,11 +158,11 @@ class Student extends MY_Controller {
 		if(  $classSingularInfo->num_rows() > 0 ){
 			$classSingularInfo = $classSingularInfo->result_array()[0];
 			$classes = $this->prepare_query( $classesListArgs )->result_array();
-			$modals = $this->projectModals();
+
+			$members = $this->GET_CLASS_STUDENTS($id,'cred_id as user_id, ui_profile_data, concat( ui_firstname, " ", ui_lastname )  as studname' );
 			$dataPass = array(
 							'classinfo' 	=> 	$classSingularInfo,
-							'classesInfo'	=>	$classes,
-							'modals'		=> 	$modals,
+							'classesInfo'	=>	$classes, 
 							'nav'			=> array( 'menu'	=> 'class' ),
 							'pageTitle'		=> 'Class Information',
 							'projectScripts'	=> array( 
@@ -174,8 +174,8 @@ class Student extends MY_Controller {
 							'projectCss'		=> array('project.library'),
 							'posts'			=> $this->getPosts(),
 							'modals'		=>  $this->projectModals(),
-							'duetasks'		=> $this->getDueTask( $id)
-
+							'duetasks'		=> $this->getDueTask( $id),
+							'members'		=> $members
 			); 
 
 			
@@ -187,6 +187,21 @@ class Student extends MY_Controller {
 		}
 
 	}
+
+	private function GET_CLASS_STUDENTS ($classID,$select = null,$admission = 1) {
+		$members = array(  
+					'select' 	=> 	!is_null($select) ? $select : '*',
+					'from'		=>	'userinfo ui',
+					'where'		=> array( 
+										array( 'field' => 'cs.class_id', 'value'  =>  $classID),
+										array( 'field' => 'cs.admission_status', 'value'  => $admission),
+									),
+					'join'		=> array( array(	'table'	=>	'class_students cs',	'cond'	=>	'cs.student_id = ui.cred_id' ) )
+		);
+
+		return $this->prepare_query( $members )->result_array();
+	}
+
 
 	public function progress(){
 		$vars = array();
@@ -812,6 +827,7 @@ class Student extends MY_Controller {
 
 
 	
+ 	
 	public function getDownloadablefiles($ID){
 		$this->load->library('zip');
 
@@ -852,7 +868,23 @@ class Student extends MY_Controller {
 		$this->zip->download($filename);   
 	}
 
+	
+
  
+	public function folder(){
+		$action = $this->input->post('action');
+
+		if( $action == 'addfolder' ) $this->addFolder(); 
+		else if ( $action == 'fetchfolder') $this->getFolder();
+		else if( $action == 'uploadlibraryfiles' )  $this->uploadlibraryfiles();
+		else if( $action == 'removeFolder' )  $this->removeFolderFile();
+		else if( $action == 'shareFolder' ) $this->shareFolder();
+		else if( $action == 'fetchAssignees' ) $this->fetchAssignees();
+	}
+
+
+	
+
 }
 
 

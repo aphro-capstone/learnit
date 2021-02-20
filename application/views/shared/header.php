@@ -39,6 +39,8 @@
 	<?php endif; ?>
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/light-theme.css">
+	<link rel="stylesheet" type="text/css" href="<?= base_url()?>assets/css/project.mediaqueries.css">
+
 	<script type="text/javascript">
 		const SITE_URL = '<?=site_url();?>';
 		const BASE_URL = '<?=base_url();?>';

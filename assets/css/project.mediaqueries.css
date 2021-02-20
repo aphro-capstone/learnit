@@ -1,0 +1,72 @@
+@media only screen and (max-width: 991px) {
+    
+    .container{
+        width: 100%;
+        max-width: 100%;
+    }
+ 
+  }
+
+@media only screen and (max-width : 768px){
+      
+    header .right-content{
+        position: absolute;
+        right: 47px;
+        width: 120px;
+    }
+
+    header .left-content .navbar-toggler-icon{
+        margin: auto;
+        display: flex;
+    }
+
+    header .left-content .navbar-toggler{
+        position: absolute;
+        right: 0;
+        top: 4px; 
+        padding-right: 0;
+       
+    }
+
+    header .left-content .navbar-toggler:not(.collapsed){
+        z-index: 9999;
+        color: #fff;
+    }
+    header .left-content .navbar-toggler:not(.collapsed) i:before{
+        content: "\f00d";
+    }
+    
+    header .left-content .navbar{
+        position: absolute;
+        right: 0;
+    }
+
+    header .left-content .navbar-collapse{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000b8;
+        z-index: 999;
+           color: #fff;
+    }
+    header .left-content .navbar-collapse.collapsing,
+    header .left-content .navbar-collapse.show{
+        display: flex;
+    }
+
+    header .left-content .navbar-collapse .navbar-nav{
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    header .left-content .navbar-collapse li a{
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.4em;
+    }
+  }
