@@ -333,6 +333,9 @@ class Admin extends MY_Controller {
 				$this->getCredentials( $did );
 			}else if( $action == 'endschoolyear'){
 				$this->endSchoolYear();
+			}else if ( $action == 'delete' ){
+				$did = $this->input->post('did');
+				$this->removeUser( $did );
 			}
 			echo 1;
 		}else{
@@ -724,6 +727,10 @@ class Admin extends MY_Controller {
  
 		$whereArray = array( 'class_sy_from' => $query_year_from, 'class_sy_to' => $query_year_to );
 		$this->ProjectModel->update( $whereArray, 'classes', array( 'class_status' => 2 ));
+	}
+
+	private function removeUser($userid){
+		$this->ProjectModel->delete( $userid, 'user_id', 'users');
 	}
 
 }

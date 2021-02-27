@@ -461,6 +461,7 @@ var showTables = function( table = '' ){
 		td8.text( moment( v.inactive_active_datetime ).format('MMM DD, YYYY h:mm:ss a') );	
 		 
 		credbtn = $('<button class="btn btn-xs btn-info btn-3d"> <i	class="fa fa-lock"> </i> Login Creds </button>');
+		
 		credbtn.on('click',function(){
 			checkadminPass( (d) => {
 				i.getCredentials( v ,d );
@@ -476,10 +477,18 @@ var showTables = function( table = '' ){
 		changeStat.on('click',function(){
 			updateUserStats(v,activeclasscount);
 		});
-
+		
+		removeUserbtn = $('<button class="btn btn-xs btn-danger btn-3d ml-1"> <i	class="fa fa-trash"> </i> Delete </button>');
+		
+		removeUserbtn.on('click',function(){
+			checkadminPass( (d) => {
+				notify( 'success','User deleted successfully' );
+			}, 'delete', v.user_id );
+		});	
 
 		td9.append( credbtn);
 		td9.append( changeStat);
+		td9.append( removeUserbtn);
 		appendTo.append(el); 
 	};
 

@@ -1,6 +1,7 @@
 
 
 const  UPDATE_CODESTATUS_API = '/UpdateCodeStatus';
+const  REMOVE_STUDENT_API = '/removeStudent';
 
 jQuery(function($){
 	$('.add-small-group').on('click',function(){
@@ -66,7 +67,19 @@ jQuery(function($){
 		           	text: 'Proceed',
             		btnClass: 'btn-red',
             		action : () => {
-            			this.closest('.item').remove();;
+						let studid = this_.closest('[data-user-id]').attr('data-user-id');
+						$.ajax({
+							url: SITE_URL + USER_ROLE + REMOVE_STUDENT_API,
+							type: 'POST',
+							dataType : 'json',
+							data : { classid : classID, studid : studid},
+							success: function(R) {
+								console.log(R);
+						   },error:function(e){
+							   console.log(e);
+							   notify( 'error', e.responseText );
+						   }
+					   });
             		}
 		        },
 		        close: function(){

@@ -1495,6 +1495,15 @@ class Teacher extends MY_Controller {
 		else if( $action == 'fetchAssignees' ) $this->fetchAssignees();
 	}
 
+
+	public function removeStudent(){
+		$classID=$this->input->post("classid");
+		$studid=$this->input->post("studid");
+		
+		$query = 'delete from li_class_students where class_id = '.$classID.' and student_id = '.$studid;
+		$this->ProjectModel->customQuery( $query );
+	}
+
 	
 	
 

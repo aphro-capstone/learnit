@@ -49,7 +49,7 @@
 								<ul class="dropdown-menu start-from-right" style="">
 									<li> <a href="#"> <i class="fa fa-eye text-info"></i> View Progress  </a>  </li>
 									<li> <a href="#"> <i class="fa fa-key text-warning"></i> Change student's password  </a>  </li>
-									<li> <a href="#" class="removebtnConfirm"> <i class="fa fa-trash text-danger"></i> Remove from class  </a>  </li>
+									<li> <a href="#" class="removebtnConfirm"> <i class="fa fa-trash text-danger"></i> Remove/Kick from class  </a>  </li>
 								</ul>		
 							<?php endif ?>
 							
