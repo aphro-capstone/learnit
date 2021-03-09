@@ -1,6 +1,7 @@
 <script type="text/javascript">
 	let classColor = '<?=$classinfo['color'];?>';
 	let classID = '<?=$classinfo['class_id'];?>';
+	let members = <?= json_encode($members); ?>;
 </script>
 
 <style type="text/css" id="class-changeable-colors">

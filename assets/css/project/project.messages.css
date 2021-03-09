@@ -95,6 +95,16 @@
     display: flex;
     margin-top: 15px;
 }
+.contact-item{
+    padding: 5PX 10PX;
+    cursor: pointer;
+}
+
+.contact-item:hover{
+    background: #fff;
+}
+
+
 .contact-item .img-container,
 .convo-item .img-container{
     height: 50px;
@@ -204,13 +214,14 @@
     margin-top: 10px;
 }
 
-.msg-item .user-img{
+.msg-item.receiver-msg .user-img{
     width: 35px;
     margin-right: 10px;
+    float: left;
 }
 
 
-.msg-item.continueous-msg .user-img{
+.msg-item.receiver-msg.continueous-msg .user-img{
     visibility: hidden;
 }
 
@@ -237,7 +248,7 @@
 .msg-item.sender-msg:not(.img-attachment) .msg-content{
     background: #e6e6e6;
 }
-.msg-item.receiver-msg:not(.img-attachment) .msg-content{
+.msg-item.sender-msg:not(.img-attachment) .msg-content{
     background: #b236c7;
     color: #fff;
 }
@@ -245,7 +256,7 @@
     float: left;
 }
 
-.msg-item.receiver-msg > div{float: right;}
+.msg-item.sender-msg > div{float: right;}
 
 
 
@@ -265,7 +276,7 @@
     top: calc( 50% - 13px);
 }
 
-.msg-item.receiver-msg .actions{
+.msg-item.sender-msg .actions{
     right: calc(100% + 15px);
     left: auto;
 }
@@ -287,15 +298,15 @@
     cursor: pointer;
 }
 
-.msg-item.receiver-msg.img-attachment .msg-content .reaction-div{
+.msg-item.sender-msg.img-attachment .msg-content .reaction-div{
     left: 0;
     right: auto;
 }
 
-.msg-item.receiver-msg .reaction-div .reactions{
+/* .msg-item.sender-msg .reaction-div .reactions{
     left: -360px;
-}
+} */
 
-.msg-item.img-attachment .msg-content .reaction-div .reactions{
+/* .msg-item.img-attachment .msg-content .reaction-div .reactions{
     left: -234px;
-}
+} */

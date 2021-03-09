@@ -35,7 +35,7 @@
 }
 
 
-:focus{
+:focus:not(.fill_in_the_blanks input){
     border: none!important;
     outline: none!important;
   }
@@ -1529,6 +1529,7 @@ span.teachername:after {
     border-right: none;
     text-align: center;
 }
+
 
 textarea.question-textarea{
     height: 100px;
@@ -3052,6 +3053,20 @@ body.navbar-open .navmobile-overlay{
     content: "\f054"!important; 
 }
 
+#members_list .no-student{ display: none;}
+#members_list.empty .no-student{ display: block;}
+#left-div .conversations{
+    padding-left: 12px;
+    padding-right: 15px;
+}
+#left-div .conversations .convo-item{
+    background: transparent;
+    border-radius: 10px;
+    padding: 8px;
+}
+#left-div .conversations .convo-item.active{
+    background: #7997e13b;
+}
 
 @media only screen and ( max-width: 766px ){
     body.login-page .navbar{

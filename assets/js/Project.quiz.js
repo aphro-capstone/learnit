@@ -87,8 +87,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 			collapsibletoggle.on('click',function(e){
 				e.preventDefault();
 				this_.QuestionItem.toggleClass('collapsed');
-			});
-		
+			}); 
 			right_full.append( this.createTypeSelectionSection() );
 			right_full.append( this.createQuestionSection() );
 			// right_full.append( this.createAttachmentSection() );
@@ -222,6 +221,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		this.QuestionItem.find('.quiz-responses').append(this.responses);
 		this.QuestionItem.find('.collapsed-view .question').text( this.Question );
 		this.QuestionItem.find('.collapsed-view .type').text(this.selectedTypeString);
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 
 
@@ -322,7 +322,14 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 				b.append(text);
 				a.append(b);
 				a.append('<small class="font-italic text-info">Students will have to answer in the exact order for the question to be marked as correct.</small>');
-
+				a.append('<div class="form-group">\
+							<div class="custom-checkbox checked mt-1" >\
+							<input type="checkbox" name="iscasesensitive" checked>\
+							<span class="checkbox fa fa-check" data-toggle="tooltip" data-placement="left" data-original-title="Check to make students enter the exact words"></span>\
+							<span class="label"> Case Sensitive  </span>\
+							</div>\
+						</div>');
+			
 			return a;
 		};
 
@@ -410,7 +417,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		
 		
 		if( this.selectedType == 0 ) 		response =  this.createTrueFalseResponse(i.qnum);
-		else if(this.selectedType == 1) 	response =  this.createMultipleChoiceResponse()
+		else if(this.selectedType == 1) 	response =  this.createMultipleChoiceResponse();
 		else if( this.selectedType == 3 ) 	response =  this.createFillTheBlanksResponse();
 		else if( this.selectedType == 4 ) 	response =  this.createMatchingResponse();
 		else if( this.selectedType == 5 ) 	response =  this.createMultipleAnswerResponse();
@@ -487,6 +494,9 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 			total_points : this.getTotalPoints()
 		};  
 
+		
+ 
+
 		if( obj.type == 0 ){
 			obj['responses'] = this.QuestionItem.find('.response-item.selected input').val();
 		}else if( obj.type == 1 || obj.type == 5 ){
@@ -515,10 +525,12 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 			this.QuestionItem.find('.fill_in_the_blanks input[type="text"]').each(function(a,b){
 				obj['responses'].push($(b).val());
 			});
+			
+			obj['iscasesensitive'] = this.QuestionItem.find('[name="iscasesensitive"]').is(':checked');
 		}
 		
 
-
+		console.log(obj);
 		return obj;
 	};
 
@@ -1054,9 +1066,8 @@ const iniQuizQuestions = ( )=> {
 			return a;
 		};
 
-		this.createFillTheBlanksResponse = ( R,RR ) => {
-			let text  = R
-			
+		this.createFillTheBlanksResponse = ( R,RR,isCasesensitive ) => {
+			let text  = R 
 			
 			let a = $('<div class="fill_in_the_blanks mt-3 response-div"></div>'),
 				b = $('<div class="text"></div>'),
@@ -1076,6 +1087,7 @@ const iniQuizQuestions = ( )=> {
 
 				b.append(text);
 				a.append(b);
+				b.after('<p> <strong> Note : </strong>'+ (isCasesensitive ? 'All answers are case sensitive.' : 'Answers can be capitals or small letters.') +'</p>');
 
 				if( !VQWS ){
 					b.find('input').each( (c,d) => {
@@ -1343,7 +1355,7 @@ const iniQuizQuestions = ( )=> {
 		 
 		if( b.type == 0 ) return this.createTrueFalseResponse( b.responses ) ;
 		else if( b.type == 1 ) return this.createMultipleChoiceResponse( b.responses ) ;
-		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question,b.responses ) ;
+		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question,b.responses,b.casesensitive ) ;
 		else if( b.type == 4 ) return this.createMatchingResponse( b.responses ) ;
 		else if( b.type == 5 ) return this.createMultipleAnswerResponse( b.responses ) ;
 		else if( b.type == 2 ) return this.createShortAnswerResponse();  
@@ -1396,7 +1408,7 @@ const iniQuizQuestions = ( )=> {
 		dflex.append(right);
 		aa.append(dflex	);	
 
-		 
+		 console.log(b);
 		if( typeof quiz_answers !== 'undefined' ){
 			var FR = ins.createForm(b, studQuizView && quiz_answers[a] ? quiz_answers[a] : undefined);
 		}else{

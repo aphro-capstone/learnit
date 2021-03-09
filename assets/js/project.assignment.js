@@ -22,10 +22,10 @@ var iniAssignment = function(){
 				fd.append('tid',tid);
 				fd.append('aid',aid);
 			}
+			dataSend['minScore'] =  modal.find('[name="minScore"]').val();
 			dataSend = JSON.stringify( dataSend);
-
+			
 			fd.append('data', dataSend);
-			console.log(attachmentlist);
 			for (var x = 0; x < attachmentlist.length; x++) {
 				fd.append("attachFile[]", attachmentlist[x].f);
 			}
@@ -43,7 +43,7 @@ var iniAssignment = function(){
 					if( Response.Error == null ){
 						$('.modal').modal('hide');
 						notify('success', Response.msg, () => {
-							window.location.reload();
+							// window.location.reload();
 						});
 					}
 			   },error:function(e){
@@ -107,10 +107,12 @@ var iniAssignment = function(){
 				modal.find('.modal-body .d-flex > .form-group:last-child input').val( vals[1] );				
 			}else{
 				modal.find('.modal-title').text('Grade Assignment');
+				modal.find('[name="over"]').val(default_over);
 			}
 
 			modal.modal('show');
 		}); 
+		
 
 
 

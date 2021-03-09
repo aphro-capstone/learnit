@@ -30,10 +30,12 @@
 	<script type="text/javascript" src="<?= base_url();?>assets/plugins/moment.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/qrcode/instascan.min.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/lightbox/js/lightbox.js"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/pusher.min.js"></script>
 	<!-- PLUGINS END -->
 
 	<script type="text/javascript" src="<?= base_url()?>assets/js/project.modals.js"></script>
 	<script type="text/javascript" src="<?= base_url()?>assets/js/project.common.js"></script>
+	<script type="text/javascript" src="<?= base_url()?>assets/js/project.PM.js"></script>
 
 	
 	<?php if(getSessionData('sess_userRole') == 'teacher'):  ?>
@@ -41,6 +43,7 @@
 	<?php else: ?>
 		<script type="text/javascript" src="<?= base_url()?>assets/js/project.student.js"></script>
 	<?php endif; ?>
+	
 
 
 	<?php if( isset($projectScripts)  ): ?>

@@ -45,6 +45,8 @@
 		const SITE_URL = '<?=site_url();?>';
 		const BASE_URL = '<?=base_url();?>';
 		const USER_ROLE = '<?=getSessionData('sess_userRole');?>';
+		const PUSHER_APP_KEY = '1167516a5e5f6f3b8ee6';
+		const UCI = '<?= getUserID(); ?>';
 	</script>
 		<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-3.5.1.min.js"></script>
 </head>

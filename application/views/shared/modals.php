@@ -322,6 +322,11 @@
           </div>
          
           <hr>
+          <div class="form-group d-flex">
+            <label for="inputPassword" class="col-form-label">Default Score</label>
+            <input type="number" class="form-control ml-2 w-auto" min=1 name="minScore">
+          </div>
+        <hr>
           <div class="form-group"> 
             <label for="exampleInputEmail1">Assign to : </label>
             <select class="form-control selectpicker btn-primary" title="Please Select" multiple name="assignIds">
@@ -370,6 +375,7 @@
               </select>
             </div>
           </div>  
+        
         <div class="form-group">
           <div class="custom-checkbox ml-3">
             <input type="checkbox" name="islockondue">
@@ -377,6 +383,7 @@
             <span class="label"> Lock on Due  </span>
           </div>
         </div>
+        
           <hr>
           <div class="form-group">
               <label for="exampleInputEmail1">Other option  </label>

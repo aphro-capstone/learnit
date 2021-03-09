@@ -217,15 +217,212 @@ class MY_Controller extends CI_Controller
 
 
     protected function getMessages(){
-        $vars = array(
-                'nav'	=> array( 'menu' => 'messages' ),
-                'pageTitle'	=> 'Messages',
-                'projectCss'	=> array('project.messages'),
-                'projectScripts'	=> array(  'project.messages','../plugins/emoji.button-picker' )
+
+        $action = $this->input->post('action');
+		if( $action == 'sendM' ) $this->SendMessage();
+		else if($action == 'getF') $this->getFriends();
+		else if($action == 'getC') $this->getChats();
+		else if($action == 'getCM' ) $this->getChatMessages();
+        else {
+            $vars = array(
+                'nav'	            => array( 'menu' => 'messages' ),
+                'pageTitle'	        => 'Messages',
+                'projectCss'	    => array('project.messages'),
+                'projectScripts'	=> array(  'project.messages','../plugins/emoji.button-picker' ),
+                'friends'           => $this->getFriends(true)
+            ); 
+
+            $this->load->template('shared/messages',$vars);
+        }
+        
+    }
+
+
+    private function SendMessage(){
+		$msg = $this->input->post('msg');
+		$cg = $this->input->post('cg');
+		$replyFrom = $this->input->post('replyFrom');
+        
+
+
+
+        $msgObj = array(
+			'cg_id' 	    => $cg,			 							
+            'user_id' 	    => getUserID(),
+            'cg_reply_id'   => $replyFrom,
+            'cm_content'    => json_encode( array( 'c' => $msg, 't' => 'text' ) )
+		);
+
+		$m_id = $this->ProjectModel->insert_CI_Query( $msgObj, 'chat_messages',true );
+        $msg = $this->getChatMessages( $m_id,true );
+
+        
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+          );
+          $pusher = new Pusher\Pusher(
+            '1167516a5e5f6f3b8ee6',
+            '0189f04ae8443c6b6a47',
+            '1163559',
+            $options
+          );
+           
+          $pusher->trigger('messages', 'ALL', array('command' => 'MCU', 'msg' => $msg));
+          echo json_encode($msg);
+        die();
+	} 
+
+	private function getFriends($isReturn = false){
+		$args = array(
+			'select' => 'ui_profile_data,u.user_id,online_status, concat( ui_firstname," ",ui_lastname ) as friend_name',
+			'from' => 'user_friends as uf',
+			'join'	=> array( 
+							array( 'table'=> 'users as u', 'cond' => 'u.user_id = uf.friend_id' ),
+							array( 'table'=> 'userinfo as ui', 'cond' => 'ui.cred_id = u.user_id' ),
+						),
+			'where'	=> array(  array( 'field' => 'uf.user_id', 'value'  =>  getUserID() ), ),
+		);
+		$a = $this->prepare_query( $args )->result_array();
+
+		if($isReturn) return $a;
+
+		echo json_encode( $a );
+	}
+	
+	private function getChats(){
+        $args = array(
+            'select'    => 'cg.cg_id',
+            'from'  => 'chat_group cg',
+            'join'  => array(
+                                // array( 'table' => 'chat_messages cm', 'cond' => 'cm.cg_id = cg.cg_id' ),
+                                array( 'table'=> 'chat_group_members cgm' ,'cond' => 'cgm.cg_id = cg.cg_id' ),
+            ),
+            'where' => array( 
+                            array('field'=> 'cgm.user_id','value'=> getUserID() ),
+                            array( 'field' => '(select count(m_id) from li_chat_messages where cg_id = cg.cg_id) >','value' => 0 )
+            ),
+            // 'order' =>  array( array( 'by'	=> 'cm.timestamp', 'path'	=> 'desc' ))
         );
 
-        $this->load->template('shared/messages',$vars);
-    }
+        $args = $this->prepare_query( $args )->result_array();
+        
+        $args = array_map( function($a){
+            $args2 = array(
+                'from' => 'chat_messages',
+                'where' => array( array('field' => 'cg_id', 'value' => $a['cg_id']) ),
+                'order' => array( array('by' => 'timestamp', 'path' => 'desc') ),
+                'limit' => 1
+            );
+
+            $args3 = array(
+                'select' => 'ui_profile_data,u.user_id,online_status, concat( ui_firstname," ",ui_lastname ) as friend_name',
+                'from' => 'chat_group_members cgm',
+                'join'  => array( 
+                                    array('table' => 'users u', 'cond' => 'u.user_id = cgm.user_id'),
+                                    array('table' => 'userinfo ui', 'cond' => 'u.user_id = ui.cred_id') ),
+                'where' => array( array('field' => 'cgm.user_id !=', 'value' => getUserID() ) ),
+            );
+
+            $args2 = $this->prepare_query( $args2 )->result_array();
+            $args3 = $this->prepare_query( $args3 )->result_array();
+
+            // $this->ProjectModel->printLastQuery();
+            $args2 = $args2[0];
+
+            $a['otherMember'] = $args3[0];
+            $a['replyFrom'] =  $args2['cg_reply_id']; 
+            $a['msg_content'] =  $args2['cm_content']; 
+            $a['sender'] =  $args2['user_id'];
+            $a['msgid'] = $args2['m_id'];
+            $a['timestamp'] = $args2['timestamp'];
+            return $a;
+        }, $args );
+
+        // Sort by msgtimestamp
+        usort($args, function($a, $b) { 
+			return new DateTime($b['timestamp']) <=> new DateTime($a['timestamp']);
+		});
+
+
+        echo json_encode( $args );
+	}
+	
+	private function getChatMessages($cgid = null,$isReturn = false){
+        
+        if( is_null($cgid) ){
+            $userid = $this->input->post('userid');
+
+            $args = array(
+                'select' => 'cg.cg_id',
+                'from' => 'chat_group cg',
+                'join'	=> array(  array( 'table'=> 'chat_group_members cgm', 'cond' => 'cgm.cg_id = cg.cg_id' ),  ),
+                'where'	=> array(  
+                        array( 'field' => 'cgm.user_id', 'value'  =>  getUserID() ),
+                        array( 'type' => 'or',  'field' => 'cgm.user_id', 'value'  =>  $userid ),
+                    ),
+            );
+            $args = $this->prepare_query( $args );
+        }
+
+        if( (isset($args) && $args->num_rows() >= 2) || !is_null($cgid) ){
+
+            $args2 = array(
+                'from' => 'chat_messages cm',
+                'join'	=> array(  array( 'table'=> 'userinfo ui', 'cond' => 'ui.cred_id = cm.user_id' ),  ),
+                'where'	=> array(),
+                // 'order' => array( array( 'by' => 'timestamp' ,'path' => 'desc' ) )
+            );
+
+            if(is_null($cgid)){
+                $cgid = $args->result_array();
+                $cgid = $cgid[0]['cg_id'];
+                $args2['where'][] =   array( 'field' => 'cm.cg_id', 'value'  => $cgid );
+            }else{
+                $args2['where'][] =   array( 'field' => 'cm.m_id', 'value'  => $cgid );
+            } 
+
+
+            $args2 = $this->prepare_query( $args2 )->result_array(); 
+            $data = array();
+            
+            foreach($args2 as $d){
+                $arr = array();
+                $arr['msg'] = $d['m_id'];
+                $arr['cg'] = $d['cg_id'];
+                $arr['parent'] = $d['cg_reply_id'];
+                $arr['content'] = json_decode($d['cm_content'],true);
+                $arr['sender'] = $d['user_id'];
+                $arr['datetime'] = $d['timestamp'];
+                $data[] = $arr;
+            }
+
+            if( $isReturn ) return $data;
+            echo json_encode( array('cg_id' => $cgid, 'msgs' => $data ));
+        } 
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 
     protected function sendSMS($mobile = '',$message = ''){
         // return true;

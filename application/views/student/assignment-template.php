@@ -33,6 +33,7 @@
 <?php if( isset($AD['submissions']) ): ?>
 	<script>
 		const TSAID = <?= $AD['submissions']['tsa_id'] ;?>;
+		const default_over = <?= $AD['default_over'];?>;
 	</script>
 <?php endif; ?>
 

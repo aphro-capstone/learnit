@@ -25,6 +25,20 @@ jQuery.fn.placeholdercontent = function(){
 	}); 
 };
 
+function user(userID,fname,lname,pic){
+	this.id = userID;
+	this.fname = fname;
+	this.lname = lname;
+	this.profilePic = pic;
+
+	this.getFullname = (id) => {
+
+	}
+
+	this.getImage = () =>{
+		// return BASE_URL + (this.profilePic == undefined ? '')
+	}
+}
 
 
 jQuery( ($) => {
@@ -203,6 +217,10 @@ jQuery( ($) => {
     });
 	 
 	$('.downloadable').on('click',function(e){
+		doDownload( $(this) );
+	});
+
+	$('.file-preview').on('click',function(e){
 		doDownload( $(this) );
 	});
 
@@ -740,3 +758,28 @@ function create_UUID(){
     });
     return uuid;
 } 
+
+
+
+
+function getDateDifference(d1,d2){ 
+	let timeArr = [
+		{ 't' : 'w', 'c' : 1000 * 3600 * 24 * 7 },
+		{ 't' : 'd', 'c' : 1000 * 3600 * 24  },
+		{ 't' : 'h', 'c' : 1000 * 3600  },
+		{ 't' : 'm', 'c' : 1000 * 60 },
+		{ 't' : 's', 'c' : 1000},
+	];
+	
+	toReturn = '';
+	for(var x = 0; x < timeArr.length;x++){
+		let diffTime = Math.abs(d2 - d1);
+		let diff = (diffTime / parseFloat(timeArr[x].c));
+		if( diff.toFixed(0) > 0 ){
+			toReturn = diff.toFixed(0) + timeArr[x].t;
+			break;
+		}
+	} 
+	 
+	return toReturn;
+}

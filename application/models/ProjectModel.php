@@ -18,7 +18,7 @@ class ProjectModel extends CI_Model {
     
     public function do_CI_Query($args){
         $this->db->select($args['select']);    //Select Fields
-
+        
         $this->db->from($args['from']); //Select table
 
         // Check if there is conditional select where args
@@ -29,7 +29,7 @@ class ProjectModel extends CI_Model {
                 }else{
                     if( isset( $val['type'] ) ){
                         if( $val['type'] == 'wherein' ) $this->db->where_in( $val['field'], $val['value'] ); 
-                        else if( $val['type'] == 'or' ) $this->db->or_where( $val['field'] );
+                        else if( $val['type'] == 'or' ) $this->db->or_where( $val['field'], $val['value']  );
                     }else{  
                         $this->db->where($val['field'],$val['value']);
                     }

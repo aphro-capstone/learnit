@@ -216,7 +216,7 @@ const iniClassDue = () => {
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/assignment/submission:' + b.ts_id )
                     }else{
                         total['score'] = total.score + parseFloat(b.quiz_score);
-                        total['over'] = total.over + b.parseFloat( total_points );
+                        total['over'] = total.over + parseFloat( b.total_points );
                         el.find('.score').text(b.quiz_score);
                         el.find('.over').text(b.total_points); 
                         el.find('td.action a').attr('href', SITE_URL + USER_ROLE + '/classes/quiz/submission:' + b.ts_id );
@@ -225,7 +225,7 @@ const iniClassDue = () => {
 
                     table.append(el);
             } );
-            console.log(total);
+            
             $('.average-percentage').html( ((total.score/ total.over) * 100).toFixed(0) + '%' );
 
         }else{

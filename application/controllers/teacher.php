@@ -107,14 +107,8 @@ class Teacher extends MY_Controller {
 		$this->getLibrary();
 	}
 
-	public function messages(){
-		$this->getMessages();
-	}
+
 	
-
-
-
-
 	public function addClass($id = null){
 		try{
 			$className 	= $this->input->post('class_name');
@@ -707,6 +701,7 @@ class Teacher extends MY_Controller {
 									tsk_instruction,
 									tsk_title,
 									student_id,
+									default_over,
 									(select  concat(ui_firstname, " ", ui_lastname) from li_userinfo where cred_id = ts.student_id) as studname',
 					'from'		=> 'tasks as tsk',
 					'join'		=> array(  
@@ -901,7 +896,8 @@ class Teacher extends MY_Controller {
 		$aid = $this->input->post('aid');
 		$assAdd = array(
 			'task_id'			=> $taskID,
-			'ass_attachments'	=> $this->getAttachmentsJSON()
+			'ass_attachments'	=> $this->getAttachmentsJSON(),
+			'default_over'		=> $data['minScore']
 		);
 
 		if(  isset($aid) && !is_null($aid) ){
@@ -1500,15 +1496,21 @@ class Teacher extends MY_Controller {
 		$classID=$this->input->post("classid");
 		$studid=$this->input->post("studid");
 		
-		$query = 'delete from li_class_students where class_id = '.$classID.' and student_id = '.$studid;
-		$this->ProjectModel->customQuery( $query );
+
+		$whereArray = array('class_id' => $classID, 'student_id' => $studid );
+
+		if( $this->ProjectModel->delete($whereArray,null, 'class_students') ){
+			$this->returnResponse('Removed student succesfully');
+		}else{
+			$this->returnResponse(null,'Error removing student, try again in a few minutes or contact support.');
+		}
 	}
 
 	
-	
-
-	  
-
+	public function messages(){
+		$this->getMessages();
+		
+	} 
 
 }
 

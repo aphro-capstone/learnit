@@ -51,43 +51,9 @@ jQuery(function($){
 		setTimeout(() => { $(this).attr('data-original-title','Copy'); $(this).tooltip('hide').tooltip('show'); }, 2500);
 	});
 
-	$('.removebtnConfirm').on('click',function(e){
-		e.preventDefault(e);
-		let this_ = $(this);
-		$.confirm({
-            icon: 'fa fa-trash-o',
-            title : 'Remove',
-            content: 'are you sure you want to remove this member?',
-            theme: 'modern',
-            closeIcon: true,
-            animation: 'scale',
-            type: 'red',
-            buttons: {
-		        p : {
-		           	text: 'Proceed',
-            		btnClass: 'btn-red',
-            		action : () => {
-						let studid = this_.closest('[data-user-id]').attr('data-user-id');
-						$.ajax({
-							url: SITE_URL + USER_ROLE + REMOVE_STUDENT_API,
-							type: 'POST',
-							dataType : 'json',
-							data : { classid : classID, studid : studid},
-							success: function(R) {
-								console.log(R);
-						   },error:function(e){
-							   console.log(e);
-							   notify( 'error', e.responseText );
-						   }
-					   });
-            		}
-		        },
-		        close: function(){
-		        }
-		    }
-        });
-	})
-  
+	
+	
+	showMembersList();
 });
 
 
@@ -172,3 +138,104 @@ var updateClassColor = (colorID) => {
             }
 	});
 };
+
+var showMembersList = function(find = ''){
+	let tmp_members = members;
+	$('#members_list .user-item').remove();
+
+	$('#student-count').html( members.length );
+
+	var str = '<div class="user-item item" data-user-id="169">\
+				<div class="user-image img-container">\
+					<img src="http://localhost/learnit/assets/images/user1.jfif">\
+				</div>\
+				<div class="user-info">\
+					<a href="#"><span class="user-name"></span></a>\
+				</div>\
+				<div class="dropdown user-menu-dd">\
+					<span class="mr-2" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-chevron-down"></i> </span>\
+					<ul class="dropdown-menu start-from-right" style="">\
+						<li> <a href="#"> <i class="fa fa-eye text-info"></i> View Progress  </a>  </li>\
+						<li> <a href="#"> <i class="fa fa-key text-warning"></i> Change student\'s password  </a>  </li>\
+						<li> <a href="#" class="removebtnConfirm"> <i class="fa fa-trash text-danger"></i> Remove/Kick from class</a></li>\
+					</ul>\
+				</div>\
+			</div>';
+	
+	if( find != ''){
+		tmp_members = tmp_members.find( (a,b) => {
+			return a.studname.includes(find);
+		});
+	}
+
+	if( tmp_members.length > 0 ){
+		$('#members_list').removeClass('empty');
+	}else{
+		$('#members_list').addClass('empty');
+	}
+
+	tmp_members.forEach(m => {
+		let data = JSON.parse( m.ui_profile_data );
+		let aa = str;
+			aa = $(aa);
+		
+		aa.attr('data-user-id', m.user_id);
+		aa.find( '.user-image img' ).attr('src', BASE_URL + ( data.userImage == undefined ? 'assets/images/user1.jfif' : data.userImage )  );
+		aa.find( '.user-info a' ).attr('href', 'http://localhost/learnit/teacher/profile/'  + m.user_id  );
+		aa.find( '.user-info .user-name' ).html( m.studname );
+
+		if( USER_ROLE != 'teacher' ){
+			aa.find('.user-menu-dd').remove();
+		}
+
+		aa.find('.removebtnConfirm').on('click',function(e){
+			e.preventDefault(e);
+			let this_ = $(this);
+			$.confirm({
+				icon: 'fa fa-trash-o',
+				title : 'Remove',
+				content: 'are you sure you want to remove this member?',
+				theme: 'modern',
+				closeIcon: true,
+				animation: 'scale',
+				type: 'red',
+				buttons: {
+					p : {
+						   text: 'Proceed',
+						btnClass: 'btn-red',
+						action : () => {
+							let studid = this_.closest('[data-user-id]').attr('data-user-id');
+							$.ajax({
+								url: SITE_URL + USER_ROLE + REMOVE_STUDENT_API,
+								type: 'POST',
+								dataType : 'json',
+								data : { classid : classID, studid : studid},
+								success: function(R) {
+									if( R.Error == null ){
+										notify( 'success', R.msg );
+										members = $.grep(members, function(e){ 
+												return e.user_id != studid; 
+										});
+										showMembersList(find);
+									}
+							   },error:function(e){
+								   console.log(e);
+								   notify( 'error', e.responseText );
+							   }
+						   });
+						}
+					},
+					close: function(){
+					}
+				}
+			});
+		});
+		
+
+		$('#members_list').append(aa);
+	}); 
+
+
+ 
+}
+
