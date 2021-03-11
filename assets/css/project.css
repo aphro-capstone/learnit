@@ -2049,6 +2049,7 @@ textarea.question-textarea{
     border-radius: 5px;
     display: flex;
     padding-left: 0;
+    margin-bottom: 15px;
 }
 
 .task-icon{
@@ -3067,6 +3068,116 @@ body.navbar-open .navmobile-overlay{
 #left-div .conversations .convo-item.active{
     background: #7997e13b;
 }
+
+#PDFModal .modal-dialog{
+    padding-right: 7px;
+    display: block;
+}
+#pdfViewer{
+    width: 100%;
+    overflow: auto;
+    background: #9b9b9b;
+}
+
+#pdfViewer canvas{
+    margin: auto;
+    display: block;
+    margin-bottom: 20px;
+    box-shadow: 4px 3px 5px #0000004f;
+}
+
+#pdfViewer canvas:first-child{
+    margin-top: 30px;
+}
+
+
+.slidecontainer{
+    position: absolute;
+    bottom: 10px;
+    left: calc(50% - 122.5px);
+    display: none;
+}
+
+#pdfViewer:hover .slidecontainer{
+    display: flex;
+}
+
+.slidecontainer .zoom_group{
+    background: #0000008c;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+}
+
+.slidecontainer .zoom_group span{
+    padding: 8px 10px 8px 14px;
+    cursor: pointer;
+    display: flex;
+    margin: auto;
+}
+
+.slidecontainer .reset{
+    padding: 8px 10px 8px 14px;
+    cursor: pointer;
+    background: #0000008c;
+    border-radius: 5px;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.slidecontainer input{
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    -webkit-appearance: none;
+    background: transparent;
+    overflow: visible;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.slidecontainer input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  .slidecontainer input[type="range"]::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .slidecontainer input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    color: #fff;
+    margin-top: -1px;
+  }
+
+  .slidecontainer input:before{
+      content: " ";
+      height:4px;
+      width:100%;
+      top:calc(50% - 3px);
+      background: #fff;
+      position: absolute;
+      z-index: 1;
+  }
+
+  .class-item-container .class-item.active a{
+    background: #cbdaff;
+  }
+ 
 
 @media only screen and ( max-width: 766px ){
     body.login-page .navbar{

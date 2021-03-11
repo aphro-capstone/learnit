@@ -10,7 +10,7 @@
 		<input type="file" name="attachFile" multiple="true" id="attachFile" class="d-none"  accept="video/*, image/*, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx,.txt">
 	</form>
 
-
+	<div id="pdfViewer"></div>
 
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/jquery-ui.js"></script>
 	<script type="text/javascript" src="<?= base_url()?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -31,6 +31,9 @@
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/qrcode/instascan.min.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/lightbox/js/lightbox.js"></script>
 	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/pusher.min.js"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/PDF_VIEWER/pdf.js"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/PDF_VIEWER/pdf_viewer.js"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/PDF_VIEWER/pdf.worker.js"></script>
 	<!-- PLUGINS END -->
 
 	<script type="text/javascript" src="<?= base_url()?>assets/js/project.modals.js"></script>

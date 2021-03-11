@@ -4,6 +4,7 @@
 var fileinputcontainer = null;
 var tempAttachments = {};
 var attachmentlist = [];
+var downloadableFileElement;
 
 jQuery.fn.placeholdercontent = function(){ 
 	// This is the element
@@ -220,33 +221,203 @@ jQuery( ($) => {
 		doDownload( $(this) );
 	});
 
-	$('.file-preview').on('click',function(e){
-		doDownload( $(this) );
+	$('.viewable').on('click',function(e){
+		doDownload( $(this),true );
+		downloadableFileElement = $(this);
 	});
 
 
 	$('[data-toggle="tooltip"]').tooltip();
 
+	$('#downloadFILEPReviewed').on('click',function(){
+		doDownload( downloadableFileElement );
+	});
+
+
+	$(window).on('resize',function(){
+		iniResize();
+	});
+
+ 
+	iniResize();
+
 });
 
 
+const iniResize = ()=> {
+	let windowheight = $(window).height();
+	$('#pdfViewer').css('height', (windowheight - 137) +'px');
+}
 
 
-var doDownload = (this_) => {
+const PDF_VIEWER_FILE = function(file,container){
+	this.basse64File = file;
+	this.BASE64_MARKER = ';base64,';
+	this.container = container;
+
+	this.convertDataURIToBinary = (dataURI) => {
+		var base64Index = dataURI.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
+		var base64 = dataURI.substring(base64Index);
+		var raw = window.atob(base64);
+		var rawLength = raw.length;
+		var array = new Uint8Array(new ArrayBuffer(rawLength));
+	  
+		for(var i = 0; i < rawLength; i++) {
+		  array[i] = raw.charCodeAt(i);
+		}
+		return array;
+	};
+
+	this.renderPDF = (doc,__container) => {
+		$('#pdf-contents,#pdf-main-container').show();
+	
+		var __PDF_DOC;
+		var __TOTAL_PAGES;
+		var width100 = __container.width() * 0.8;
+		var pageScaleMultiplier = 1;  
+		
+
+		let str = $('<div class="slidecontainer">\
+						<div class="zoom_group">\
+						<span class="minus fa fa-minus"></span>\
+						<input type="range" name="foo" min="100" max="200" value="100" class="slider" data-toggle="tooltip" data-placement="top" data-title="111" >\
+						<span class="plus fa fa-plus"></span>\
+						</div>\
+						<div class="reset">\
+						<span class=" fa fa-compress"></span>\
+						</div>\
+					</div>');
+		str.find('.minus').on('click',function(){
+			let input = $(this).closest('.slidecontainer').find('input');
+				input.val( parseInt(input.val()) - 5 ).trigger('change');
+		});
+
+		str.find('.plus').on('click',function(){
+			let input = $(this).closest('.slidecontainer').find('input');
+				input.val( parseInt(input.val()) + 5 ).trigger('change');
+		});
+
+		str.find('.reset').on('click',function(){
+			let input = $(this).closest('.slidecontainer').find('input');
+				input.val( 100 ).trigger('change');
+		});
+
+		str.find('input').on('change',function(){
+			pageScaleMultiplier = $(this).val() / 100; 
+			renderPages();
+		});
+ 
+	
+		function renderPage(page) {
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+	
+			canvas.width = width100 * pageScaleMultiplier;
+			var scale_required = canvas.width / page.getViewport(1).width;
+			var viewport = page.getViewport(scale_required);
+	
+	
+			var renderContext = {
+			  canvasContext: ctx,
+			  viewport: viewport
+			};
+			canvas.height = viewport.height;
+			__container.append(canvas);
+			
+			page.render(renderContext);
+		}
+	
+		function renderPages(){
+			__container.find('canvas').remove();
+			for(var num = 1; num <= __TOTAL_PAGES; num++)
+				__PDF_DOC.getPage(num).then(renderPage);
+ 
+		}
+	
+	
+	
+		PDFJS.getDocument(doc).then(function(pdf_doc) {
+			__PDF_DOC = pdf_doc;
+			__TOTAL_PAGES = __PDF_DOC.numPages;
+			
+			renderPages();
+			__container.append( str );
+			
+		});
+	
+	
+		
+	};
+
+	this.showPDFBy64Base = () => { 
+		// $('#program-shop >div:nth-child(2) .loading-container').hide();
+		// $('#program-shop > div.contain').css({display:'block'});
+	   
+		var pdfAsDataUri = "base64," + this.basse64File;
+		var pdfAsArray = this.convertDataURIToBinary(pdfAsDataUri);
+		var filename = 'test-pdf';
+	
+		var blobpdf = new Blob([pdfAsArray], { type: 'application/pdf' }); 
+		var blobpdfURL = URL.createObjectURL(blobpdf);
+	
+		// $('#downloadpdf').attr('href',blobpdfURL);
+		// $('#downloadpdf').attr('target','_blank');
+		// $('#downloadpdf').attr('download',  filename );
+		this.renderPDF({ data: pdfAsArray }, $('#pdfViewer'));
+	} 
+
+}
+ 
+var previewFile = (this_,link,queryString) => {
+	
+	$('#PDFModal').modal('show');
+	$('#PDFModal .loading').addClass('show');
+	$('#PDFModal #pdfViewer').css('visibility','hidden');
+
+	$.ajax({
+		url: link,
+		type: 'GET',
+		data : queryString,
+		success: function(R) { 
+			$('#PDFModal #pdfViewer').show();
+			console.log(R);
+			setTimeout( () => {
+				let pdf = new PDF_VIEWER_FILE(R);
+				pdf.showPDFBy64Base(); 
+				$('#PDFModal .loading').removeClass('show');
+				$('#PDFModal #pdfViewer').css('visibility','visible');
+			},1000);
+			
+	   },error:function(e){
+		   console.log(e);
+		   notify( 'error', e.responseText );
+	   }
+   }); 
+	
+};
+
+
+
+var doDownload = (this_,isPreview = false) => {
 	let type1__ = this_.attr('data-type'); 
 	let filename =  this_.attr('data-name') ;
 	var link;
 	if( type1__ == 'post' ){
 		var id = this_.closest('.post-panel').attr('data-post-id');
 		var type2 = this_.closest('.post-panel').attr('data-id-2');
-		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + type2+ '?filename=' +  encodeURIComponent(filename);
+		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + type2;
 	}else{
 		var id = this_.attr('data-id');
 		var type2 = this_.attr('data-id-2');
-		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__ + '/' + '?filename=' +  encodeURIComponent(filename);
+		link = SITE_URL + USER_ROLE + '/downloadfile/'+ id + '/' +type1__;
+		
+	}  
+	if( isPreview ){
+		previewFile(this_,link,{ filename : filename, preview : true });
+	}else{
+		window.open(link +  '?filename=' +  encodeURIComponent(filename) ,'Download'); 
+	}
 	
-	} 
-	window.open(link ,'Download'); 
 }
 
 

@@ -30,7 +30,7 @@
 
 <div class="file-attachments">
     <?php foreach( $files as $a ):  ?>
-            <div class="attachment-item downloadable" data-name="<?=$a['name'];?>" data-type="<?php echo isset($type) ? $type : 'post'; ?>"  data-id="<?php echo isset($dataID) ? $dataID : '';?>">
+            <div class="attachment-item viewable" data-name="<?=$a['name'];?>" data-type="<?php echo isset($type) ? $type : 'post'; ?>"  data-id="<?php echo isset($dataID) ? $dataID : '';?>">
                 <div class="file-type-image pull-left mr-2">
                     <div class="attachment-image image-<?= $a['type'];?>"></div>
                 </div>

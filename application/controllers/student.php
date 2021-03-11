@@ -17,7 +17,8 @@ class Student extends MY_Controller {
 		$vars['nav'] = array( 'menu' => 'home' );
 		$vars['projectScripts'] = array(
 										'../plugins/qrcode/instascan.min',
-										'Project.post'
+										'Project.post',
+										'project.attachments'
 									);
 		
 
@@ -488,7 +489,32 @@ class Student extends MY_Controller {
 
 
 	public function tasks(){
-		$this->load->template('student/tasks.php');
+
+		$var = array();
+		$vars['nav'] = array( 'menu' => 'Tasks' );
+	
+		$vars['projectScripts'] = array(
+			'project.student.tasks'
+		);
+
+
+		$args = array(
+			'select' => 'tsk_id, tsk_type, tsk_title,tsk_instruction,tsk_duedate,tsk_status,c.class_id,class_name',
+			'from'	=> 'tasks t',
+			'join'	=> array(
+				array( 'table' => 'task_class_assignees tca', 'cond' => 'tca.task_id = t.tsk_id' ),
+				array( 'table' => 'classes c', 'cond' => 'c.class_id = tca.class_id' ),
+				array( 'table' => 'class_students cs', 'cond' => 'cs.class_id = c.class_id' ),
+			),
+			'where' => array(array('field' =>'cs.student_id','value' => getUserID())),
+			// 'order' => array( array( 'by' => 't.', 'path' => 'desc') ),
+
+		);
+
+		$args = $this->prepare_query( $args )->result_array();
+		$vars['tasks'] = $args;
+
+		$this->load->template('student/tasks.php',$vars);
 	}
 
 

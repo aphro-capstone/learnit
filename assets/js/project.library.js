@@ -135,10 +135,12 @@ var getFoldercontent = function(){
 					<div class="dropdown pull-right">\
 						<span class="btn btn-default" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-chevron-down"></i> </span>\
 						<ul class="dropdown-menu start-from-right" style="">\
+							<li class="preview"> <a href="#"> <i class="fa fa-eye  text-primary"></i> Preview </a>  </li>\
 							<li class="edit"> <a href="#"> <i class="fa fa-edit text-info"></i> Edit  </a>  </li>\
 							<li class="share"> <a href="#"> <i class="fa fa-share-alt text-primary"></i> Share  </a>  </li>\
 							<li class="delete"> <a href="#"> <i class="fa fa-trash text-danger"></i> Delete  </a>  </li>\
 							<li class="unshare"> <a href="#"> <i class="fa fa-trash text-danger"></i> Unshare  </a>  </li>\
+							<li class="download"> <a href="#"> <i class="fa fa-download text-info"></i> Download  </a>  </li>\
 						</ul>\
 					</div>\
 				</div>\
@@ -203,6 +205,13 @@ var getFoldercontent = function(){
 
 		$('#libraryfoldershareupload').modal('show');
 	};
+	this.previewBtn = (this_) => {
+		downloadableFileElement = this_;
+		previewFile();
+	}
+	this.downloadBtn = (this_) => {
+		doDownload( this_ );
+	}
 
 	this.createFolderContent = (r) =>{ 
 		r.folders.forEach( function(e){
@@ -231,7 +240,11 @@ var getFoldercontent = function(){
 
 			div.find('li.share a').on('click',function(){
 				shareBtnClicked( $(this).closest('.folder-item').attr('data-id') );
-			});
+			}); 
+
+
+			div.find('li.preview').remove();
+			div.find('li.download').remove();
 		});
 
 		r.files.forEach(  function(e){
@@ -244,11 +257,19 @@ var getFoldercontent = function(){
 			
 			div.find('li.share').remove();
 			div.find('li.unshare').remove();
-
+			div.attr({ 'data-type' : "library_file" , 'data-name': e.file_name});
 			folderCont.append(div);
 
 			div.find('li.delete a').on('click', function(){
 				fileremove( $(this).closest('.folder-item').attr('data-id'),'file' );
+			});
+
+			div.find('.preview a').on('click',function(){
+				previewBtn(  div );
+			});
+
+			div.find('.download a').on('click',function(){
+				downloadBtn( div );
 			});
 		});
 	}

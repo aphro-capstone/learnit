@@ -971,6 +971,10 @@ class Teacher extends MY_Controller {
 		$this->getDownloadFile( $id,$type__,$type2 );
 	}
 
+	public function previewFile(){
+		$this->getPreviewFile();
+	}
+
 	
 	public function addPost(){
 		$this->_addPost();

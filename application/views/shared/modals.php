@@ -904,3 +904,36 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="PDFModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document" style="width: 90%; max-width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header pb-2 pt-2 border-bottom bg-gray" style="border-bottom: none;">
+        <h5 class="modal-title"></h5>
+        <span class=""> </span>
+
+        
+        <button type="button" class="close" id="downloadFILEPReviewed" >
+          <i class="fa fa-download" data-toggle="tooltip" data-placement="left" data-title="Download"></i> 
+        </button>
+
+        <button type="button" class="close ml-0" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+          <div class="loading">
+					    <div class="overlay"></div>
+              <div class="sk-spinner sk-spinner-wave">
+                  <div class="sk-rect1"></div>
+                  <div class="sk-rect2"></div>
+                  <div class="sk-rect3"></div>
+                  <div class="sk-rect4"></div>
+                  <div class="sk-rect5"></div>
+              </div>	
+          </div> 
+          <div id="pdfViewer" style=""></div>
+      </div> 
+    </div>
+  </div>
+</div> 

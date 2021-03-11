@@ -1,28 +1,28 @@
+<script>
+	const tasks = <?php echo json_encode( $tasks );?>;
+</script>
+
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-4 col-lg-4">
-			<ul class="panel-like-tabs">
+			<ul class="panel-like-tabs class-item-container">
                 <li class="title">  <span> Task Categories</span></li>
-                <li> <a class="active" href="#" >  DNSC - QM (2nd, 2020)  </a> </li>
-                <li> <a class="active" href="#" >  IT 223  </a> </li>
-                <li> <a class="active" href="#" >  IT 322 Set B  </a> </li>
-                <li> <a class="active" href="#" >  IT 324 Social and Prof.  </a> </li>
             </ul>
 		</div>
 		<div class="col-sm-12 col-md-8 col-lg-8">
 			<div class="panel panel2">
 				<div class="panel-header d-table border-bottom">
-					<div class="dropdown pull-left">
-                    	<button class="btn btn-default" data-toggle="dropdown"> <span>Upcoming</span> <i class="fa fa-chevron-down"></i></button>
+					<div class="dropdown pull-left status-dd" >
+                    	<button class="btn btn-default" data-toggle="dropdown"> <span>Ongoing</span> <i class="fa fa-chevron-down"></i></button>
                         <ul class="dropdown-menu">
-                            <li><a href="#"> Upcoming</a></li> 
+                            <li><a href="#"> Ongoing</a></li> 
                             <li><a href="#"> Completed</a></li> 
                         </ul>
                     </div>
 
-                    <button class="btn btn-primary hoverable-btn pull-right"> <i class="fa fa-plus"></i> <span>New</span></button>
 				</div>
-				<div class="panel-content">
+				<div class="panel-content tasks-container">
 
 					<div class="task-item" data-toggle="modal" data-target="#quizInstruction">
 						<div class="task-icon"	>

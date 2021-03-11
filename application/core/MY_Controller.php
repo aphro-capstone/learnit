@@ -888,6 +888,7 @@ class MY_Controller extends CI_Controller
 
     protected function getDownloadFile($id,$type__ = null,$type2 = null){
         $filename = $_GET['filename'] ;
+        $ispreview = $_GET['preview'];
 		if($type__ == 'post'){
 			$fileargs =  array(
 						'from'		=> 'posts as p', 
@@ -927,9 +928,8 @@ class MY_Controller extends CI_Controller
 			$args = array(
 				'from'	=> 'task_submission_ass',
 				'where'	=> array( array( 'field' => 'tsa_id', 'value' =>  $id ) )
-			);
-
-			
+            ); 
+            
 			$file = $this->prepare_query( $args )->result_array();
 			$file = json_decode($file[0]['submission_content'],true);
 			$file = json_decode( $file['attchments'],true );
@@ -938,18 +938,33 @@ class MY_Controller extends CI_Controller
 			foreach( $file as $f ){
 				if($f['name'] == $filename){ $selectedfile = $f; }
 			}
-
 			$this->doDownload($selectedfile); 
-		}
+		}else if( $type__ == 'library_file' ){
+            $args = array(
+				'from'	=> 'library_folder_files',
+				'where'	=> array( array( 'field' => 'lff_id', 'value' =>  $id ) )
+			);
+
+			
+            $file = $this->prepare_query( $args )->result_array();
+			$this->doDownload(array( 'name' => $file[0]['file_name'], 'path' => 'library/'. $file[0]['file_path'] ), $ispreview); 
+        }
 
 
     }
 
-    private function doDownload($file){
+    private function doDownload($file,$isPreview = false){
         $this->load->helper('download');
+       
         $file_ = file_get_contents(getcwd() .  __SYSTEM_UPLOAD_PATH__ . $file['path']);
-        $name =  __PROJECT_NAME__  . '_' . date('Y-m-d').'_' .$file['name'] ;
-        force_download($name,$file_);
+        $fileExt = end( explode('.',$file['path']));
+        $name =  __PROJECT_NAME__  . '_' . date('Y-m-d').'_' .$file['name'] . '.' . $fileExt ;
+        
+        if( $isPreview ){
+            echo base64_encode($file_);
+        }else{
+            force_download($name,$file_);
+        }
    }
 
 
@@ -1424,5 +1439,20 @@ class MY_Controller extends CI_Controller
         );
 
         echo json_encode($vars);
+    }
+
+    protected function getPreviewFile(){
+        // $this->
+        $filepath = '2021\01\OBJECTIVE.pdf';
+
+        if( file_exists( getcwd() . __SYSTEM_UPLOAD_PATH__ . $filepath ) ){
+            $file = file_get_contents( getcwd() .  __SYSTEM_UPLOAD_PATH__ . $filepath);
+ 
+
+            echo base64_encode($file);
+        }else{
+            echo 0;
+        }
+        die();
     }
 }
