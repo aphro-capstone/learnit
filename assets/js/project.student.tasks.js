@@ -1,24 +1,21 @@
 var classFocus;
 var statusFocus = 1;
-let listedClassID = [];
-let listedClass = [];
+
 
 jQuery( function(){
 
     $('.status-dd li').on('click',function(){
         let str = $(this).text();
         $(this).closest('.dropdown').find('[data-toggle="dropdown"] span').text(str);
-        statusFocus = str == 'Ongoing' ? 1 : 0;
+        statusFocus = $(this).find('a').attr('value');
         displayTasks();
     }); 
-
-    displayTasks();
-    listClass();
+    listClass(); 
+   
 });
 
 
 var displayTasks = function(){
-
     const str = '<div class="task-item" data-toggle="modal" data-target="#quizInstruction">\
                 <div class="task-icon"	>\
                     <div class="ribbon left-ribbon ribbon-primary ribbon1">\
@@ -28,9 +25,9 @@ var displayTasks = function(){
                     </div>\
                 </div>\
                 <div class="task-details">\
-                    <p class="big-text task-name">Example Quiz task </p>\
+                    <p class="big-text task-name"> <a href="#"> Example Quiz task  </a></p>\
                     <p class="text-danger mb-0"> <i class="fa fa-clock-o"></i> Due on <span class="due-time"> May 01,2020 </span> </p>\
-                    <p class=""> 60 Questions | 2 Hours</p>\
+                    <p class="quiz-info"> <span class="questions"></span> Questions | <span class="duration">60</span> Minutes</p>\
                     <hr>\
                     <span class="d-block font-bold"> Instruction </span>\
                     <p class="instruction">\
@@ -48,19 +45,26 @@ var displayTasks = function(){
     
 
     tasks.forEach(t => {
+        if( (t.tsk_status != statusFocus || t.class_id != classFocus) && statusFocus != 2 ) return true;
 
-        // if( t.tsk_status != statusFocus && t.class_id != classFocus ) return true;
-
+        if( statusFocus == 2 && t.subcount == 0 ) return true;
+        
         let a = $(str);
-            a.find('.task-name').text(t.tsk_title);
+            a.find('.task-name a').text(t.tsk_title);
             a.find('.instruction').html(t.tsk_instruction);
             a.attr({ 'data-task-id' : t.tsk_id, 'data-class-id' : t.class_id });
-
-            if( listedClassID.indexOf(t.class_id) == -1 ){
-                listedClass.push({ 'id' : t.class_id, 'name' : t.class_name });
-                listedClassID.push( t.class_id );
-            }
+            a.find('.due-time').html( moment( t.tsk_duedate).format('MMMM D, YYYY'));
             
+
+            if(t.tsk_type == 1){
+                a.find('.quiz-info').remove();
+                a.find('.task-name a').attr('href',SITE_URL + USER_ROLE + '/assignment/assignment:' + t.assID)
+            }else{
+
+                a.find('.task-name a').attr('href',SITE_URL + USER_ROLE + '/quiz/'+ ( t.subcount != 0 ? 'view' : 'quiz' )   +':' + t.quiz.id);
+                a.find('.questions').text(t.quiz.count);
+                a.find('.duration').text(t.quiz.duration);
+            }
             $('.tasks-container').append(a);
     }) 
 
@@ -69,6 +73,18 @@ var displayTasks = function(){
 const listClass = () => {
     const str1 = '<li class="class-item"> <a href="#">  DNSC - QM (2nd, 2020)  </a> </li>'; 
     $('.class-item').remove();
+    let listedClassID = [];
+    let listedClass = [];
+
+    tasks.forEach(t => { 
+
+        if( listedClassID.indexOf(t.class_id) == -1 ){
+            listedClass.push({ 'id' : t.class_id, 'name' : t.class_name });
+            listedClassID.push( t.class_id );
+        } 
+    }) 
+
+
     listedClass.forEach( (c,d) => {
         let a = $(str1);
             a.attr('data-value',c.id);

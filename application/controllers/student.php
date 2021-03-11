@@ -499,7 +499,8 @@ class Student extends MY_Controller {
 
 
 		$args = array(
-			'select' => 'tsk_id, tsk_type, tsk_title,tsk_instruction,tsk_duedate,tsk_status,c.class_id,class_name',
+			'select' => 'tsk_id, tsk_type, tsk_title,tsk_instruction,tsk_duedate,tsk_status,c.class_id,class_name,
+						(select count(ts_id) from li_task_submissions where task_id = t.tsk_id and student_id = '. getUserID() .') as subcount',
 			'from'	=> 'tasks t',
 			'join'	=> array(
 				array( 'table' => 'task_class_assignees tca', 'cond' => 'tca.task_id = t.tsk_id' ),
@@ -512,6 +513,38 @@ class Student extends MY_Controller {
 		);
 
 		$args = $this->prepare_query( $args )->result_array();
+
+		$args = array_map(function($a){
+			if( $a['tsk_type'] == 1 ){
+				$args2 = array(
+							'select' => 'ass_id',
+							'from'	=> 'assignments',
+							'where'	=> array( array( 'field' => 'task_id', 'value'	=> $a['tsk_id'] ) )
+				);
+				
+				$args2 = $this->prepare_query( $args2 )->result_array();
+				$a['assID'] = $args2[0]['ass_id'];
+			}else{ 
+				$args2 = array(
+							'select' => 'quiz_id,quiz_count,quiz_duration',
+							'from'	=> 'quizzes',
+							'where'	=> array( array( 'field' => 'task_id', 'value'	=> $a['tsk_id'] ) )
+				);
+					
+				$args2 = $this->prepare_query( $args2 )->result_array();
+				$a['quiz'] = array( 
+					'id' => $args2[0]['quiz_id'],
+					'count' => $args2[0]['quiz_count'],
+					'duration' => $args2[0]['quiz_duration'],
+								);
+			}
+
+
+
+			return $a;
+		},$args);
+
+
 		$vars['tasks'] = $args;
 
 		$this->load->template('student/tasks.php',$vars);
