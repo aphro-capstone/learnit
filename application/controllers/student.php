@@ -210,7 +210,7 @@ class Student extends MY_Controller {
 					'menu' => 'Classes',
 					'sub-menu'	=> 'Progress',
 				 );
-
+		$vars['projectScripts'] = array( 'project.student.progress' );
 				 
 		$vars['duetasks'] = $this->getDueTask();
 
@@ -218,14 +218,142 @@ class Student extends MY_Controller {
 		
 
 		if(strpos($segment, 'details:') !== false){
-			$vars['projectCss'] = array('project.classdue'	);
+
+			$id = explode( ':', $segment );
+			$id = $id[1];
+
+			$vars['classes'] = $this->getStudGrades(true, $id );
 			$this->load->template('student/progress/item-details',$vars);
 		}else{
+
+			$vars['classes'] = $this->getStudGrades( false );
+
 			$this->load->template('student/progress/progress-archive',$vars);	
 		}
 	}
 
+	private function getStudGrades($isDetails = true){
+		
+		
+		$args = array(
+			'select' => 'c.class_id, class_name,class_sy_to',
+			'from' => 'classes c',
+			'join'	=> array(
+					array( 'table' => 'class_students cs','cond' =>'cs.class_id = c.class_id' ),
+			),
+			'where'	=> array(  
+								array('field'=> 'cs.student_id','value'=> getUserID()),
+								array('field'=> 'cs.admission_status','value'=> 1),
+							)
+		);
 
+		$args = $this->prepare_query($args)->result_array();
+		$args = array_map(function($a) use ($isDetails){
+			// get Latest Grading Period
+			$args2 = array(
+						'select' => 'cgp_id,cg_period_name',
+						'from' => 'class_grading_periods',
+						'where'	=> array( array( 'field'=> 'class_id', 'value' => $a['class_id'] ) ),
+						
+			);
+
+			if( !$isDetails ){
+				$args2['limit'] = 1;
+				$args2['order']	= array( array(  'by' => 'cgp_id', 'path' => 'desc' ) );
+			}
+
+			$a['periods'] = ($this->prepare_query( $args2 )-> result_array());
+
+			
+			$a['periods'] = array_map( function($b){
+ 
+
+				//  Get Grades from normal manually added columns
+				$args2 = array(
+							'select' => 'cgpc_id,cgg_name,default_over,timestamp_created',
+							'from' => 'class_grading_period_columns cgpc',
+							'where'	=> array(  array( 'field'=> 'cgpc.cgp_id', 'value' => $b['cgp_id'] ), ),
+				);
+
+				$args2 = $this->prepare_query( $args2 )->result_array();
+
+				if( count($args2) > 0 ){
+
+					$args2 = array_map( function($c){
+									$args3 = array(
+												'select' => 'cgsg_score,cgsg_over',
+												'from' => 'class_grading_student_grades cgsg',
+												'where'	=> array(  
+																array( 'field'=> 'cgpc_id', 'value' => $c['cgpc_id'] ),
+																array( 'field'=> 'stud_id', 'value' => getUserID() ),
+															),
+									);
+
+							$args3 = $this->prepare_query( $args3 )->result_array();
+							$c['grades'] = $args3;
+							return $c;
+					},$args2 ); 
+					
+					
+				}
+				$b['normal_col_grades'] = $args2; 
+
+			   //  get grades from tasks
+				$args2 = array(
+							'select' => 'tsk_id,tsk_type,tsk_title,
+											tsk_duedate, 
+											t.timestamp_created as assigned_date,
+											tsk_status,
+											(select total_points from li_quizzes where task_id = t.tsk_id ) as quiz_total,
+											(select quiz_id from li_quizzes where task_id = t.tsk_id ) as quiz_id,
+											(select default_over from li_assignments where task_id = t.tsk_id ) as ass_default,
+											(select ass_id from li_assignments where task_id = t.tsk_id ) as ass_id,
+											',
+							'from' => 'class_grading_period_tasks cgpt',
+							'join' => array( array( 'table' => 'tasks t', 'cond' => 't.tsk_id = cgpt.task_id' ) ),
+							'where'	=> array( array( 'field'=> 'cgpt.cgp_id', 'value' => $b['cgp_id'] ) ),
+				);
+
+				$args2 = $this->prepare_query( $args2 )->result_array();
+				if( count($args2) > 0  ){
+					//  ARRAY MAP/  GET SUBMISSIONS SCORES
+					$args2 = array_map( function($c){
+
+						$args3 = array( 'from' => 'task_submissions ts',
+										'where'	=> array( 
+													array( 'field'=> 'ts.task_id', 'value' => $c['tsk_id'] ) ,
+													array( 'field'=> 'ts.student_id', 'value' => getUserID()) 
+												),
+							);
+							
+						
+						if( $c['tsk_type'] == 0 ){   
+							$args3['select'] = 'quiz_score as score';
+							$args3['join'] =  array( array( 'table' => 'task_submission_quiz tsq', 'cond' => 'tsq.ts_id = ts.ts_id' ) );
+
+						}else{   // GET GRADES FROM Assignments
+							$args3['select'] = 'ass_grade as score, ass_over';
+							$args3['join'] =  array( array( 'table' => 'task_submission_ass tsa', 'cond' => 'tsa.ts_id = ts.ts_id' ) );
+						}
+
+						$c['submissions'] = $this->prepare_query( $args3 )->result_array();
+						return $c;
+					},$args2);
+
+					
+				}
+				$b['task_grades'] = $args2;
+
+				return $b;
+			}, $a['periods'] );
+ 
+
+			return $a;
+		},$args); 
+
+		return $args;
+	}
+  
 
 	private function checkStudSubmission($quizid){
 		

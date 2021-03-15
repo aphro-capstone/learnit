@@ -35,7 +35,7 @@
 }
 
 
-:focus:not(.fill_in_the_blanks input){
+:focus:not(.fill_in_the_blanks input):not(.search input){
     border: none!important;
     outline: none!important;
   }
@@ -160,6 +160,11 @@ ul.no-style{
 }
 
 
+table.table tbody td{
+    vertical-align: middle;
+  }
+ 
+  
 .btn3d{
 	position: relative;
 	top: -6px;
@@ -3177,7 +3182,7 @@ body.navbar-open .navmobile-overlay{
   .class-item-container .class-item.active a{
     background: #cbdaff;
   }
- 
+
 
 @media only screen and ( max-width: 766px ){
     body.login-page .navbar{

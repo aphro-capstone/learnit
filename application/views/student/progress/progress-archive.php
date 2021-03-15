@@ -1,6 +1,11 @@
-
+<script>
+	const grades = <?php echo json_encode($classes);?>;
+	const isSingleView = false;
+</script>
 <div class="container">
 	<h3 class="title">Student Progress</h3>
+
+
 	<div class="row mt-3">
 		<div class="col-sm-12 col-md-8 col-lg-9">
 			<div class="panel">
@@ -27,11 +32,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="class-progress-list" class="d-table full-width mt-3">
-						<?php for($a = 0 ; $a < 5 ; $a++): ?>
-							<?php $this->load->view('student/progress/progress-item'); ?>
-						<?php endfor; ?>	
-					</div>
+					<div id="class-progress-list" class="d-table full-width mt-3"> </div>
 				</div>
 			</div>
 		</div>
