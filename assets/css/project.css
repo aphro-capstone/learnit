@@ -1,12 +1,5 @@
 
 
-
-
-
-
-
-
-
 /* KEYFRAMES*/
 
 @-webkit-keyframes sk-waveStretchDelay {
@@ -349,8 +342,7 @@ table.table tbody td{
     opacity: 1;
 }
 
-header .dropdown-menu li a{
-    font-size: 0.8em;
+header .dropdown-menu li a{font-size: 0.8em;
 }
 
 header .dropdown-menu li a i{
@@ -873,7 +865,7 @@ header .right-content li.dropdown .dropdown-menu.show{
     top: 100%!important;
     right: 0!important;
     left: auto!important;
-        font-weight: normal;
+    font-weight: normal;
     font-size: 14px;
  }
 
