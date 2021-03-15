@@ -104,7 +104,7 @@
 				      		</a>
 	                        
 	                        <ul class="dropdown-menu animated fadeInLeft">
-	                            <li><a href="#"><i class="fa fa-users"></i> Profile</a></li> 
+	                            <li><a href="<?= site_url() . '/' . getRole() . '/profile'?>"><i class="fa fa-users"></i> Profile</a></li> 
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Invite Teachers</a></li>  -->
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Connections</a></li>  -->
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Groups</a></li>  -->

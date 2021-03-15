@@ -1078,8 +1078,9 @@ class Student extends MY_Controller {
 		else if( $action == 'fetchAssignees' ) $this->fetchAssignees();
 	}
 
-
-	
+	public function profile(){
+		$this->getProfile();
+	} 
 
 }
 

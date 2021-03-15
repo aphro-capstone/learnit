@@ -1455,4 +1455,10 @@ class MY_Controller extends CI_Controller
         }
         die();
     }
+
+    protected function getProfile(){
+        $vars = array();
+		$vars['projectScripts']	=  array( 'project.profile'); 
+		$this->load->template("shared/profile", $vars);
+    }
 }

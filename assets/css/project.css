@@ -28,10 +28,10 @@
 }
 
 
-:focus:not(.fill_in_the_blanks input):not(.search input){
+/* :focus:not(.fill_in_the_blanks input):not(.search input){
     border: none!important;
     outline: none!important;
-  }
+  } */
 
 
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
@@ -3175,6 +3175,17 @@ body.navbar-open .navmobile-overlay{
     background: #cbdaff;
   }
 
+.input-group-icon-right input.form-control{
+    background-color: transparent;
+    padding-right: 2em;
+} 
+
+.input-group-icon-right i {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+    font-size: 1.4em;
+}
 
 @media only screen and ( max-width: 766px ){
     body.login-page .navbar{
