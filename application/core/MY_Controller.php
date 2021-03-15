@@ -1361,7 +1361,7 @@ class MY_Controller extends CI_Controller
                 $name = explode('.',$name); // explode with the '.'
                 unset( $name[ count($name) - 1 ] );  // remove xtention
                 $name = implode(' ', $name );  //glued together without name
-                $name = preg_replace("/[\s-_]+/", " ", $name); 
+                $name = preg_replace("/\s-_+/", " ", $name); 
                 $args['file_name'] = $name;
                 $args['file_path'] = $dbPath . $fileName;
                 $args['author_id'] = getUserID();
