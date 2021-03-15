@@ -790,7 +790,16 @@ class Student extends MY_Controller {
 				$hasShortAnswer = true;
 			}else if( $question['type'] == 3 ){  // Fill in the blanks
 				for($x = 0; $x < count( $responses ) ; $x++ ){
-					if( $responses[$x] == $answer[$x] ) { $score +=  intval( $question['points'] ); };
+
+					 
+					if( $question['iscasesensitive'] ){
+						$_isCorrect = $responses[$x] == $answer[$x] ;
+					}else{
+						$_isCorrect = strtolower( $responses[$x] ) == strtolower( $answer[$x] );
+					}
+
+
+					if( $_isCorrect) { $score +=  intval( $question['points'] ); };
 				}
 			}else  if ( $question['type'] == 4 ){   // matching type
 				$matches = $question['responses']['matches'];

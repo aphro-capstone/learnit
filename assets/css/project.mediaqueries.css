@@ -1,14 +1,11 @@
-@media only screen and (max-width: 991px) {
-    
+
+@media only screen and (max-width : 991px){
+
     .container{
         width: 100%;
         max-width: 100%;
     }
- 
-  }
 
-@media only screen and (max-width : 768px){
-      
     header .right-content{
         position: absolute;
         right: 47px;
@@ -21,10 +18,10 @@
     }
 
     header .left-content .navbar-toggler{
-        position: absolute;
-        right: 0;
-        top: 4px; 
-        padding-right: 0;
+        position: fixed;
+    right: 15px;
+    top: 12px;
+    padding-right: 0;
        
     }
 
@@ -49,7 +46,9 @@
         height: 100%;
         background: #000000b8;
         z-index: 999;
-           color: #fff;
+        color: #fff;
+        margin-top: 0;
+
     }
     header .left-content .navbar-collapse.collapsing,
     header .left-content .navbar-collapse.show{
@@ -69,4 +68,18 @@
         text-align: center;
         font-size: 1.4em;
     }
+
+    header .left-content .navbar-collapse li  .dropdown-menu{
+        background: transparent;
+
+    }
   }
+
+@media only screen and (max-width : 764px){
+      
+    #gradebook-container .headpart div:last-child{
+        clear: both;
+        margin-top: 10px;
+      
+    }
+}

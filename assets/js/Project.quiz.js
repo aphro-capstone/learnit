@@ -494,6 +494,7 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 			total_points : this.getTotalPoints()
 		};  
 
+		// console.log(obj);
 		
  
 
@@ -530,20 +531,21 @@ function quizItem(QuestionNum, Question = '',Selection = null,preRep,points = 1)
 		}
 		
 
-		console.log(obj);
 		return obj;
 	};
 
 	this.getTotalPoints = () => {
 		let pointMultiplier = 0;
 		if(this.selectedType >= 0 && this.selectedType <= 2) pointMultiplier = 1;
-		else if( this.selectedType == 3) pointMultiplier = this.QuestionItem.find('.fill_in_the_blanks input').length;
+		else if( this.selectedType == 3) pointMultiplier = this.QuestionItem.find('.fill_in_the_blanks input[type="text"]').length;
 		else if ( this.selectedType == 4 ) pointMultiplier = this.QuestionItem.find('.matching.response-div > .response-item').length; 
 		else if( this.selectedType ==  5) {
 			this.QuestionItem.find('.response-item').each(function(a,b){
 				 pointMultiplier += $(b).find('input[type="checkbox"]').is(':checked') ? 1: 0;
 			});
 		}
+
+		console.log( this.questionPoints , pointMultiplier );
 		return this.questionPoints * pointMultiplier;
 	}
 
@@ -1087,6 +1089,7 @@ const iniQuizQuestions = ( )=> {
 
 				b.append(text);
 				a.append(b);
+
 				b.after('<p> <strong> Note : </strong>'+ (isCasesensitive ? 'All answers are case sensitive.' : 'Answers can be capitals or small letters.') +'</p>');
 
 				if( !VQWS ){
@@ -1102,7 +1105,7 @@ const iniQuizQuestions = ( )=> {
 						if( answer[c] != undefined ){
 							$(d).val( answer[c] != undefined ? answer[c]: '' );
 							
-							if(answer[c] == RR[c]){
+							if( (isCasesensitive && answer[c] == RR[c]) || (!isCasesensitive && answer[c].toLowerCase() == RR[c].toLowerCase() )){
 								$(d).addClass( 'correct-answer');
 								score['c'] = score.c + 1;
 							}else{
@@ -1355,7 +1358,7 @@ const iniQuizQuestions = ( )=> {
 		 
 		if( b.type == 0 ) return this.createTrueFalseResponse( b.responses ) ;
 		else if( b.type == 1 ) return this.createMultipleChoiceResponse( b.responses ) ;
-		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question,b.responses,b.casesensitive ) ;
+		else if( b.type == 3 ) return this.createFillTheBlanksResponse( b.Question,b.responses,b.iscasesensitive ) ;
 		else if( b.type == 4 ) return this.createMatchingResponse( b.responses ) ;
 		else if( b.type == 5 ) return this.createMultipleAnswerResponse( b.responses ) ;
 		else if( b.type == 2 ) return this.createShortAnswerResponse();  
