@@ -1440,7 +1440,7 @@ class MY_Controller extends CI_Controller
 
     protected function getPreviewFile(){
         // $this->
-        $filepath = '2021\01\OBJECTIVE.pdf';
+        $filepath = 'library\2021\03\f_21_EndorsementLetter.pdf';
 
         if( file_exists( getcwd() . __SYSTEM_UPLOAD_PATH__ . $filepath ) ){
             $file = file_get_contents( getcwd() .  __SYSTEM_UPLOAD_PATH__ . $filepath);

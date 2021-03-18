@@ -84,7 +84,7 @@
 				</div>
 				<div class="contain position-relative pt-3 pb-3 pl-5 pr-5">
 					<form id="login-form" class="logintabs pt-4 pb-4 login_reg" action="<?=base_url();?>/home/login">
-					  	<h2 class="title"> Login to <strong>LeartIT</strong></h2>
+					  	<h2 class="title"> Login to <strong>LearnIT</strong></h2>
 					  	<p class="semi-title"></p>
 					  	<!-- <div class="row">
 					  		<div class="col col-sm-12 col-md-6 col-lg-6"></div>

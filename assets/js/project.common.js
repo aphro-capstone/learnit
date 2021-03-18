@@ -375,7 +375,7 @@ var previewFile = (this_,link,queryString) => {
 	$('#PDFModal #pdfViewer').css('visibility','hidden');
 
 	$.ajax({
-		url: link,
+		url: SITE_URL + USER_ROLE + '/previewFile',
 		type: 'GET',
 		data : queryString,
 		success: function(R) { 
