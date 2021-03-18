@@ -16,7 +16,7 @@
 	<div class="panel-header">
 		<div class=" column-panel-multi-row d-flex">
 			<div class="image-left">
-				<div class="img-container image-circular"> 
+				<div class="img-container image-circular user-image-container"> 
 					<img src="<?=base_url() . getSessionData('sess_userImage');?>" alt="" />
 				</div>
 			</div>

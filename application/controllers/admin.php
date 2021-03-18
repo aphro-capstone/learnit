@@ -170,7 +170,7 @@ class Admin extends MY_Controller {
 		}else{
 			$whereArray = array( 'sc_id' => $id);
 			$this->JSONENCODE_CONDITION( 
-										$this->ProjectModel->update( $whereArray, 'settings_colors', $dataSet),
+										$this->PM->update( $whereArray, 'settings_colors', $dataSet),
 										'Successfully updated color with ID ' . $id,
 										'Failed to update color,  something went wrong.'
 									);
@@ -203,7 +203,7 @@ class Admin extends MY_Controller {
 		}else{
 			$whereArray = array( 'g_id' => $id);
 			$this->JSONENCODE_CONDITION( 
-										$this->ProjectModel->update( $whereArray, 'settings_yr_lvl', $dataSet),
+										$this->PM->update( $whereArray, 'settings_yr_lvl', $dataSet),
 										'Successfully update Grade with ID ' . $id,
 										'Failed to update grade,  something went wrong.'
 									);
@@ -246,7 +246,7 @@ class Admin extends MY_Controller {
 		}else{
 			$whereArray = array( 's_id' => $id);
 			$this->JSONENCODE_CONDITION( 
-										$this->ProjectModel->update( $whereArray, 'settings_subjects', $dataSet),
+										$this->PM->update( $whereArray, 'settings_subjects', $dataSet),
 										'Successfully update Subject with ID ' . $id,
 										'Failed to update subject,  something went wrong.'
 									);
@@ -285,7 +285,7 @@ class Admin extends MY_Controller {
 		}else{
 			$whereArray = array( 'spa_id ' => $id);
 			$this->JSONENCODE_CONDITION( 
-										$this->ProjectModel->update( $whereArray, 'settings_post_availability', $dataSet),
+										$this->PM->update( $whereArray, 'settings_post_availability', $dataSet),
 										'Successfully update Subject with ID ' . $id,
 										'Failed to update availability,  something went wrong.'
 									);
@@ -399,7 +399,7 @@ class Admin extends MY_Controller {
 				'snapshot'	=> $data
 
 			);
-			$id = $this->ProjectModel->insert_CI_Query( $m_add, 'multimedia',true );     // Add Post
+			$id = $this->PM->insert_CI_Query( $m_add, 'multimedia',true );     // Add Post
 
 			$args = array( 'from' => 'multimedia' , 'where' => array( array( 'field'	=> 'm_id', 'value' => $id  ) ));
 			$item = $this->prepare_query( $args )->result_array();
@@ -428,7 +428,7 @@ class Admin extends MY_Controller {
 		$id = $this->input->post('id');
 		$filepath = $this->input->post('path');
 		unlink( getcwd() . $filepath );
-		if( $this->ProjectModel->delete( $id, 'm_id', 'multimedia') ){
+		if( $this->PM->delete( $id, 'm_id', 'multimedia') ){
 			$this->returnResponse('Successfully deleted the video');
 		}else{
 			$this->returnResponse('Failed to delete the video');
@@ -442,7 +442,7 @@ class Admin extends MY_Controller {
 		$classname = $this->input->post('classname');
 
 
-		if( $this->ProjectModel->update( array( 'class_id' => $classid) , 'classes', array('teacher_id' => $ntid)) ){
+		if( $this->PM->update( array( 'class_id' => $classid) , 'classes', array('teacher_id' => $ntid)) ){
 			
 			$reassignmentLogfields = array(
 								'classid' =>  $classid,
@@ -450,7 +450,7 @@ class Admin extends MY_Controller {
 								'prev_teacher_id' =>  $ptid,
 							);
 
-			$this->ProjectModel->insert_CI_Query( $reassignmentLogfields, 'class_teacher_transition_log' );
+			$this->PM->insert_CI_Query( $reassignmentLogfields, 'class_teacher_transition_log' );
 			
 
 			$this->addnotificationLogs($ntid,'The class ' . $classname . ' has been reassigned to you.', 'reassignment');
@@ -471,10 +471,10 @@ class Admin extends MY_Controller {
 
 
 
-		if( $this->ProjectModel->update( array( 'user_id' => $userid) , 'users', array('user_status' => $stats,'datetime_inactive' => $datetimeinactive )) ){
+		if( $this->PM->update( array( 'user_id' => $userid) , 'users', array('user_status' => $stats,'datetime_inactive' => $datetimeinactive )) ){
 
 			if( $role == 'student'){
-				$this->ProjectModel->update( array('student_id' => $userid) , 'class_students', array('admission_status' => 0));
+				$this->PM->update( array('student_id' => $userid) , 'class_students', array('admission_status' => 0));
 			}else{
 
 			}
@@ -726,11 +726,11 @@ class Admin extends MY_Controller {
 		}
  
 		$whereArray = array( 'class_sy_from' => $query_year_from, 'class_sy_to' => $query_year_to );
-		$this->ProjectModel->update( $whereArray, 'classes', array( 'class_status' => 2 ));
+		$this->PM->update( $whereArray, 'classes', array( 'class_status' => 2 ));
 	}
 
 	private function removeUser($userid){
-		$this->ProjectModel->delete( $userid, 'user_id', 'users');
+		$this->PM->delete( $userid, 'user_id', 'users');
 	}
 
 }

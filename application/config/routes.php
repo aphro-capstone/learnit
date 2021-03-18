@@ -56,3 +56,5 @@ $route['translate_uri_dashes'] = FALSE;
 // $CI =& get_instance();
 // var_dump($CI->session->userdata('userdata')['sess_userRole']);
 // $route['classes'] = 'teacher/classes';
+$route['profile'] = 'common/profile';
+$route['logout'] = 'common/logout';

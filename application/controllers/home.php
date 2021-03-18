@@ -66,13 +66,13 @@ class Home extends MY_Controller {
 
 
                     if(!empty( $uprofileData )){
-                        $udata['sess_userImage'] = isset($uprofileData['ui_profile_image_path']) ? $uprofileData['ui_profile_image_path'] : 'assets/images/user.png' ; 
+                        $udata['sess_userImage'] = isset($uprofileData['ui_profile_image_path']) ? (__USER_IMAGE_UPLOAD_PATH__ . $uprofileData['ui_profile_image_path']) : 'assets/images/user.png' ; 
                     }else{
                         $udata['sess_userImage'] = 'assets/images/user.png';
                     }
                 }
 
-                $this->session->set_userdata( array( 'userdata' => $udata ) );
+                $this->session->set_userdata(   $udata  );
                 echo json_encode( array(
                                         'type'  => 'success', 
                                         'msg'   => 'Successfully logged in', 

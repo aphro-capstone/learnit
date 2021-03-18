@@ -97,3 +97,4 @@ define('__SCHOOL_YEAR_MONTH_END__', 6); // July
 
 define('__MULTIMEDIA_UPLOAD_PATH__','\assets\multimedia\\');
 define('__MULTIMEDIA_SNAPSHOT_UPLOAD_PATH__','\assets\multimedia\snapshots\\');
+define('__USER_IMAGE_UPLOAD_PATH__','\assets\uploads\user-images\\');

@@ -1,5 +1,5 @@
 <div class="user-comment-input">
-    <div class="user-image img-container image-circular">
+    <div class="user-image img-container image-circular user-image-container">
         <img src="<?=base_url() . getSessionData('sess_userImage');?>" alt="user-image">
     </div>
     <div class="wrapper">

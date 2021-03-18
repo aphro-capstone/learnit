@@ -26,19 +26,12 @@ class MY_Controller extends CI_Controller
  	
 
 
-
- 	protected function logout_() {
-        // $this->SystemsModel->logout();
-        $this->session->sess_destroy();
-        redirect('home');
-    }
-
-
+ 
     public function prepare_query($argss = null,$ci_query = true){
         
         extract($argss);
 
-        $this->load->model('ProjectModel');
+        $this->load->model('PM');
 
             // 
         if ($ci_query){
@@ -65,7 +58,7 @@ class MY_Controller extends CI_Controller
             }
 
             
-            return $this->ProjectModel->do_CI_Query($args);
+            return $this->PM->do_CI_Query($args);
         }else{
             $query = 'SELECT ' . (isset($select)? $select:'*') .' FROM ' . $table . (isset($join) ? " inner join $join on $join_cond " : '') . ((isset($cond)) ? 'WHERE ' . $cond : '') . ((isset($ord)) ? ' order by ' . $ord : '' ). (isset($path) ? ' ' .$path : ' asc');
         }
@@ -80,7 +73,7 @@ class MY_Controller extends CI_Controller
         else if ( $setting == 'grade') $table = 'settings_yr_lvl';
         else if ( $setting == 'subject') $table = 'settings_subjects';
 
-        return $this->ProjectModel->delete( $value, $key, $table);
+        return $this->PM->delete( $value, $key, $table);
     }
 
 
@@ -92,7 +85,7 @@ class MY_Controller extends CI_Controller
     protected function insertIfnotexist($args,$toInsert,$messageToreturn,$returnNotEcho = FALSE,$returnLatestID = FALSE){
         $data = $this->prepare_query( $args );
         if( $data->num_rows() == 0 ){
-            $temp = $this->ProjectModel->insert_CI_Query( $toInsert['data'], $toInsert['table'],$returnLatestID);
+            $temp = $this->PM->insert_CI_Query( $toInsert['data'], $toInsert['table'],$returnLatestID);
             if( $returnNotEcho ){
                 return $temp;
             }
@@ -253,7 +246,7 @@ class MY_Controller extends CI_Controller
             'cm_content'    => json_encode( array( 'c' => $msg, 't' => 'text' ) )
 		);
 
-		$m_id = $this->ProjectModel->insert_CI_Query( $msgObj, 'chat_messages',true );
+		$m_id = $this->PM->insert_CI_Query( $msgObj, 'chat_messages',true );
         $msg = $this->getChatMessages( $m_id,true );
 
         
@@ -328,7 +321,7 @@ class MY_Controller extends CI_Controller
             $args2 = $this->prepare_query( $args2 )->result_array();
             $args3 = $this->prepare_query( $args3 )->result_array();
 
-            // $this->ProjectModel->printLastQuery();
+            // $this->PM->printLastQuery();
             $args2 = $args2[0];
 
             $a['otherMember'] = $args3[0];
@@ -608,6 +601,8 @@ class MY_Controller extends CI_Controller
 						'join'		=> array( 
                                             array( 'table' => 'tasks as tsk', 'cond' => 'tsk.tsk_id = p.post_info_ref_id'),
                                             array( 'table' => 'userinfo as ui', 'cond' => 'ui.cred_id = p.user_id'),
+                                            array( 'table' => 'task_class_assignees as tca', 'cond' => 'tca.task_id = tsk.tsk_id'),
+                                            array( 'table' => 'classes as c', 'cond' => 'c.class_id = tca.class_id'),
                                         ),
 						'where'     => array(  
                                             array( 'field'    => 'post_ref_type', 'value' =>  1 ),
@@ -622,6 +617,8 @@ class MY_Controller extends CI_Controller
                 $npArgs['join'][] =  array( 'table' => 'classes as c', 'cond' => 'c.class_id = np.class_id');
                 $npArgs['where'][] = array( 'field'    => 'c.teacher_id', 'value' =>  getUserID() );
             } 
+
+            $taskArgs['where'][] = array( 'field' => 'c.teacher_id','value' => getUserID() );
         } else if( getRole() == 'student' ){
             $taskArgs['select'] = $taskArgs['select'] . '(select count(ts_id) from li_task_submissions as ltsk where ltsk.task_id = tsk.tsk_id and ltsk.student_id = '. getUserID() .' ) as student_sub_count';
         }
@@ -691,7 +688,7 @@ class MY_Controller extends CI_Controller
                 },$comments );
             }
             
-            // echo $this->ProjectModel->printLastquery();
+            // echo $this->PM->printLastquery();
 			$a['comments'] = $comments ;
              
             
@@ -765,7 +762,7 @@ class MY_Controller extends CI_Controller
 			'class_id' 		=> $classid ? $classid : 0,							
 		);
 
-		$npID = $this->ProjectModel->insert_CI_Query( $normalpostAdd, 'normal_posts',true );
+		$npID = $this->PM->insert_CI_Query( $normalpostAdd, 'normal_posts',true );
         
         $postAdd = array(							
             'user_id' 				=> intval( getUserID() ),								
@@ -773,12 +770,12 @@ class MY_Controller extends CI_Controller
 			'post_ref_type' 		=> 0,	
 			'spa_id' 			    => $spaid ? $spaid : 0,								
         );
-		$postID = $this->ProjectModel->insert_CI_Query( $postAdd, 'posts',true );
+		$postID = $this->PM->insert_CI_Query( $postAdd, 'posts',true );
 
         
         $content = array( 't' => $content ,'a' => $this->getAttachmentsJSON(true,$postID,'np_') );
         $normalpostAdd['p_content'] = $content;
-        $this->ProjectModel->update( 
+        $this->PM->update( 
                                     array( 'np_id' => $npID) , 
                                     'normal_posts', 
                                     array( 'p_content' => json_encode($content) ) );
@@ -858,7 +855,7 @@ class MY_Controller extends CI_Controller
                 'commentor_id'  => getUserID(),
                 'c_content'     => json_encode($content)
         );
-        $commentID = $this->ProjectModel->insert_CI_Query( $commentAdd, 'post_comments',true );
+        $commentID = $this->PM->insert_CI_Query( $commentAdd, 'post_comments',true );
         
         $commentAdd['c_id'] = $commentID;
         $timestamp = new Datetime();
@@ -1012,8 +1009,8 @@ class MY_Controller extends CI_Controller
     $post = $post[0];
 
     if($post['post_ref_type'] == 0){
-        $this->ProjectModel->delete( $postID, 'p_id', 'posts');
-        $this->ProjectModel->delete( $post['post_info_ref_id'], 'np_id', 'normal_posts');
+        $this->PM->delete( $postID, 'p_id', 'posts');
+        $this->PM->delete( $post['post_info_ref_id'], 'np_id', 'normal_posts');
         echo json_encode( array( 'Error' => null) );
     }else{
         // check if there are already submissions
@@ -1030,8 +1027,8 @@ class MY_Controller extends CI_Controller
         if( $s['submissions'] > 0 ){
             return json_encode(  array('Error' => 'Cannot delete post. It is connected to a task that has submissions.' )  );
         }else{
-            $this->ProjectModel->delete( $postID, 'p_id', 'posts');
-            $this->ProjectModel->delete( $post['post_info_ref_id'], 'tsk_type', 'tasks');
+            $this->PM->delete( $postID, 'p_id', 'posts');
+            $this->PM->delete( $post['post_info_ref_id'], 'tsk_type', 'tasks');
             return json_encode( array( 'Error' => null) );
         }
     }
@@ -1039,7 +1036,7 @@ class MY_Controller extends CI_Controller
 
    private function postNotification($postID,$type){
        if($type == 2 ){
-            return $this->ProjectModel->delete( 
+            return $this->PM->delete( 
                 array( 
                         'userid'   => getUserID(), 
                         'postid'   => $postID  
@@ -1049,14 +1046,14 @@ class MY_Controller extends CI_Controller
                 'userid'			=>  getUserID(), 
                 'postid'			=>	$postID, 
             );
-            return $this->ProjectModel->insert_CI_Query($args, 'user_utility_post_notification');
+            return $this->PM->insert_CI_Query($args, 'user_utility_post_notification');
        }
    }
 
 
    private function postHidden($postID,$type){
         if( $type == 2 ){
-            return $this->ProjectModel->delete( 
+            return $this->PM->delete( 
                     array( 
                             'user_id'   => getUserID(), 
                             'post_id'   => $postID  
@@ -1066,7 +1063,7 @@ class MY_Controller extends CI_Controller
                             'user_id'			=>  getUserID(), 
                             'post_id'			=>	$postID, 
                         );
-            return $this->ProjectModel->insert_CI_Query($args, 'user_utility_hidden_posts_log');
+            return $this->PM->insert_CI_Query($args, 'user_utility_hidden_posts_log');
         }
     
    }
@@ -1236,7 +1233,7 @@ class MY_Controller extends CI_Controller
             'log_type' =>  $logtype,
         );
 
-        $this->ProjectModel->insert_CI_Query( $notificationlogs, 'user_utility_notification_logs' );
+        $this->PM->insert_CI_Query( $notificationlogs, 'user_utility_notification_logs' );
    }
 
    protected function soloVideo($id){
@@ -1366,7 +1363,7 @@ class MY_Controller extends CI_Controller
                 $args['file_path'] = $dbPath . $fileName;
                 $args['author_id'] = getUserID();
                 
-            $this->ProjectModel->insert_CI_Query( $args, 'library_folder_files' );
+            $this->PM->insert_CI_Query( $args, 'library_folder_files' );
             } 
             
         }
@@ -1386,7 +1383,7 @@ class MY_Controller extends CI_Controller
             $field = 'lf_id';
         }
 
-        if( $this->ProjectModel->delete( $id, $field, $table) ){
+        if( $this->PM->delete( $id, $field, $table) ){
             $this->returnResponse( 'Successfully removed the item.');
         }else{
             $this->returnResponse('Failed to remove item.' );
@@ -1402,7 +1399,7 @@ class MY_Controller extends CI_Controller
 
         $idslist = implode(',',$assignids);
         $query = 'delete from li_library_class_shares where class_id not in ('. $idslist .') and folder_id = ' . $folderid;
-        $this->ProjectModel->customQuery( $query );
+        $this->PM->customQuery( $query );
 
 
 
@@ -1456,9 +1453,5 @@ class MY_Controller extends CI_Controller
         die();
     }
 
-    protected function getProfile(){
-        $vars = array();
-		$vars['projectScripts']	=  array( 'project.profile'); 
-		$this->load->template("shared/profile", $vars);
-    }
+     
 }

@@ -547,7 +547,7 @@ class Student extends MY_Controller {
 							$whereArray = array( 'cs_id' => $cs['cs_id']);
 							$dataUpdate	= array( 'admission_status'	=> 1);
 							$this->JSONENCODE_CONDITION(  
-												$this->ProjectModel->update( $whereArray, 'class_students', $dataUpdate),
+												$this->PM->update( $whereArray, 'class_students', $dataUpdate),
 												'Successfully re-enrolled to the class.',
 												'Re-enroll process failed, contact admin.'  );
 							$this->notifyNewSubjectEnroll($classname,4);
@@ -566,7 +566,7 @@ class Student extends MY_Controller {
 						'class_id' 		=> $class,								
 					);
 
-					$this->ProjectModel->insert_CI_Query( $dataToinsert, 'class_students' );
+					$this->PM->insert_CI_Query( $dataToinsert, 'class_students' );
 					$this->notifyNewSubjectEnroll($classname,3);
 					$this->addnotificationLogs( $teacher_id,'A new student had joined your class \''. $classname .'\'');
 					echo json_encode( array( 'type' => 'success', 'msg' => 'Successfuly joined class.'));
@@ -594,7 +594,7 @@ class Student extends MY_Controller {
 			$whereArray = array( 'cs_id' => $classID);
 			$dataUpdate	= array( 'admission_status'	=> 0);
 			$this->JSONENCODE_CONDITION(  
-								$this->ProjectModel->update( $whereArray, 'class_students', $dataUpdate),
+								$this->PM->update( $whereArray, 'class_students', $dataUpdate),
 								'Successfully withdrawn from class.',
 								'Withdrawn process unsuccesful.'  );
 			 
@@ -701,14 +701,7 @@ class Student extends MY_Controller {
 
 	public function activities( $game = null){
 		$this->getActivities($game);
-	}
-	
-
-
-	public function logout(){
-        $this->logout_();
-	}
-	
+	} 
 
 
 	private function getStudents_classlist($select = 'lc.class_id'){
@@ -797,7 +790,7 @@ class Student extends MY_Controller {
 			'student_id' 		=> getUserID(),								
 		); 
 		
-		$tsID = $this->ProjectModel->insert_CI_Query( $A, 'task_submissions',true );
+		$tsID = $this->PM->insert_CI_Query( $A, 'task_submissions',true );
 
 
 		$SC = array();
@@ -810,7 +803,7 @@ class Student extends MY_Controller {
 			'submission_content' 	=> json_encode( $SC ),								
 		);
 
-		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_ass',true ) ){
+		if( $this->PM->insert_CI_Query( $A, 'task_submission_ass',true ) ){
 			echo json_encode(array( 'Error' => null, 'msg' => 'Successfuly submitted assignment' ));
 
 			$args  = array( 'select'  => 'teacher_id,tsk_title',
@@ -865,7 +858,7 @@ class Student extends MY_Controller {
 			'student_id' 		=> getUserID(),								
 		);
 
-		$tsID = $this->ProjectModel->insert_CI_Query( $A, 'task_submissions',true );
+		$tsID = $this->PM->insert_CI_Query( $A, 'task_submissions',true );
 
 
 
@@ -876,7 +869,7 @@ class Student extends MY_Controller {
 			'quiz_score'		=> $this->checkQuizAnswers($quizID,json_decode($answers),true)					
 		);
 
-		if( $this->ProjectModel->insert_CI_Query( $A, 'task_submission_quiz',true ) ){
+		if( $this->PM->insert_CI_Query( $A, 'task_submission_quiz',true ) ){
 
 			$args  = array( 'select'  => 'teacher_id,tsk_title',
 							'from' => 'task_submissions ts',

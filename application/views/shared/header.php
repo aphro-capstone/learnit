@@ -98,19 +98,19 @@
 				      </li>
 				      <li class="dropdown navbar-user">
 				      		<a href="#" class="" data-toggle="dropdown" >
-				      			<div class="user-nav img-container image-circular">
+				      			<div class="user-nav img-container image-circular user-image-container">
 					      			 <img src="<?=base_url() . getSessionData('sess_userImage');?>" alt="ddd" />
 					      		</div>
 				      		</a>
 	                        
 	                        <ul class="dropdown-menu animated fadeInLeft">
-	                            <li><a href="<?= site_url() . '/' . getRole() . '/profile'?>"><i class="fa fa-users"></i> Profile</a></li> 
+	                            <li><a href="<?= site_url() . '/profile'?>"><i class="fa fa-users"></i> Profile</a></li> 
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Invite Teachers</a></li>  -->
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Connections</a></li>  -->
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Groups</a></li>  -->
 	                            <!-- <li><a href="#"><i class="fa fa-users"></i> Account Settings</a></li>  -->
 
-	                            <li><a href="<?=site_url() .'/'. getSessionData('sess_userRole') . '/logout';?>"> <i class="fa fa-sign-out"></i> Log Out</a></li>
+	                            <li><a href="<?=site_url() .'/logout';?>"> <i class="fa fa-sign-out"></i> Log Out</a></li>
 	                        </ul>
 	                    </li>
 				    </ul>

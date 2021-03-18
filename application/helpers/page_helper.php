@@ -34,9 +34,9 @@ function getSessionData($subkey,$key = null){
 	$CI =& get_instance();
 	if($key == null) $key = 'userdata';
 	
-	$data = $CI->session->userdata($key);
+	$data = $CI->session->userdata($subkey);
 	
-	if( $data ) return $data[$subkey];
+	if( $data ) return $data;
 	return '';
 	// var_dump($CI->session->userdata($key));
 	// return $CI->session->userdata($key)[$subkey];

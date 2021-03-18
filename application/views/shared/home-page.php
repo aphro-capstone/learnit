@@ -12,12 +12,12 @@
 						</div>
 						<div class="text-content">
 							<div class="text position-relative" style="top: 5px; font-weight: 500;"> <?= getUserName();  ?></div>
-							<div class="text"><small><a href="<?=site_url();?>teacher/profile"> View Profile </a></small></div>
+							<div class="text"><small><a href="<?=site_url();?>/profile"> View Profile </a></small></div>
 						</div>
 					</div>
 					<div class="divider"></div>
 					<ul class="personal-info no-style mt-3 pl-3" >
-						<li class="" > <i class="fa fa-home"></i> { School }</li>
+						<!-- <li class="" > <i class="fa fa-home"></i> { School }</li> -->
 					</ul>
 				</div>
 			</div>

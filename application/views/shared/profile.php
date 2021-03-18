@@ -1,13 +1,19 @@
+<script>
+	const ___D___= <?= json_encode($UI);?>;
+</script>
+
+
+
+
 <div class="container" id="user-profile-page">
 
 		<div class="left">
 			<div class="column-panel-multi-row d-flex mb-3">
 				<div class="m-auto">
-						
-
+						 
 				 	<div class="profile-avatar-main">
-				 		<div class="img-container"> 
-				 			<img src="<?=base_url() . getSessionData('sess_userImage');?>" alt="" />
+				 		<div class="img-container d-flex"> 
+				 			<img class="m-auto" src="<?=base_url() . getSessionData('sess_userImage');?>" alt="" />
 				 		</div>	
 				 		<div class="avatar-profile-overlay">
 				 			<div class="avatar-text-container">
@@ -15,8 +21,13 @@
 								<span class="d-block text-center">Update Photo</span>
 				 			</div>	
 						 </div>
-						 <input type="text">
-				 	</div>
+						 <form action="" id="savePhotoForm">
+						 	<input type="file" class="hide" accept=".jpg,.jpeg,.png" >
+						 </form>
+					 </div>
+
+					 <p class="mb-0 mt-1 text-center"><button class="btn btn-primary btn-xs" style="display:none" id="savePhoto"> <i class="fa fa-save"></i> Save </button> </p>
+					 
 				 
 					<div class="profile-info-section">
 							<div class="profile-banner-title-container qa-test-profilePageHeader-titleContainer d-flex align-items-baseline">
@@ -52,55 +63,36 @@
 						<div class="panel-content">
 								<form class="form">
 
-									<div class="row">
-
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="fname" placeholder="Firstname">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="mname" placeholder="Middle name">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="lname" placeholder="Lastname">
-												<i class="fa fa-user"></i>
+									 
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">
+											<i class="fa fa-calendar mr-1"></i> Full Name</label>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-lg-4 pr-1">
+													<div class="input-group input-group-icon-right">
+														<input type="text" class="form-control" name="fname" placeholder="Firstname" readonly="true">
+													</div>
+												</div>
+												<div class="col-lg-4 pr-1 pl-1">
+													<div class="input-group input-group-icon-right">
+														<input type="text" class="form-control" name="mname" placeholder="Middlename" readonly="true">
+													</div>
+												</div>
+												<div class="col-lg-4 pl-1">
+													<div class="input-group input-group-icon-right">
+														<input type="text" class="form-control" name="lname" placeholder="Lastname" readonly="true">
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-									
-									<div class="row">
-
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="fname" placeholder="Firstname">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="mname" placeholder="Middle name">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-										<div class="col-lg-4">
-											<div class="input-group input-group-icon-right">
-												<input type="text" class="form-control" name="lname" placeholder="Lastname">
-												<i class="fa fa-user"></i>
-											</div>
-										</div>
-									</div> 
 
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">
 											<i class="fa fa-calendar mr-1"></i> Date of Birth</label>
 										<div class="col-sm-9">
-										<input type="date" readonly="true" class="form-control">
+										<input type="date" readonly="true" class="form-control" name="day_birth">
 										</div>
 									</div>
 									<div class="form-group row">
@@ -108,32 +100,43 @@
 											<i class="fa fa-transgender mr-1"></i> Gender</label>
 										<div class="col-sm-9 d-flex">
 											<div class="form-check form-check-inline m-auto ml-0">
-												<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male">
+												<input class="form-check-input" type="radio" name="gender" value="Male">
 												<label class="form-check-label" for="inlineRadio1">Male</label>
-												<input class="form-check-input ml-4" type="radio" name="gender" id="inlineRadio2" value="Female">
+												<input class="form-check-input ml-4" type="radio" name="gender" value="Female">
 												<label class="form-check-label" for="inlineRadio2">Female</label>
 											</div>
 										</div>
 									</div>
-									<div class="form-group row">
-										<label class="col-sm-3 col-form-label">
-											<i class="fa fa-phone mr-1"></i> Contact #</label>
-										<div class="col-sm-9">
-										<input type="tel" readonly="true" class="form-control" placeholder="Contact Number">
-										</div>
-									</div>
+									
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">
 											<i class="fa fa-envelope mr-1"></i> Email Address</label>
 										<div class="col-sm-9">
-										<input type="text" readonly="true" class="form-control" placeholder="@gmail.com">
+										<input type="text" readonly="true" name="email" class="form-control" placeholder="@gmail.com">
 										</div>
 									</div>
+
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">
+											<i class="fa fa-phone mr-1"></i> <?= getRole() == 'student' ? 'Guardian Phone #' : 'Contact #';?></label>
+										<div class="col-sm-9">
+										<input type="tel" readonly="true" name="contact" class="form-control" placeholder="Contact Number">
+										</div>
+									</div>
+									<?php if(getRole() == 'student'): ?>
+										<div class="form-group row">
+											<label class="col-sm-3 col-form-label">
+												<i class="fa fa-phone mr-1"></i> Guardian Name</label>
+											<div class="col-sm-9">
+											<input type="tel" readonly="true" name="guardian_name" class="form-control" placeholder="Contact Number">
+											</div>
+										</div>
+									<?php endif; ?>
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">
 											<i class="fa fa-home mr-1"></i> Address</label>
 										<div class="col-sm-9">
-										<input type="text" readonly="true" class="form-control" placeholder="Current Address">
+										<input type="text" readonly="true" name="addr" class="form-control" placeholder="Current Address">
 										</div>
 									</div> 
 							
@@ -150,7 +153,30 @@
 							</div>
 						</div>
 					</div>
-				</div>		
+				</div>
+
+				<!-- <div class="tab-pane fade" id="image-profile">
+					<div class="panel panel2">
+						<div class="panel-header"> <h2>Profile Image</h2></div>
+						<div class="panel-content">
+							<div class="profile-image">
+								<div>
+									<img id="profimage" src="<?=base_url() . getSessionData('sess_userImage');?>">
+								</div>
+							</div>
+							<input type="file" class="hidden" name="photo">
+							<button class="btn btn-primary">
+									<i class="fa fa-upload"></i> Upload Photo
+							</button>
+							<div class="d-table">
+							 
+								<button class="btn btn-outline-secondary hoverable-btn pull-right savePhoto">
+									<i class="fa fa-save mr-1"></i>  Save
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>		 -->
 				<div class="tab-pane fade " id="classen">
 					<div class="panel panel2">
 						<div class="panel-header"> <h2>Class Enrolled</h2></div>

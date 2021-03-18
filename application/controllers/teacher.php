@@ -166,7 +166,7 @@ class Teacher extends MY_Controller {
 					'class_id'			=>  $classid,
 					'cg_period_name'	=>	1, 
 				);
-				$this->ProjectModel->insert_CI_Query( $postAdd, 'class_grading_periods' );
+				$this->PM->insert_CI_Query( $postAdd, 'class_grading_periods' );
 			}
 
  
@@ -198,7 +198,7 @@ class Teacher extends MY_Controller {
 				$this->returnResponse(null,'Class needs to have no students to be able to delete it.');
 			}
 
-			if( $this->ProjectModel->delete( $id, 'class_id', 'classes') ){
+			if( $this->PM->delete( $id, 'class_id', 'classes') ){
 				$this->returnResponse('Successfully deleted the class');
 			}else{
 				$this->returnResponse(null,'Error occurred when deleting class,  try again in a few minutes or contact support.');
@@ -209,7 +209,7 @@ class Teacher extends MY_Controller {
 			$dataUpdate	= array( 'class_status'	=> $statusVal );
 			$action = $statusVal == 2? 'archiving' : 'reactivating';
 
-			if($this->ProjectModel->update($whereArray,'classes',$dataUpdate)){
+			if($this->PM->update($whereArray,'classes',$dataUpdate)){
 				$this->returnResponse(ucfirst($action. ' the class successfull.'));
 			}else{
 				$this->returnResponse(null,'Error occurred while '. $action .' the class,  try again in a few minutes or contact support.');
@@ -757,7 +757,7 @@ class Teacher extends MY_Controller {
 
 		$whereArray = array( 'class_id' => $classid);
 		$dataUpdate	= array( 'code_status'	=> $status );
-		$this->JSONENCODE_CONDITION(  $this->ProjectModel->update( $whereArray, 'classes', $dataUpdate), '', '' );
+		$this->JSONENCODE_CONDITION(  $this->PM->update( $whereArray, 'classes', $dataUpdate), '', '' );
 	}
 
 
@@ -767,7 +767,7 @@ class Teacher extends MY_Controller {
 
 		$whereArray = array( 'class_id' => $classid);
 		$dataUpdate	= array( 'color_id'	=> $colorID );
-		$this->JSONENCODE_CONDITION(  $this->ProjectModel->update( $whereArray, 'classes', $dataUpdate), '', '' );
+		$this->JSONENCODE_CONDITION(  $this->PM->update( $whereArray, 'classes', $dataUpdate), '', '' );
 	}
  
 
@@ -799,7 +799,7 @@ class Teacher extends MY_Controller {
 		
 		if( isset( $tid ) && !is_null( $tid ) ){
 			$whereArray = array( 'tsk_id' => $tid); 
-			$this->ProjectModel->update($whereArray,'tasks',$taskAdd);
+			$this->PM->update($whereArray,'tasks',$taskAdd);
 			$postID = null; 
 			$taskID = $tid;
 
@@ -807,7 +807,7 @@ class Teacher extends MY_Controller {
 
 			$ids = implode(',',$assignIDs);
 			$query = 'delete from li_task_class_assignees where class_id not in ('. $ids .') and task_id = ' . $taskID;
-			$this->ProjectModel->customQuery( $query );
+			$this->PM->customQuery( $query );
 
 			
 			foreach( $assignIDs as $id ){
@@ -828,13 +828,13 @@ class Teacher extends MY_Controller {
 
 
 		}else{
-			$taskID = $this->ProjectModel->insert_CI_Query( $taskAdd, 'tasks',true );
+			$taskID = $this->PM->insert_CI_Query( $taskAdd, 'tasks',true );
 			$postAdd = array(
 				'user_id'			=>  getUserID(),
 				'post_info_ref_id'	=>	$taskID,
 				'post_ref_type'		=> 	1  
 			);
-			$postID = $this->ProjectModel->insert_CI_Query( $postAdd, 'posts',true );     // Add Post
+			$postID = $this->PM->insert_CI_Query( $postAdd, 'posts',true );     // Add Post
 			
 			//  Add Task assigned classes
 			$assigneeAdd = array(); 
@@ -845,7 +845,7 @@ class Teacher extends MY_Controller {
 				); 
 			} 
 			
-			$this->ProjectModel->insert_CI_Query( $assigneeAdd, 'task_class_assignees',false,true );
+			$this->PM->insert_CI_Query( $assigneeAdd, 'task_class_assignees',false,true );
 		}
 
 		//     Check whether to add to gradebook or delte if exist
@@ -883,10 +883,10 @@ class Teacher extends MY_Controller {
 		
 		if( isset($qid) && !is_null($qid) ){
 			$whereArray = array( 'quiz_id' => $qid); 
-			$this->ProjectModel->update($whereArray,'quizzes',$quizAdd);
+			$this->PM->update($whereArray,'quizzes',$quizAdd);
 			$this->returnResponse('Successfully updated the quiz.'); 
 		}else{
-			$quizID = $this->ProjectModel->insert_CI_Query( $quizAdd, 'quizzes',true );    // Add Quiz datails
+			$quizID = $this->PM->insert_CI_Query( $quizAdd, 'quizzes',true );    // Add Quiz datails
 			$this->sendnewTasksEmail('Quiz',$taskID,$postID);
 			$this->returnResponse('Successfully created the quiz.'); 
 		}
@@ -902,10 +902,10 @@ class Teacher extends MY_Controller {
 
 		if(  isset($aid) && !is_null($aid) ){
 			$whereArray = array( 'ass_id' => $aid); 
-			$this->ProjectModel->update($whereArray,'assignments',$assAdd);
+			$this->PM->update($whereArray,'assignments',$assAdd);
 			$this->returnResponse('Successfully updated the Assignment.');
 		}else{
-			if( $this->ProjectModel->insert_CI_Query( $assAdd, 'assignments',true ) ){
+			if( $this->PM->insert_CI_Query( $assAdd, 'assignments',true ) ){
 				$this->sendnewTasksEmail('Assignment',$taskID,$postID);
 				$this->returnResponse('Successfully created the assignment.');
 			}
@@ -1038,10 +1038,10 @@ class Teacher extends MY_Controller {
 			$msg =  'Task closed succesfully';
 		}
 
-		if($this->ProjectModel->update($whereArray,'tasks',$dataUpdate)){
+		if($this->PM->update($whereArray,'tasks',$dataUpdate)){
 			if(  $action == 'review' && $reviewVal == 1 ){
 				$dataUpdate	= array( 'tsk_status'	=> 0 );
-				$this->ProjectModel->update($whereArray,'tasks',$dataUpdate);
+				$this->PM->update($whereArray,'tasks',$dataUpdate);
 			}
 			echo json_encode( array( 'Error' => null, 'msg' => $msg) );
 		}else{
@@ -1069,7 +1069,7 @@ class Teacher extends MY_Controller {
 			$over = $this->input->post('over');
 			$whereArray = array( 'tsa_id' => $tsaid);
 			$dataUpdate	= array( 'ass_grade'	=> $score, 'ass_over' => $over );
-			if( $this->ProjectModel->update( $whereArray, 'task_submission_ass', $dataUpdate) ){
+			if( $this->PM->update( $whereArray, 'task_submission_ass', $dataUpdate) ){
 				echo json_encode( array( 'Error' => null, 'msg' => 'Successfully graded assignment'  ) );
 			}else{
 				echo json_encode( array( 'Error' => 'Failed to grade assignment', 'msg' => ''  ) );
@@ -1125,14 +1125,14 @@ class Teacher extends MY_Controller {
 			$t = $t[0];
 			$whereArray = array( 'cgsg_id' => $t['cgsg_id']);  
 
-			if($this->ProjectModel->update($whereArray,'class_grading_student_grades',$dataInsert)){
+			if($this->PM->update($whereArray,'class_grading_student_grades',$dataInsert)){
 				$this->returnResponse( 'Successfully updated grade' );
 			}else{
 				$this->returnResponse( 'Failed to update grade' );
 			}
 		}else{
 			// insert
-			if( $this->ProjectModel->insert_CI_Query( $dataInsert, 'class_grading_student_grades',true ) ){
+			if( $this->PM->insert_CI_Query( $dataInsert, 'class_grading_student_grades',true ) ){
 				$this->returnResponse( 'Successfully updated grade' );
 			}else{
 				$this->returnResponse( 'Failed to update grade' );
@@ -1218,7 +1218,7 @@ class Teacher extends MY_Controller {
 
 	private function delColumn(){
 		$cgpcID = $this->input->post('cgpc');
-		if( $this->ProjectModel->delete( $cgpcID, 'cgpc_id', 'class_grading_period_columns') ){
+		if( $this->PM->delete( $cgpcID, 'cgpc_id', 'class_grading_period_columns') ){
 			$this->returnResponse( 'Successfully removed column.' );
 		}else{
 			$this->returnResponse( null,'Failed to remove column' );
@@ -1255,7 +1255,7 @@ class Teacher extends MY_Controller {
 			'class_id '			=>  $classid,
 			'cg_period_name'	=>	$name, 
 		);
-		$periodid = $this->ProjectModel->insert_CI_Query( $add, 'class_grading_periods',true );     // Add Post	
+		$periodid = $this->PM->insert_CI_Query( $add, 'class_grading_periods',true );     // Add Post	
 		
 		if( $periodid ){
 			echo $periodid;
@@ -1284,7 +1284,7 @@ class Teacher extends MY_Controller {
 		
 		if( isset( $cgpc )  ){
 			$whereArray = array( 'cgpc_id' => $cgpc);  
-			if($this->ProjectModel->update($whereArray,'class_grading_period_columns',$args2)){
+			if($this->PM->update($whereArray,'class_grading_period_columns',$args2)){
 				$this->returnResponse( 'Successfully updated column' );
 			}else{
 				$this->returnResponse( 'Failed to update column' );
@@ -1422,7 +1422,7 @@ class Teacher extends MY_Controller {
 	private function deleteCurrentPeriod(){
 		$cgpid = $this->input->post( 'cgp' );
 
-		if( $this->ProjectModel->delete( $cgpid, 'cgp_id', 'class_grading_periods') ){
+		if( $this->PM->delete( $cgpid, 'cgp_id', 'class_grading_periods') ){
 			$this->returnResponse('Successfull removed class period');
 		}else{
 			$this->returnResponse(null,'Failed to remove class period');
@@ -1435,7 +1435,7 @@ class Teacher extends MY_Controller {
 		$cgp = $this->input->post('cgp');
 
 		$whereArray = array( 'cgpc_id' => $cgpc);  
-		if($this->ProjectModel->update($whereArray,'class_grading_period_columns',array( 'cgp_id' => $cgp )  )){
+		if($this->PM->update($whereArray,'class_grading_period_columns',array( 'cgp_id' => $cgp )  )){
 			$this->returnResponse( 'Successfully updated column' );
 		}else{
 			$this->returnResponse( 'Failed to update column' );
@@ -1474,10 +1474,10 @@ class Teacher extends MY_Controller {
 
 				$periodID = $periodID[0]['cgp_id'];
 							
-				$this->ProjectModel->insert_CI_Query( array('cgp_id' => $periodID,'task_id' => $taskid), 'class_grading_period_tasks',true );     // Add Post
+				$this->PM->insert_CI_Query( array('cgp_id' => $periodID,'task_id' => $taskid), 'class_grading_period_tasks',true );     // Add Post
 			}
 		}else{
-			$this->ProjectModel->delete( $taskid, 'task_id', 'class_grading_period_tasks');			
+			$this->PM->delete( $taskid, 'task_id', 'class_grading_period_tasks');			
 		}
 	}
 
@@ -1502,7 +1502,7 @@ class Teacher extends MY_Controller {
 
 		$whereArray = array('class_id' => $classID, 'student_id' => $studid );
 
-		if( $this->ProjectModel->delete($whereArray,null, 'class_students') ){
+		if( $this->PM->delete($whereArray,null, 'class_students') ){
 			$this->returnResponse('Removed student succesfully');
 		}else{
 			$this->returnResponse(null,'Error removing student, try again in a few minutes or contact support.');

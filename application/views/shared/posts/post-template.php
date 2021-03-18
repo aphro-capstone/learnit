@@ -93,7 +93,7 @@
 		
 		<div class="reaction-counts d-table">
 			<div class="pull-left d-flex">
-				<div class="mini-reaction-item mini-reaction-like">
+				<!-- <div class="mini-reaction-item mini-reaction-like">
 					<div class="namelist">
 						<span class="reaction-name"> Like </span>
 						<ul class="no-style mb-0">
@@ -129,7 +129,7 @@
 						</ul>
 					</div>
 				</div> 
-				<span class="count ml-1">15</span>
+				<span class="count ml-1">15</span> -->
 			</div>
 			<div class="pull-right">
 				<a href="#" class="comment-toggle"> <?=$commentCounter;?> comments </a>
