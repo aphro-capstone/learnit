@@ -44,7 +44,7 @@
 	const QSD = <?php echo json_encode($QSD);?>; 
 	
  </script>
-<div class="container <?= $isviewQuiz ? 'viewing' : 'taking';?>   <?= !$VQWS ? 'teacher-viewing-empty' :''?>" id="student-quiz-view">
+<div class="container <?= $isviewQuiz ? 'viewing' : 'taking';?>   <?= !$VQWS ? 'teacher-viewing-empty' :''?>  <?=getRole() == 'student' ? 'user-student':'user-teacher' ?>" id="student-quiz-view">
 
 	<?php if( getRole() == 'teacher' ): ?>
 		<h5 class="title return"> <a href="<?=getSiteLink('classes/quiz/quiz:' . $QSD['tsk_id']);?>"> <i class="fa fa-arrow-left"></i> </span>  Back   </a> </h5>

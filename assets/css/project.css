@@ -2508,6 +2508,10 @@ body.activities #main-content{
     box-shadow: 1px 1px 3px #00000085;
 }
 
+.user-student .overview-items .overview-item{
+    cursor: default;
+}
+
 .overview-items .overview-item.unanswered,
 .overview-items .overview-item.wrong,
 .overview-item.remark-3
