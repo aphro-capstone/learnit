@@ -140,7 +140,7 @@ class Home extends MY_Controller {
                         'vc_code'
                 );
         
-                $this->ProjectModel->insert_CI_Query(  array(  'vc_code' => $v_code, 'user_id' => $id ), 'verification_codes');
+                $this->PM->insert_CI_Query(  array(  'vc_code' => $v_code, 'user_id' => $id ), 'verification_codes');
 
                 $this->addStudentInfo( $id, $v_code );
               
@@ -156,9 +156,9 @@ class Home extends MY_Controller {
 
 
                 // Saved verification code to DB
-                $this->ProjectModel->insert_CI_Query(  array(  'vc_code' => $v_code, 'user_id' => $id ), 'verification_codes');
+                $this->PM->insert_CI_Query(  array(  'vc_code' => $v_code, 'user_id' => $id ), 'verification_codes');
                
-                $this->ProjectModel->insert_CI_Query( array( 
+                $this->PM->insert_CI_Query( array( 
                                                             'cred_id' => $id,
                                                             'ui_firstname' => $fname, 
                                                             'ui_lastname' => $lname ,
@@ -209,7 +209,7 @@ class Home extends MY_Controller {
             );
             
 
-            $this->ProjectModel->insert_CI_Query( $DTS_1, 'userinfo');
+            $this->PM->insert_CI_Query( $DTS_1, 'userinfo');
             $err = [] ;
 
             if( !empty( $err ) ){
@@ -232,7 +232,7 @@ class Home extends MY_Controller {
             die();
         }else{
             echo json_encode( array( 'type' => 'error', 'msg' => 'Student is already registered. Contact your teacher if you forgot your password.' ) );
-            $this->ProjectModel->delete( $id, 'user_id', 'users') ;
+            $this->PM->delete( $id, 'user_id', 'users') ;
             die();
         }
         
@@ -283,8 +283,8 @@ class Home extends MY_Controller {
 
             if( $temp->num_rows() > 0 ){
                 $temp = $temp->result_array()[0];
-                $this->ProjectModel->delete( $token, 'vc_code', 'verification_codes' );
-                $this->ProjectModel->update( 
+                $this->PM->delete( $token, 'vc_code', 'verification_codes' );
+                $this->PM->update( 
                                             array('user_id' => $temp[ 'user_id' ] ),
                                             'users',
                                             array( 'application_status' => 2 )  );
@@ -318,8 +318,8 @@ class Home extends MY_Controller {
 
             if( $temp->num_rows() > 0 ){
                 $temp = $temp->result_array()[0];
-                $this->ProjectModel->delete( $code, 'vc_code', 'verification_codes' );
-                $this->ProjectModel->update( 
+                $this->PM->delete( $code, 'vc_code', 'verification_codes' );
+                $this->PM->update( 
                                             array('user_id' => $temp[ 'user_id' ] ),
                                             'users',
                                             array( 'application_status' => 2 )  );

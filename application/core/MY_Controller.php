@@ -556,12 +556,13 @@ class MY_Controller extends CI_Controller
         
 		$npArgs =  array(
                         'select'    => 'p.p_id,
-                                        user_id as author_id,
+                                        p.user_id as author_id,
                                         p.post_ref_type,
                                         p.spa_id,
                                         p.timestamp_created,
                                         np.class_id,
                                         np.p_content,
+                                        ui.timestamp_created as user_timestamp,
                                         concat( ui_firstname, " ",ui_midname," ", ui_lastname ) as poster_name,
                                         (select class_name from li_classes where class_id = np.class_id) as assignees',
 						'from'      => 'posts as p',
@@ -572,14 +573,13 @@ class MY_Controller extends CI_Controller
 						'where'     => array( 
                                             array( 'field'    => 'post_ref_type', 'value' =>  0 ),
                                             array( 'field'    => '( SELECT COUNT(post_id) as existing from li_user_utility_hidden_posts_log where user_id = '. getUserID() .' and post_id = p.p_id  ) = ' , 'value' => 0 ),
-
                                         ),
 						'order'		=> array( array( 'by'	=> 'p.timestamp_created', 'path'	=> 'desc' ))
 					); 
         
                     
 		$taskArgs =  array(
-						'select'    => 'p.p_id,user_id as author_id,
+						'select'    => 'p.p_id, p.user_id as author_id,
 												p.post_ref_type,
 												p.spa_id,
                                                 p.timestamp_created,
@@ -596,7 +596,8 @@ class MY_Controller extends CI_Controller
                                                 (select quiz_duration from li_quizzes as q where q.task_id = tsk.tsk_id) as duration,
                                                 (select quiz_count from li_quizzes as q where q.task_id = tsk.tsk_id) as quiz_count,
                                                 (select ass_id from li_assignments as a where a.task_id = tsk.tsk_id) as ass_id,
-                                                (select total_points from li_quizzes as q where q.task_id = tsk.tsk_id) as total_point,',
+                                                (select total_points from li_quizzes as q where q.task_id = tsk.tsk_id) as total_point,
+                                                ui.timestamp_created as user_timestamp,',
 						'from'      => 'posts as p',
 						'join'		=> array( 
                                             array( 'table' => 'tasks as tsk', 'cond' => 'tsk.tsk_id = p.post_info_ref_id'),
@@ -606,7 +607,7 @@ class MY_Controller extends CI_Controller
                                         ),
 						'where'     => array(  
                                             array( 'field'    => 'post_ref_type', 'value' =>  1 ),
-                                            array( 'field'    => '( SELECT COUNT(post_id) as existing from li_user_utility_hidden_posts_log where user_id = '. getUserID() .' and post_id = p.p_id  ) = ' , 'value' => 0 )    
+                                            array( 'field'    => '( SELECT COUNT(post_id) as existing from li_user_utility_hidden_posts_log where user_id = '. getUserID() .' and post_id = p.p_id  ) = ' , 'value' => 0 ),
                                         ),
 						'order'		=> array( array( 'by'	=> 'p.timestamp_created', 'path'	=> 'desc' ))
                     ); 
@@ -616,16 +617,25 @@ class MY_Controller extends CI_Controller
             if( $classID  != 0){
                 $npArgs['join'][] =  array( 'table' => 'classes as c', 'cond' => 'c.class_id = np.class_id');
                 $npArgs['where'][] = array( 'field'    => 'c.teacher_id', 'value' =>  getUserID() );
-            } 
+            }
 
             $taskArgs['where'][] = array( 'field' => 'c.teacher_id','value' => getUserID() );
         } else if( getRole() == 'student' ){
             $taskArgs['select'] = $taskArgs['select'] . '(select count(ts_id) from li_task_submissions as ltsk where ltsk.task_id = tsk.tsk_id and ltsk.student_id = '. getUserID() .' ) as student_sub_count';
+            $taskArgs['join'][] = array( 'table' => 'class_students as cs', 'cond' => 'cs.class_id = c.class_id');
+            
+            $taskArgs['where'][] = array( 'field' => 'cs.student_id','value' => getUserID() );
+
         }
-        
+
+ 
         if( $classID != 0 ){
-            $npArgs['where'][] =  array( 'field'    => 'np.class_id', 'value' =>  $classID );
-        }             
+            $npArgs['where'][] =  array( 'field'    => 'np.class_id', 'value' =>  $classID ); 
+        }else{
+            $npArgs['join'][] =  array( 'table' => 'user_friends as uf', 'cond' => 'uf.friend_id = ui.cred_id');
+            $npArgs['where'][] =  array( 'field'    => 'uf.user_id', 'value' =>  getUserID() ); 
+        }
+         
 
         $tasks = $this->prepare_query( $taskArgs )->result_array();
         $np = $this->prepare_query( $npArgs )->result_array();  
@@ -658,11 +668,27 @@ class MY_Controller extends CI_Controller
         }
         
 
-
-		
+        $user_timestamp = $this->UM->getUserField( 'timestamp_created' )['timestamp_created']; 
+ 
 		$postArray = [];
 		 
-		$temp = array_merge( $np,$tasks );
+		$temptemp = array_merge( $np,$tasks );
+
+        $temp = array();
+        $tempIDs = array();
+
+       
+        foreach($temptemp as $t){
+            
+             //  Remove Duplicate and posts posted before account creation
+            if( !in_array( $t['p_id'],$tempIDs ) && $t['timestamp_created'] >= $user_timestamp ){
+                $temp[] = $t;
+                $tempIDs[] = $t['p_id'];
+            }
+        }
+
+
+
 
 		usort($temp, function($a, $b) { 
 			return new DateTime($b['timestamp_created']) <=> new DateTime($a['timestamp_created']);

@@ -69,5 +69,23 @@ class userModel extends CI_Model {
  
     }
 
+
+    public function getUserField($field,$table = 0){
+        $str = '';
+
+        if( gettype($field) == 'string' ){
+            $field = array($field);
+        }
+        
+        $str = implode(',',$field);
+
+        $this->db->select( $str );
+        $this->db->from($table == 0 ? 'userinfo' : 'users');
+        $this->db->where( array( 'cred_id' => getUserID() ));
+
+        return ($this->db->get()->result_array())[0];
+
+    }
+
     
 }

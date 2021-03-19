@@ -173,7 +173,7 @@ class Student extends MY_Controller {
 														'project.assignment',
 														'project.post'),
 							'projectCss'		=> array('project.library'),
-							'posts'			=> $this->getPosts(),
+							'posts'			=> $this->getPosts($id),
 							'modals'		=>  $this->projectModals(),
 							'duetasks'		=> $this->getDueTask( $id),
 							'members'		=> $members
